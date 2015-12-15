@@ -12,13 +12,12 @@ public class ClassDeclarationVisitor extends ClassVisitor {
 
 	public ClassDeclarationVisitor(int arg0, ClassVisitor arg1) {
 		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		System.out.println("Class: " + name + " extends " + superName + " implements " + 
-				Arrays.toString(interfaces));
+		String[] path = name.split("/");
+		System.out.println("\t" + path[path.length-1] + " [ \n \t \t label = \"{" + path[path.length-1] +"|");
 		super.visit(version, access, name, signature, superName, interfaces);
 	}
 
