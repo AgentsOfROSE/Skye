@@ -17,7 +17,7 @@ public class ClassDeclarationVisitor extends ClassVisitor {
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 		String[] path = name.split("/");
-		System.out.println("\t" + path[path.length-1] + " [ \n \t \t label = \"{" + path[path.length-1] +"|");
+		System.out.print("\t" + path[path.length-1] + " [ \n \t \t label = \"{" + path[path.length-1] +"|");
 		super.visit(version, access, name, signature, superName, interfaces);
 	}
 

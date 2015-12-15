@@ -15,12 +15,14 @@ public class UMLTextParrser {
 			
 			ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5);
 			
-			//ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5,
-			//		declVisitor);
+			reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+			
+			ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5);
+			
+			reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+			System.out.print("|");
 			
 			//ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, fieldVisitor);
-			
-			reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
 		}
 		System.out.println("}");
 	}

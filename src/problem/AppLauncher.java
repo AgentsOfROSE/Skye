@@ -84,7 +84,7 @@ public class AppLauncher extends Thread {
 	public void run() {
 		this.stop = false;
 		while(!stop) {
-			// Wait for key to be signalled
+			// Wait for key to be signaled
 			WatchKey key;
 			try {
 				key = watcher.take();
@@ -101,7 +101,13 @@ public class AppLauncher extends Thread {
 				Path child = dir.resolve(name);
 
 				// Call the handler method
-				this.handleDirectoryEvent(event.kind().name(), child);
+				//this.handleDirectoryEvent(event.kind().name(), child);
+				
+				//This is the first alternate handler method I created
+				this.handleDirectoryEventByPrintingFileName(event.kind().name(), child);
+				
+				//This is the second alternate handler method I created
+				//this.handleDirectoryEventByPrintingFilePath(event.kind().name(), child);
 			}
 
 			// Reset key and remove from set if directory no longer accessible
@@ -154,6 +160,20 @@ public class AppLauncher extends Thread {
 	public int getApplicationsCount() {
 		return this.processes.size();
 	}
+	
+	public void handleDirectoryEventByPrintingFileName(String eventName, Path file){
+		FileData aFile = new FileData(this.processes, file, eventName);
+		PrintHTMLFileName printName = new PrintHTMLFileName();
+		aFile.registerObserver(printName);
+		aFile.setFile(file);
+	}
+	
+	public void handleDirectoryEventByPrintingFilePath(String eventName, Path file){
+		FileData aFile = new FileData(this.processes, file, eventName);
+		PrintHTMLFilePath printPath = new PrintHTMLFilePath();
+		aFile.registerObserver(printPath);
+		aFile.setFile(file);
+	}
 
 	/**
 	 * This method gets called when ever the directory being monitored changes.
@@ -168,44 +188,60 @@ public class AppLauncher extends Thread {
 	 * @throws IOException 
 	 */
 	public void handleDirectoryEvent(String eventName, Path file) {
-
-		// We are only interested in the new files that get dropped into the launcher folder
-		if(!eventName.equals("ENTRY_CREATE"))
-			return;
-
-		ProcessBuilder processBuilder = null;
-		String command = null;
-		String arg = null;
 		
-		String fileName = file.toString();
-		System.out.println("Processing " + fileName + "...");
-	
-		if(fileName.endsWith(".html") || fileName.endsWith(".htm")) {
-			// For Mac, use the "open" command instead of "explorer"
-			command = "explorer";
-			arg = fileName;
-		}
-		else if(fileName.endsWith(".txt")) {
-			command = "Notepad";
-			arg = fileName;
-		}
-		else {
-			command = null;
-			System.err.format("No support available for: %s...%n", file);
-			return;
-		}
-
-		// Run the application if support is available
-		try {
-			System.out.format("Launching %s ...%n", command);
-			processBuilder = new ProcessBuilder(command, arg);
-			
-			// Start and add the process to the processes list
-			Process process = processBuilder.start();
-			this.processes.add(process);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileData newFile = new FileData(this.processes, file, eventName);
+		
+		HTMLDisplay html = new HTMLDisplay();
+		WordDisplay word = new WordDisplay();
+		TextDisplay text = new TextDisplay();
+		
+		newFile.registerObserver(html);
+		newFile.registerObserver(word);
+		newFile.registerObserver(text);
+		
+		newFile.setFile(file);
+		
+//		// We are only interested in the new files that get dropped into the launcher folder
+//		if(!eventName.equals("ENTRY_CREATE"))
+//			return;
+//
+//		ProcessBuilder processBuilder = null;
+//		String command = null;
+//		String arg = null;
+//		
+//		String fileName = file.toString();
+//		System.out.println("Processing " + fileName + "...");
+//	
+//		if(fileName.endsWith(".html") || fileName.endsWith(".htm")) {
+//			// For Mac, use the "open" command instead of "explorer"
+//			command = "explorer";
+//			arg = fileName;
+//		}
+//		else if(fileName.endsWith(".txt")) {
+//			command = "Notepad";
+//			arg = fileName;
+//		}
+//		else if((fileName.endsWith(".docx") || fileName.endsWith(".doc")) && !fileName.contains("~$")){
+//			command = "C:\\Program Files (x86)\\Microsoft Office\\Office15\\winword";
+//			arg = fileName;
+//		}
+//		else {
+//			command = null;
+//			System.err.format("No support available for: %s...%n", file);
+//			return;
+//		}
+//
+//		// Run the application if support is available
+//		try {
+//			System.out.format("Launching %s ...%n", command);
+//			processBuilder = new ProcessBuilder(command, arg);
+//			
+//			// Start and add the process to the processes list
+//			Process process = processBuilder.start();
+//			this.processes.add(process);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -224,4 +260,7 @@ public class AppLauncher extends Thread {
 
 		System.out.println("Directory watching stopped ...");
 	}
+	
+	
+	
 }
