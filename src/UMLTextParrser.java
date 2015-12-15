@@ -22,7 +22,8 @@ public class UMLTextParrser {
 			reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
 			System.out.print("|");
 			
-			//ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, fieldVisitor);
+			ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, fieldVisitor);
+			reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 		}
 		System.out.println("}");
 	}

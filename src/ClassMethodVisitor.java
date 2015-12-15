@@ -1,12 +1,15 @@
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.MethodVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 import jdk.internal.org.objectweb.asm.Type;
+import jdk.internal.org.objectweb.asm.commons.Method;
+import jdk.internal.org.objectweb.asm.Label;
 
 public class ClassMethodVisitor extends ClassVisitor {
 
@@ -28,21 +31,29 @@ public class ClassMethodVisitor extends ClassVisitor {
 		
 		String returnType = Type.getReturnType(desc).getClassName();
 		
-		Type[] argTypes = Type.getArgumentTypes(desc);
+		Type[] argTypes = Type.getArgumentTypes(desc);		
 		
 		List<String> stypes = new ArrayList<String>();
 		for(Type t: argTypes){
-			stypes.add(t.getClassName());
+			stypes.add(t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1));
 		}
 		
 		String symbol = "";
-		if((access & Opcodes.ACC_PUBLIC) != 0){
+		if ((access & Opcodes.ACC_PUBLIC) != 0) {
 			symbol = "+";
-		} else if((access & Opcodes.ACC_PRIVATE) != 0){
+		} else if ((access & Opcodes.ACC_PRIVATE) != 0) {
 			symbol = "-";
+		} else if ((access & Opcodes.ACC_PROTECTED) != 0) {
+			symbol = "#";
 		}
 		
-		System.out.println("	method "+ symbol + returnType+" "+name+" "+stypes.toString());
+		System.out.print(symbol +" "+name+"(");
+		for(int i = 0; i<stypes.size(); i++){
+			System.out.print("Param"+(i+1)+" : " + stypes.get(i));
+			if(i <= stypes.size()-2)
+				System.out.print(", ");
+		}
+		System.out.print( ") : " + returnType+"\\l");
 		
 		return toDecorate;
 	}
