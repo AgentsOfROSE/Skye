@@ -17,7 +17,8 @@ public class ClassImplementsVisitor extends ClassVisitor {
 		String[] path = name.split("/");
 		if(interfaces.length != 0){
 			for(String inter : interfaces){
-				System.out.println("\t" + path[path.length-1] + "->" + inter);
+				String[] interPath = name.split("/");
+				System.out.println("\t" + path[path.length-1] + "->" + interPath[interPath.length -1]);
 			}
 		}
 		super.visit(version, access, name, signature, superName, interfaces);
