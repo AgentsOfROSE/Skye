@@ -26,9 +26,20 @@ public class UMLTextParrser {
 			reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 		}
 		 for(String className: args){
-			 ClassReader read = new ClassReader(className);
+			 ClassReader reader = new ClassReader(className);
 			 
-			 ClassVisitor classExtVisitor = new ClassDeclarationVisitor(Opcodes.ASM5);
+			 System.out.print("\n\n\tedge [\n\t\tarrowhead = \"empty\"\n\t]\n\n");
+			 
+			 ClassVisitor classExtVisitor = new ClassExtendsVisitor(Opcodes.ASM5);
+			 
+			 reader.accept(classExtVisitor, ClassReader.EXPAND_FRAMES);
+			 
+			 System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"filled\"\n\t]\n\n");
+
+			 
+			 ClassVisitor classImplVisitor = new ClassImplementsVisitor(Opcodes.ASM5);
+			 
+			 reader.accept(classImplVisitor, ClassReader.EXPAND_FRAMES);
 			 
 		 }
 		
