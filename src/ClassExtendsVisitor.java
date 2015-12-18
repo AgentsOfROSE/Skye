@@ -15,7 +15,7 @@ public class ClassExtendsVisitor extends ClassVisitor {
 		String[] path = name.split("/");
 		if (!superName.equals("")) {
 			String[] superPath = superName.split("/");
-			System.out.print("\t" + path[path.length - 1] + " -> " + superPath[superPath.length - 1]);
+			System.out.print("\t" + path[path.length - 1] + " -> " + superPath[superPath.length - 1] + "\n");
 		}
 		super.visit(version, access, name, signature, superName, interfaces);
 	}
