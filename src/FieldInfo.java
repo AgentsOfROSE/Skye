@@ -1,9 +1,9 @@
 
 public class FieldInfo {
 	
-	String name;
-	String className;
-	String access;
+	private String name;
+	private String className;
+	private String access;
 
 	public String getName() {
 		return name;

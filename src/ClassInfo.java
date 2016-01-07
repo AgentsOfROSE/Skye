@@ -2,14 +2,13 @@ import java.util.ArrayList;
 
 public class ClassInfo {
 	
-	String name;
-	ArrayList<FieldInfo> fields = new ArrayList<FieldInfo>();
-	ArrayList<MethodInfo> methods = new ArrayList<MethodInfo>();
-	String extendedClass;
-	ArrayList<String> implementedClasses = new ArrayList<String>(); 
+	private String name;
+	private ArrayList<FieldInfo> fields = new ArrayList<FieldInfo>();
+	private ArrayList<MethodInfo> methods = new ArrayList<MethodInfo>();
+	private String extendedClass;
+	private ArrayList<String> implementedClasses = new ArrayList<String>(); 
 
 	public ClassInfo() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

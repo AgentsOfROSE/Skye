@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class MethodInfo {
 	
-	String name;
-	String access;
-	String returnType;
-	ArrayList<String> params = new ArrayList<String>();
+	private String name;
+	private String access;
+	private String returnType;
+	private ArrayList<String> params = new ArrayList<String>();
 
 	public String getName() {
 		return name;
