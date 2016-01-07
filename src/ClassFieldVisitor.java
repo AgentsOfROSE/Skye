@@ -34,6 +34,9 @@ public class ClassFieldVisitor extends ClassVisitor {
 		String type = Type.getType(desc).getClassName();
 		fieldInfo.setClassName(type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type);
 		fieldInfo.setName(name);
+		if(!info.getAssociatedClasses().contains(fieldInfo.getClassName())){
+			info.getAssociatedClasses().add(fieldInfo.getClassName());
+		}
 
 		return toDecorate;
 
