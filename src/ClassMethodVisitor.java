@@ -13,8 +13,11 @@ import jdk.internal.org.objectweb.asm.Label;
 
 public class ClassMethodVisitor extends ClassVisitor {
 
-	public ClassMethodVisitor(int arg0) {
+	ClassInfo info;
+	
+	public ClassMethodVisitor(int arg0, ClassInfo info) {
 		super(arg0);
+		this.info = info;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -28,33 +31,32 @@ public class ClassMethodVisitor extends ClassVisitor {
 			String signature, String[] exceptions){
 		MethodVisitor toDecorate = super.visitMethod(access, name, desc, 
 				signature, exceptions);
+		MethodInfo methodInfo = new MethodInfo();
+		info.getMethods().add(methodInfo);
 		
-		String returnType = Type.getReturnType(desc).getClassName();
+		methodInfo.setReturnType(Type.getReturnType(desc).getClassName());
 		
-		Type[] argTypes = Type.getArgumentTypes(desc);		
-		
-		List<String> stypes = new ArrayList<String>();
+		Type[] argTypes = Type.getArgumentTypes(desc);	
 		for(Type t: argTypes){
-			stypes.add(t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1));
+			methodInfo.getParams().add(t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1));
 		}
 		
-		String symbol = "";
 		if ((access & Opcodes.ACC_PUBLIC) != 0) {
-			symbol = "+";
+			methodInfo.setAccess("+");
 		} else if ((access & Opcodes.ACC_PRIVATE) != 0) {
-			symbol = "-";
+			methodInfo.setAccess("-");
 		} else if ((access & Opcodes.ACC_PROTECTED) != 0) {
-			symbol = "#";
+			methodInfo.setAccess("#");
 		}
 		
-		System.out.print(symbol +" "+name.replace("<", "").replace(">", "")+"(");
-		for(int i = 0; i<stypes.size(); i++){
-			System.out.print("Param"+(i+1)+" : " + stypes.get(i));
-			if(i <= stypes.size()-2)
-				System.out.print(", ");
-		}
-		System.out.print( ") : " + returnType+"\\l");
-		
+//		System.out.print(symbol +" "+name.replace("<", "").replace(">", "")+"(");
+//		for(int i = 0; i<stypes.size(); i++){
+//			System.out.print("Param"+(i+1)+" : " + stypes.get(i));
+//			if(i <= stypes.size()-2)
+//				System.out.print(", ");
+//		}
+//		System.out.print( ") : " + returnType+"\\l");
+//		
 		return toDecorate;
 	}
 

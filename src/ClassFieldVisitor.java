@@ -7,9 +7,12 @@ import jdk.internal.org.objectweb.asm.Opcodes;
 import jdk.internal.org.objectweb.asm.Type;
 
 public class ClassFieldVisitor extends ClassVisitor {
+	
+	ClassInfo info;
 
-	public ClassFieldVisitor(int api) {
+	public ClassFieldVisitor(int api, ClassInfo info) {
 		super(api);
+		this.info = info;
 	}
 
 	public ClassFieldVisitor(int api, ClassVisitor decorated) {
@@ -18,18 +21,19 @@ public class ClassFieldVisitor extends ClassVisitor {
 
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 		FieldVisitor toDecorate = super.visitField(access, name, desc, signature, value);
+		FieldInfo fieldInfo = new FieldInfo();
+		info.getFields().add(fieldInfo);
 
-		String symbol = "";
 		if ((access & Opcodes.ACC_PUBLIC) != 0) {
-			symbol = "+";
+			fieldInfo.setAccess("+");
 		} else if ((access & Opcodes.ACC_PRIVATE) != 0) {
-			symbol = "-";
+			fieldInfo.setAccess("-");
 		} else if ((access & Opcodes.ACC_PROTECTED) != 0) {
-			symbol = "#";
+			fieldInfo.setAccess("#");
 		}
 		String type = Type.getType(desc).getClassName();
-		String classname = type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type;
-		System.out.print(symbol + " " + name + " : " + classname + "\\l");
+		fieldInfo.setClassName(type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type);
+		fieldInfo.setName(name);
 
 		return toDecorate;
 

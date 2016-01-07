@@ -15,15 +15,34 @@ public class UMLTextParser {
 			ClassReader reader = new ClassReader(className);
 			
 			ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5, info);
+			ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+			ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+
 			
 			reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+			reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+			reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 		}
 		
 		System.out.println("digraph G {\n\tfontname = \"Bitstream Vera Sans\"\n\tfontsize = 8 \n\n\t"
 				+ "node [\n\t\t fontname = \"Bitstream Vera Sans\" \n\t\t fontsize = 8 \n\t\t shape = \"record\" \n\t] "
-						+ "\n\n\tedge [\n\t\t fontname = \"Bitstream Vera Sans\"\n\t\t fontsize = 8 \n\t]");
+						+ "\n\n\tedge [\n\t\t fontname = \"Bitstream Vera Sans\"\n\t\t fontsize = 8 \n\t]\n");
 		for(ClassInfo classInfo: classes){
 			System.out.print("\t" + classInfo.getName() + " [ \n \t \t label = \"{" + classInfo.getName() +"|");
+			for(FieldInfo fieldInfo : classInfo.getFields()){
+				System.out.print(fieldInfo.getAccess() + " " + fieldInfo.getName() + " : " + fieldInfo.getClassName() + "\\l");
+			}
+			System.out.print("|");
+			for(MethodInfo methodInfo : classInfo.getMethods()){
+				System.out.print(methodInfo.getAccess() +" "+methodInfo.getName().replace("<", "").replace(">", "")+"(");
+				for(int i = 0; i<methodInfo.getParams().size(); i++){
+					System.out.print("Param"+(i+1)+" : " + methodInfo.getParams().get(i));
+					if(i <= methodInfo.getParams().size()-2)
+						System.out.print(", ");
+				}
+				System.out.print( ") : " + methodInfo.getReturnType()+"\\l");
+			}
+			System.out.println("}\"\n\t]\n");
 		}
 		
 		System.out.print("\n\n\tedge [\n\t\tarrowhead = \"empty\"\n\t]\n\n");
@@ -37,38 +56,15 @@ public class UMLTextParser {
 				System.out.println("\t" + classInfo.getName() + "->" + interfaceName);
 			}
 		}
+		
+		
 
-//			ClassReader reader = new ClassReader(className);
-//			
-//			ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5);
-//			
-//			reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
-//			
-//			ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5);
-//			
-//			reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
-//			System.out.print("|");
-//			
-//			ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5);
-//			reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-//			System.out.println("}\"\n\t]");
-//		}
-//			 
-//		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"normal\"\n\t]");
-//		for(String className: args){
-//			ClassReader reader = new ClassReader(className);
-//			 
-//			ClassVisitor classImplVisitor = new ClassImplementsVisitor(Opcodes.ASM5);
-//			 
-//			reader.accept(classImplVisitor, ClassReader.EXPAND_FRAMES);
-//		 }
-//		
 //		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"vee\"\n\t]");
 //		
 //		System.out.print("\n\n\tedge [\n\t\tstyle = \"normal\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
 //		
 //		
-//		System.out.println("}");
+		System.out.println("\n}");
 	}
 
 }
