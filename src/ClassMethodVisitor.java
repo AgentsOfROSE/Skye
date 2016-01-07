@@ -48,15 +48,7 @@ public class ClassMethodVisitor extends ClassVisitor {
 		} else if ((access & Opcodes.ACC_PROTECTED) != 0) {
 			methodInfo.setAccess("#");
 		}
-		
-//		System.out.print(symbol +" "+name.replace("<", "").replace(">", "")+"(");
-//		for(int i = 0; i<stypes.size(); i++){
-//			System.out.print("Param"+(i+1)+" : " + stypes.get(i));
-//			if(i <= stypes.size()-2)
-//				System.out.print(", ");
-//		}
-//		System.out.print( ") : " + returnType+"\\l");
-//		
+				
 		return toDecorate;
 	}
 
