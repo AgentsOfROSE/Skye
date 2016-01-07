@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class MethodInfo {
 	
 	private String name;
-	private String access;
+	private String access = " ";
 	private String returnType;
 	private ArrayList<String> params = new ArrayList<String>();
 
