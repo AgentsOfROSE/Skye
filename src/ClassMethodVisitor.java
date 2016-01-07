@@ -27,8 +27,11 @@ public class ClassMethodVisitor extends ClassVisitor {
 		info.getMethods().add(methodInfo);
 		MethodVisitor methodVisitor = new MyMethodVisitor(Opcodes.ASM5, toDecorate, info);
 		
-		methodInfo.setReturnType(Type.getReturnType(desc).getClassName());
-		
+		String returnType =Type.getReturnType(desc).getClassName();
+		methodInfo.setReturnType(returnType);
+		if(!info.getUsedClasses().contains(returnType)){
+			info.getUsedClasses().add(returnType);
+		}
 		Type[] argTypes = Type.getArgumentTypes(desc);	
 		for(Type t: argTypes){
 			String className = t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1);
