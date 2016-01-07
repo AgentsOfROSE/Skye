@@ -5,9 +5,12 @@ import java.util.Arrays;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 
 public class ClassDeclarationVisitor extends ClassVisitor {
+	
+	private ClassInfo info;
 
-	public ClassDeclarationVisitor(int api) {
+	public ClassDeclarationVisitor(int api, ClassInfo info) {
 		super(api);
+		this.info = info;
 	}
 
 	public ClassDeclarationVisitor(int arg0, ClassVisitor arg1) {
