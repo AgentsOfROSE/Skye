@@ -36,7 +36,7 @@ public class UMLTextParser {
 			 reader.accept(classExtVisitor, ClassReader.EXPAND_FRAMES);
 		 }
 			 
-		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"normal\"\n\t]\n\n");
+		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"normal\"\n\t]");
 		for(String className: args){
 			ClassReader reader = new ClassReader(className);
 			 
@@ -44,6 +44,10 @@ public class UMLTextParser {
 			 
 			reader.accept(classImplVisitor, ClassReader.EXPAND_FRAMES);
 		 }
+		
+		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"vee\"\n\t]");
+		
+		System.out.print("\n\n\tedge [\n\t\tstyle = \"normal\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
 		
 		
 		System.out.println("}");
