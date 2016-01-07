@@ -33,12 +33,17 @@ public class ClassMethodVisitor extends ClassVisitor {
 				signature, exceptions);
 		MethodInfo methodInfo = new MethodInfo();
 		info.getMethods().add(methodInfo);
+		MethodVisitor methodVisitor = new MyMethodVisitor(Opcodes.ASM5, toDecorate, info);
 		
 		methodInfo.setReturnType(Type.getReturnType(desc).getClassName());
 		
 		Type[] argTypes = Type.getArgumentTypes(desc);	
 		for(Type t: argTypes){
-			methodInfo.getParams().add(t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1));
+			String className = t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1);
+			methodInfo.getParams().add(className);
+			if(!info.getUsedClasses().contains(className)){
+				info.getUsedClasses().add(className);
+			}
 		}
 		
 		if ((access & Opcodes.ACC_PUBLIC) != 0) {
@@ -48,7 +53,7 @@ public class ClassMethodVisitor extends ClassVisitor {
 		} else if ((access & Opcodes.ACC_PROTECTED) != 0) {
 			methodInfo.setAccess("#");
 		}
-		
+		methodInfo.setName(name);
 //		System.out.print(symbol +" "+name.replace("<", "").replace(">", "")+"(");
 //		for(int i = 0; i<stypes.size(); i++){
 //			System.out.print("Param"+(i+1)+" : " + stypes.get(i));
@@ -57,7 +62,7 @@ public class ClassMethodVisitor extends ClassVisitor {
 //		}
 //		System.out.print( ") : " + returnType+"\\l");
 //		
-		return toDecorate;
+		return methodVisitor;
 	}
 
 }

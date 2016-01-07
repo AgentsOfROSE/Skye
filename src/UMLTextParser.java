@@ -45,25 +45,33 @@ public class UMLTextParser {
 			System.out.println("}\"\n\t]\n");
 		}
 		
-		System.out.print("\n\n\tedge [\n\t\tarrowhead = \"empty\"\n\t]\n\n");
+		System.out.print("\n\tedge [\n\t\tarrowhead = \"empty\"\n\t]\n\n");
 		for(ClassInfo classInfo: classes){
 			System.out.print("\t" + classInfo.getName() + " -> " + classInfo.getExtendedClass() + "\n");
 		}
 		
-		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"normal\"\n\t]");
+		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"normal\"\n\t]\n\n");
 		for(ClassInfo classInfo: classes){
 			for(String interfaceName : classInfo.getImplementedClasses()){
 				System.out.println("\t" + classInfo.getName() + "->" + interfaceName);
 			}
 		}
 		
+		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
+		for(ClassInfo classInfo: classes){
+			for(String usedClassName : classInfo.getUsedClasses()){
+				System.out.println("\t" + classInfo.getName() + "->" + usedClassName);
+			}
+		}
 		
-
-//		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"vee\"\n\t]");
-//		
-//		System.out.print("\n\n\tedge [\n\t\tstyle = \"normal\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
-//		
-//		
+		System.out.print("\n\n\tedge [\n\t\tstyle = \"normal\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
+		for(ClassInfo classInfo: classes){
+			for(String associatedClass : classInfo.getAssociatedClasses()){
+				System.out.println("\t" + classInfo.getName() + "->" + associatedClass);
+			}
+		}
+		
+		
 		System.out.println("\n}");
 	}
 

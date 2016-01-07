@@ -7,6 +7,16 @@ public class ClassInfo {
 	private ArrayList<MethodInfo> methods = new ArrayList<MethodInfo>();
 	private String extendedClass;
 	private ArrayList<String> implementedClasses = new ArrayList<String>(); 
+	private ArrayList<String> usedClasses = new ArrayList<String>();
+	private ArrayList<String> associatedClasses = new ArrayList<String>();
+	
+	public ArrayList<String> getAssociatedClasses() {
+		return associatedClasses;
+	}
+
+	public void setAssociatedClasses(ArrayList<String> associatedClasses) {
+		this.associatedClasses = associatedClasses;
+	}
 
 	public ClassInfo() {
 	}
@@ -49,6 +59,14 @@ public class ClassInfo {
 
 	public void setImplementedClasses(ArrayList<String> implementedClasses) {
 		this.implementedClasses = implementedClasses;
+	}
+
+	public ArrayList<String> getUsedClasses() {
+		return usedClasses;
+	}
+
+	public void setUsedClasses(ArrayList<String> usedClasses) {
+		this.usedClasses = usedClasses;
 	}
 
 }

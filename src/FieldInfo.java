@@ -3,7 +3,7 @@ public class FieldInfo {
 	
 	private String name;
 	private String className;
-	private String access;
+	private String access = " ";
 
 	public String getName() {
 		return name;
