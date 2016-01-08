@@ -278,4 +278,44 @@ public class UMLTextParserTest {
 		reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getFields().size() == 0);
 	}
+	
+	@Test
+	public void usesFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor declVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getUsedClasses().contains("int"));
+		assertTrue(info.getUsedClasses().size() > 0);
+	}
+	
+	@Test
+	public void usesNotFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.RoseHulmanStudent");
+		ClassVisitor declVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		assertFalse(info.getUsedClasses().contains("String"));
+		assertTrue(info.getUsedClasses().size() == 0);
+	}
+	
+	@Test
+	public void associateFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor declVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getAssociatedClasses().contains("String"));
+		assertTrue(info.getAssociatedClasses().size() == 3);
+	}
+	
+	@Test
+	public void associateNotFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.RoseHulmanStudent");
+		ClassVisitor declVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		assertFalse(info.getAssociatedClasses().contains("int"));
+		assertTrue(info.getAssociatedClasses().size() == 0);
+	}
 }
