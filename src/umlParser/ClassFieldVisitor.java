@@ -34,7 +34,7 @@ public class ClassFieldVisitor extends ClassVisitor {
 		}
 		String type = Type.getType(desc).getClassName();
 		type = type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type;
-		if(type.equals("ArrayList")){
+		if(type.equals("ArrayList") && signature != null){
 			type = signature.substring(signature.lastIndexOf("<L") + 2, signature.lastIndexOf(">") - 1);
 			if(type.contains("/")){
 				type = type.substring(type.lastIndexOf("/") + 1);

@@ -25,18 +25,18 @@ public class ClassMethodVisitor extends ClassVisitor {
 		info.getMethods().add(methodInfo);
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
-		if(returnType.equals("ArrayList")){
+		if(returnType.equals("ArrayList") && signature != null){
 			returnType = signature.substring(signature.indexOf(")"));
 			returnType = returnType.substring(returnType.lastIndexOf("<L") + 2);
 			returnType = returnType.substring(returnType.lastIndexOf("/") + 1, returnType.lastIndexOf(">") - 1);
 			returnType = "ArrayList_" + returnType + "";
 		}
 		methodInfo.setReturnType(returnType);
-//		if (!returnType.equals("void")) {
-//			if (!info.getUsedClasses().contains(returnType)) {
-//				info.getUsedClasses().add(returnType);
-//			}
-//		}
+		if (!returnType.equals("void")) {
+			if (!info.getUsedClasses().contains(returnType)) {
+				info.getUsedClasses().add(returnType);
+			}
+		}
 		Type[] argTypes = Type.getArgumentTypes(desc);
 		String currentSig = "";
 		if(signature != null){
@@ -44,7 +44,7 @@ public class ClassMethodVisitor extends ClassVisitor {
 		}
 		for (Type t : argTypes) {
 			String className = t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1);
-			if(className.equals("ArrayList")){
+			if(className.equals("ArrayList") && signature != null){
 				className = currentSig.substring(currentSig.indexOf("<L") + 2, currentSig.indexOf(">") - 1);
 				currentSig = currentSig.substring(currentSig.indexOf(">") + 1);
 				if(className.contains("/")){
