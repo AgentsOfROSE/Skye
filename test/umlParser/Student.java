@@ -2,6 +2,9 @@ package umlParser;
 
 public class Student implements Person {
 	private int age = 21;
+	public String name = "John Doe";
+	protected String gender = "Male";
+	double height = 5.5;
 
 	public Student() {
 	}

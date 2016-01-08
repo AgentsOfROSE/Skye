@@ -62,7 +62,6 @@ public class UMLTextParserTest {
 		ClassReader reader = new ClassReader("umlParser.Student");
 		ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-		System.out.println(info.getMethods().stream().map(methodInfo -> methodInfo.getName()).toString());
 		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("ageUp"))
 				.toArray().length > 0);
 		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("ageDown"))
@@ -86,23 +85,197 @@ public class UMLTextParserTest {
 		assertFalse(info.getMethods().stream().filter(
 				methodInfo -> methodInfo.getName().equals("age") && methodInfo.getAccess().equals(PRIVATE_ACCESS))
 				.toArray().length > 0);
-
 	}
-
-	/*
-	 * public static void main(String[] args) throws IOException {
-	 * ArrayList<ClassInfo> classes = new ArrayList<ClassInfo>(); for (String
-	 * className : args) { ClassInfo info = new ClassInfo(); classes.add(info);
-	 * ClassReader reader = new ClassReader(className);
-	 * 
-	 * ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5,
-	 * info); ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5,
-	 * info); ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5,
-	 * info);
-	 * 
-	 * reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
-	 * reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
-	 * reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES); }
-	 */
-
+	
+	@Test
+	public void publicMethodsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("ageUp"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("age"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("laugh"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("hug"))
+				.toArray().length == 0);
+		assertFalse(info.getMethods().stream().filter(
+				methodInfo -> methodInfo.getName().equals("ageUp") && methodInfo.getAccess().equals(PUBLIC_ACCESS))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(
+				methodInfo -> methodInfo.getName().equals("age") && methodInfo.getAccess().equals(PUBLIC_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getMethods().stream().filter(
+				methodInfo -> methodInfo.getName().equals("age") && methodInfo.getAccess().equals(PRIVATE_ACCESS))
+				.toArray().length > 0);
+	}
+	
+	@Test
+	public void protectedMethodsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("ageUp"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("sleep"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("laugh"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("hug"))
+				.toArray().length == 0);
+		assertTrue(info.getMethods().stream().filter(
+				methodInfo -> methodInfo.getName().equals("sleep") && methodInfo.getAccess().equals(PROTECTED_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getMethods().stream().filter(
+				methodInfo -> methodInfo.getName().equals("sleep") && methodInfo.getAccess().equals(PRIVATE_ACCESS))
+				.toArray().length > 0);
+	}
+	
+	@Test
+	public void defaultMethodsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("ageUp"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("sleep"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("laugh"))
+				.toArray().length > 0);
+		assertTrue(info.getMethods().stream().filter(methodInfo -> methodInfo.getName().equals("hug"))
+				.toArray().length == 0);
+		assertTrue(info.getMethods().stream().filter(
+				methodInfo -> methodInfo.getName().equals("laugh") && methodInfo.getAccess().equals(DEFAULT_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getMethods().stream().filter(
+				methodInfo -> methodInfo.getName().equals("laugh") && methodInfo.getAccess().equals(PRIVATE_ACCESS))
+				.toArray().length > 0);
+	}
+	
+	@Test
+	public void allMethodsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getMethods().size() == 9);
+	}
+	
+	@Test
+	public void privateFieldsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age") && fieldInfo.getAccess().equals(PRIVATE_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height") && fieldInfo.getAccess().equals(PRIVATE_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender") && fieldInfo.getAccess().equals(PRIVATE_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name") && fieldInfo.getAccess().equals(PRIVATE_ACCESS))
+				.toArray().length > 0);
+	}
+	
+	@Test
+	public void publicFieldsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name"))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age") && fieldInfo.getAccess().equals(PUBLIC_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height") && fieldInfo.getAccess().equals(PUBLIC_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender") && fieldInfo.getAccess().equals(PUBLIC_ACCESS))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name") && fieldInfo.getAccess().equals(PUBLIC_ACCESS))
+				.toArray().length > 0);
+	}
+	
+	@Test
+	public void protectedFieldsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name"))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age") && fieldInfo.getAccess().equals(PROTECTED_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height") && fieldInfo.getAccess().equals(PROTECTED_ACCESS))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender") && fieldInfo.getAccess().equals(PROTECTED_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name") && fieldInfo.getAccess().equals(PROTECTED_ACCESS))
+				.toArray().length > 0);
+	}
+	
+	@Test
+	public void defaultFieldsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender"))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name"))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("age") && fieldInfo.getAccess().equals(DEFAULT_ACCESS))
+				.toArray().length > 0);
+		assertTrue(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("height") && fieldInfo.getAccess().equals(DEFAULT_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("gender") && fieldInfo.getAccess().equals(DEFAULT_ACCESS))
+				.toArray().length > 0);
+		assertFalse(info.getFields().stream().filter(fieldInfo -> fieldInfo.getName().equals("name") && fieldInfo.getAccess().equals(DEFAULT_ACCESS))
+				.toArray().length > 0);
+	}
+	
+	@Test
+	public void allFieldsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.Student");
+		ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getFields().size() == 4);
+	}
+	
+	@Test
+	public void noFieldsFoundTest() throws IOException {
+		ClassInfo info = new ClassInfo();
+		ClassReader reader = new ClassReader("umlParser.RoseHulmanStudent");
+		ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
+		reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
+		assertTrue(info.getFields().size() == 0);
+	}
 }
