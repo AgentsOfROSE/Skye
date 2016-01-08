@@ -16,8 +16,11 @@ Instructions:
 Milestone 2:
 
 Design:
-	For this Milestone, we used our refactored code from the first Milestone and expanded the functionality to support the addition of 'uses' and 'associates' arrows in our graphViz dot language. We still use the Visitor Pattern and follow the Command-Query design principle as did before.
+	For this Milestone, we used our refactored code from the first Milestone and expanded the functionality to support the addition of 'uses' and 'associates' arrows in our graphViz dot language. We still use the Visitor Pattern and follow the Command-Query design principle as did before. Due to the use of our "Info" classes we were able to make these additions with very little modification to the overall design of our system. 
 
 Who did what:
-	For Milestone 2, Trevor and Emily pair programmed, working together to refactor existing code to increase functionality, and also implementing the 'uses' and 'associates' requirements for this milestone. We took turns every once in a while to ensure that we submitted equal amounts of work. We also worked together to generate the manually drawn UML diagram and pair program the test cases. We also fully supported each other while staying up late to finish the milestone and going on a midnight Taco Bell run to destress and get some noms.
+	For Milestone 2, Trevor and Emily pair programmed, working together to refactor existing code to increase functionality, and also implementing the 'uses' and 'associates' requirements for this milestone. We took turns every once in a while to ensure that we submitted equal amounts of work. We also worked together to generate the manually drawn UML diagram and pair programmed the test cases. We also fully supported each other while staying up late to finish the milestone and going on a midnight Taco Bell run to destress and get some nom noms. (<-- Team matureness shown here ;) Hail Hydra!)
+	
+Instructions
+	See above. We hope to streamline the process of adding classes to be handled in the future along with allowing the user to disable packages such as "java.lang" from being shown on the final UML.
 
