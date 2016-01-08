@@ -22,8 +22,6 @@ public class ClassMethodVisitor extends ClassVisitor {
 		MethodVisitor toDecorate = super.visitMethod(access, name, desc, signature, exceptions);
 		MethodInfo methodInfo = new MethodInfo();
 		info.getMethods().add(methodInfo);
-		MethodVisitor methodVisitor = new MyMethodVisitor(Opcodes.ASM5, toDecorate, info);
-
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
 		methodInfo.setReturnType(returnType);
@@ -50,7 +48,7 @@ public class ClassMethodVisitor extends ClassVisitor {
 		}
 		methodInfo.setName(name);
 
-		return methodVisitor;
+		return toDecorate;
 	}
 
 }
