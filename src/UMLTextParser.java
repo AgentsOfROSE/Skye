@@ -64,7 +64,7 @@ public class UMLTextParser {
 			}
 		}
 		
-		System.out.print("\n\n\tedge [\n\t\tstyle = \"normal\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
+		System.out.print("\n\n\tedge [\n\t\tstyle = \"solid\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
 		for(ClassInfo classInfo: classes){
 			for(String associatedClass : classInfo.getAssociatedClasses()){
 				System.out.println("\t" + classInfo.getName() + "->" + associatedClass);

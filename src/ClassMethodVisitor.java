@@ -24,6 +24,12 @@ public class ClassMethodVisitor extends ClassVisitor {
 		info.getMethods().add(methodInfo);
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
+		if(returnType.equals("ArrayList")){
+			returnType = signature.substring(signature.indexOf(")"));
+			returnType = returnType.substring(returnType.lastIndexOf("<L") + 2);
+			returnType = returnType.substring(returnType.lastIndexOf("/") + 1, returnType.lastIndexOf(">") - 1);
+			returnType = "ArrayList_" + returnType + "";
+		}
 		methodInfo.setReturnType(returnType);
 		if (!returnType.equals("void")) {
 			if (!info.getUsedClasses().contains(returnType)) {
