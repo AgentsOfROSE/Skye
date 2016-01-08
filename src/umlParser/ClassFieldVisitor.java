@@ -1,3 +1,4 @@
+package umlParser;
 
 import java.util.Arrays;
 
@@ -32,7 +33,15 @@ public class ClassFieldVisitor extends ClassVisitor {
 			fieldInfo.setAccess("#");
 		}
 		String type = Type.getType(desc).getClassName();
-		fieldInfo.setClassName(type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type);
+		type = type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type;
+		if(type.equals("ArrayList")){
+			type = signature.substring(signature.lastIndexOf("<L") + 2, signature.lastIndexOf(">") - 1);
+			if(type.contains("/")){
+				type = type.substring(type.lastIndexOf("/") + 1);
+			}
+			type = "ArrayList_" + type + "";
+		}
+		fieldInfo.setClassName(type);
 		fieldInfo.setName(name);
 		if(!info.getAssociatedClasses().contains(fieldInfo.getClassName())){
 			info.getAssociatedClasses().add(fieldInfo.getClassName());

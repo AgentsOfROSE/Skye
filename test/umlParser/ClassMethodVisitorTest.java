@@ -1,4 +1,4 @@
-package test;
+package umlParser;
 
 public class ClassMethodVisitorTest {
 

@@ -1,3 +1,4 @@
+package umlParser;
 
 public class FieldInfo {
 	

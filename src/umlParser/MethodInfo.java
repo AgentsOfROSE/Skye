@@ -1,3 +1,4 @@
+package umlParser;
 import java.util.ArrayList;
 
 public class MethodInfo {
