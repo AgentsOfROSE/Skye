@@ -5,24 +5,26 @@ import java.util.Arrays;
 
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 
-public class ClassDeclarationVisitor extends ClassVisitor {
+public class ClassExtensionVisitor extends ClassVisitor {
 	
 	private ClassInfo info;
 
-	public ClassDeclarationVisitor(int api, ClassInfo info) {
+	public ClassExtensionVisitor(int api, ClassInfo info) {
 		super(api);
 		this.info = info;
 	}
 
-	public ClassDeclarationVisitor(int arg0, ClassVisitor arg1) {
+	public ClassExtensionVisitor(int arg0, ClassVisitor arg1) {
 		super(arg0, arg1);
 	}
 	
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		String[] path = name.split("/");
-		info.setName(path[path.length - 1]);
-		
+		if (!superName.equals("")) {
+			String[] superPath = superName.split("/");
+			info.setExtendedClass(superPath[superPath.length - 1]);
+		}
+	
 	}
 
 }

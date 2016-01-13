@@ -15,7 +15,6 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Enter 'uml' or 'sequence' to choose which parser to use: ");
 		Parsable parser = parserMap.get(args[0]);
 		parser.parse(Arrays.copyOfRange(args, 1, args.length));
 

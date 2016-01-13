@@ -23,8 +23,8 @@ public class UMLTextParserTest {
 	public void extendsFoundTest() throws IOException {
 		ClassInfo info = new ClassInfo();
 		ClassReader reader = new ClassReader("umlParser.RoseHulmanStudent");
-		ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5, info);
-		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		ClassVisitor extVisitor = new ClassExtensionVisitor(Opcodes.ASM5, info);
+		reader.accept(extVisitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getExtendedClass().equals("Student"));
 		assertTrue(info.getImplementedClasses().size() == 0);
 	}
@@ -35,15 +35,15 @@ public class UMLTextParserTest {
 		ClassReader reader = new ClassReader("umlParser.Student");
 		ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5, info);
 		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
-		assertTrue(info.getExtendedClass().equals("Object"));
+		assertTrue(info.getExtendedClass()==null);
 	}
 
 	@Test
 	public void implementsFoundTest() throws IOException {
 		ClassInfo info = new ClassInfo();
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5, info);
-		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		ClassVisitor implVisitor = new ClassImplementationVisitor(Opcodes.ASM5, info);
+		reader.accept(implVisitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getImplementedClasses().contains("Person"));
 	}
 
