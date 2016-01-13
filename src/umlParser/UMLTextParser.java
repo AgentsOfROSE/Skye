@@ -1,4 +1,5 @@
 package umlParser;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -6,11 +7,13 @@ import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
-public class UMLTextParser implements Parsable{
-	
+public class UMLTextParser implements Parsable {
+
 	public void parse(String[] args) throws IOException {
 		ArrayList<ClassInfo> classes = new ArrayList<ClassInfo>();
+		ArrayList<String> classList = new ArrayList<String>();
 		for (String className : args) {
+			classList.add(className.substring(className.lastIndexOf(".") + 1));
 			ClassInfo info = new ClassInfo();
 			classes.add(info);
 			ClassReader reader = new ClassReader(className);
@@ -30,8 +33,7 @@ public class UMLTextParser implements Parsable{
 		for (ClassInfo classInfo : classes) {
 			System.out.print("\t" + classInfo.getName() + " [ \n \t \t label = \"{" + classInfo.getName() + "|");
 			for (FieldInfo fieldInfo : classInfo.getFields()) {
-				System.out.print(
-						fieldInfo.getAccess() + " " + fieldInfo.getName() + " : " + fieldInfo.getClassName() + "\\l");
+				System.out.print(fieldInfo.getAccess() + " " + fieldInfo.getName() + " : " + fieldInfo.getClassName() + "\\l");
 			}
 			System.out.print("|");
 			for (MethodInfo methodInfo : classInfo.getMethods()) {
@@ -49,29 +51,39 @@ public class UMLTextParser implements Parsable{
 
 		System.out.print("\n\tedge [\n\t\tarrowhead = \"empty\"\n\t]\n\n");
 		for (ClassInfo classInfo : classes) {
-			System.out.print("\t" + classInfo.getName() + " -> " + classInfo.getExtendedClass() + "\n");
+			if (classList.contains(classInfo.getExtendedClass())) {
+				System.out.print("\t" + classInfo.getName() + " -> " + classInfo.getExtendedClass() + "\n");
+			}
 		}
 
 		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"normal\"\n\t]\n\n");
 		for (ClassInfo classInfo : classes) {
 			for (String interfaceName : classInfo.getImplementedClasses()) {
-				System.out.println("\t" + classInfo.getName() + "->" + interfaceName);
+				if (classList.contains(interfaceName)) {
+					System.out.println("\t" + classInfo.getName() + "->" + interfaceName);
+				}
 			}
 		}
 
 		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
 		for (ClassInfo classInfo : classes) {
 			for (String usedClassName : classInfo.getUsedClasses()) {
-				System.out.println("\t" + classInfo.getName() + "->" + (usedClassName.contains("ArrayList")
-						? usedClassName.replace("ArrayList_", "") : usedClassName));
+				if (classList.contains(usedClassName.contains("ArrayList") ? usedClassName.replace("ArrayList_", "")
+						: usedClassName)) {
+					System.out.println("\t" + classInfo.getName() + "->" + (usedClassName.contains("ArrayList")
+							? usedClassName.replace("ArrayList_", "") : usedClassName));
+				}
 			}
 		}
 
 		System.out.print("\n\n\tedge [\n\t\tstyle = \"solid\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
 		for (ClassInfo classInfo : classes) {
 			for (String associatedClass : classInfo.getAssociatedClasses()) {
-				System.out.println("\t" + classInfo.getName() + "->" + (associatedClass.contains("ArrayList")
-						? associatedClass.replace("ArrayList_", "") : associatedClass));
+				if (classList.contains(associatedClass.contains("ArrayList") ? associatedClass.replace("ArrayList_", "")
+						: associatedClass)) {
+					System.out.println("\t" + classInfo.getName() + "->" + (associatedClass.contains("ArrayList")
+							? associatedClass.replace("ArrayList_", "") : associatedClass));
+				}
 			}
 		}
 
