@@ -22,16 +22,6 @@ public class ClassAssociationVisitor extends ClassVisitor {
 
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 		FieldVisitor toDecorate = super.visitField(access, name, desc, signature, value);
-		FieldInfo fieldInfo = new FieldInfo();
-		info.getFields().add(fieldInfo);
-
-		if ((access & Opcodes.ACC_PUBLIC) != 0) {
-			fieldInfo.setAccess("+");
-		} else if ((access & Opcodes.ACC_PRIVATE) != 0) {
-			fieldInfo.setAccess("-");
-		} else if ((access & Opcodes.ACC_PROTECTED) != 0) {
-			fieldInfo.setAccess("#");
-		}
 		String type = Type.getType(desc).getClassName();
 		type = type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type;
 		if(type.equals("ArrayList") && signature != null){
@@ -41,8 +31,10 @@ public class ClassAssociationVisitor extends ClassVisitor {
 			}
 			type = "ArrayList_" + type + "";
 		}
-		fieldInfo.setClassName(type);
-		fieldInfo.setName(name);
+		if(!info.getAssociatedClasses().contains(type)){
+			info.getAssociatedClasses().add(type);
+		}
+
 
 		return toDecorate;
 

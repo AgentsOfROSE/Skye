@@ -303,8 +303,8 @@ public class UMLTextParserTest {
 	public void associateFoundTest() throws IOException {
 		ClassInfo info = new ClassInfo();
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor declVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
-		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		ClassVisitor assocVisitor = new ClassAssociationVisitor(Opcodes.ASM5, info);
+		reader.accept(assocVisitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getAssociatedClasses().contains("String"));
 		assertTrue(info.getAssociatedClasses().size() == 3);
 	}
