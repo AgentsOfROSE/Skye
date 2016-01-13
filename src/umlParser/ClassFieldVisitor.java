@@ -25,24 +25,6 @@ public class ClassFieldVisitor extends ClassVisitor {
 		FieldInfo fieldInfo = new FieldInfo();
 		info.getFields().add(fieldInfo);
 
-		if ((access & Opcodes.ACC_PUBLIC) != 0) {
-			fieldInfo.setAccess("+");
-		} else if ((access & Opcodes.ACC_PRIVATE) != 0) {
-			fieldInfo.setAccess("-");
-		} else if ((access & Opcodes.ACC_PROTECTED) != 0) {
-			fieldInfo.setAccess("#");
-		}
-		String type = Type.getType(desc).getClassName();
-		type = type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type;
-		if(type.equals("ArrayList") && signature != null){
-			type = signature.substring(signature.lastIndexOf("<L") + 2, signature.lastIndexOf(">") - 1);
-			if(type.contains("/")){
-				type = type.substring(type.lastIndexOf("/") + 1);
-			}
-			type = "ArrayList_" + type + "";
-		}
-		fieldInfo.setClassName(type);
-		fieldInfo.setName(name);
 		if(!info.getAssociatedClasses().contains(fieldInfo.getClassName())){
 			info.getAssociatedClasses().add(fieldInfo.getClassName());
 		}
