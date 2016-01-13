@@ -6,8 +6,9 @@ import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
-public class UMLTextParser {
-	public static void main(String[] args) throws IOException {
+public class UMLTextParser implements Parsable{
+	
+	public void parse(String[] args) throws IOException {
 		ArrayList<ClassInfo> classes = new ArrayList<ClassInfo>();
 		for (String className : args) {
 			ClassInfo info = new ClassInfo();
