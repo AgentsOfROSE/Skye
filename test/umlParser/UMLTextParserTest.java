@@ -283,8 +283,8 @@ public class UMLTextParserTest {
 	public void usesFoundTest() throws IOException {
 		ClassInfo info = new ClassInfo();
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor declVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
-		reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
+		ClassVisitor parVisitor = new GetParamsUsesVisitor(Opcodes.ASM5, info);
+		reader.accept(parVisitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getUsedClasses().contains("int"));
 		assertTrue(info.getUsedClasses().size() > 0);
 	}
