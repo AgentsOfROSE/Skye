@@ -59,7 +59,6 @@ public class ClassMethodVisitor extends ClassVisitor {
 			methodInfo.setAccess("#");
 		}
 		methodInfo.setName(name);
-
 		return toDecorate;
 	}
 

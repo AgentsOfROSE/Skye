@@ -1,8 +1,6 @@
 package umlParser;
 
 
-import java.util.Arrays;
-
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 
 public class ClassDeclarationVisitor extends ClassVisitor {

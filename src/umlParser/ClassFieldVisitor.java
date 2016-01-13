@@ -1,7 +1,5 @@
 package umlParser;
 
-import java.util.Arrays;
-
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.FieldVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;

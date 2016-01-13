@@ -21,22 +21,23 @@ public class GetReturnUsesVisitor extends ClassVisitor {
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		MethodVisitor toDecorate = super.visitMethod(access, name, desc, signature, exceptions);
-		
-		String returnType = Type.getReturnType(desc).getClassName()
-				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
-		if(returnType.equals("ArrayList") && signature != null){
-			returnType = signature.substring(signature.indexOf(")"));
-			returnType = returnType.substring(returnType.lastIndexOf("<L") + 2);
-			returnType = returnType.substring(returnType.lastIndexOf("/") + 1, returnType.lastIndexOf(">") - 1);
-			returnType = "ArrayList_" + returnType + "";
-		}
-		if (!returnType.equals("void")) {
-			if (!info.getUsedClasses().contains(returnType)) {
-				info.getUsedClasses().add(returnType);
-			}
-		}
+		MethodVisitor mine = new MethodReturnsVisitor(Opcodes.ASM5, info, toDecorate);
 
-		return toDecorate;
+//		String returnType = Type.getReturnType(desc).getClassName()
+//				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
+//		if(returnType.equals("ArrayList") && signature != null){
+//			returnType = signature.substring(signature.indexOf(")"));
+//			returnType = returnType.substring(returnType.lastIndexOf("<L") + 2);
+//			returnType = returnType.substring(returnType.lastIndexOf("/") + 1, returnType.lastIndexOf(">") - 1);
+//			returnType = "ArrayList_" + returnType + "";
+//		}
+//		if (!returnType.equals("void")) {
+//			if (!info.getUsedClasses().contains(returnType)) {
+//				info.getUsedClasses().add(returnType);
+//			}
+//		}
+
+		return mine;
 	}
 
 }

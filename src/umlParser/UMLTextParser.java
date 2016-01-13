@@ -22,13 +22,19 @@ public class UMLTextParser implements Parsable {
 			ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
 			ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
 			ClassVisitor extVisitor = new ClassExtensionVisitor(Opcodes.ASM5, info);
-			ClassVisitor implVisitor = new ClassExtensionVisitor(Opcodes.ASM5, info);
+			ClassVisitor implVisitor = new ClassImplementationVisitor(Opcodes.ASM5, info);
+			ClassVisitor returnUsesVisitor = new GetReturnUsesVisitor(Opcodes.ASM5, info);
+			ClassVisitor paramsUsesVisitor = new GetParamsUsesVisitor(Opcodes.ASM5, info);
+			ClassVisitor assocVisitor = new ClassAssociationVisitor(Opcodes.ASM5, info);
 
 			reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
 			reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
 			reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 			reader.accept(extVisitor, ClassReader.EXPAND_FRAMES);
 			reader.accept(implVisitor, ClassReader.EXPAND_FRAMES);
+			reader.accept(returnUsesVisitor, ClassReader.EXPAND_FRAMES);
+			reader.accept(paramsUsesVisitor, ClassReader.EXPAND_FRAMES);
+			reader.accept(assocVisitor, ClassReader.EXPAND_FRAMES);
 		}
 
 		System.out.println("digraph G {\n\tfontname = \"Bitstream Vera Sans\"\n\tfontsize = 8 \n\n\t"
