@@ -1,5 +1,8 @@
 package umlParser;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Student implements Person {
 	private int age = 21;
 	public String name = "John Doe";
@@ -16,6 +19,33 @@ public class Student implements Person {
 		} else {
 			ageUp(numYears);
 		}
+	}
+	
+	public void random(){
+		ArrayList<String> a = new ArrayList<String>();
+		Collections.shuffle(a);
+		numFriends(a);
+	}
+	
+	public static int numFriends(ArrayList<String> friends){
+		return friends.size();
+	}
+	
+	private void makeFriend(){
+		Student friend = new Student();
+		friend.jumpUpAndDown();
+	}
+	
+	public void hatesLife(){
+		Student me = new RoseHulmanStudent();
+		me.makeFriend();
+		me.sleep();
+	}
+	
+	public void cries(){
+		Student me = new RoseHulmanStudent();
+		System.out.println("Sounds of sadness");
+		me.hatesLife();
 	}
 	
 	private void ageUp(int numYears){
