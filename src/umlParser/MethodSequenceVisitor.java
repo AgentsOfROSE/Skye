@@ -26,6 +26,7 @@ public class MethodSequenceVisitor extends MethodVisitor {
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
+		if(owner.replace("/", ".").contains(info.getPackageName()))
 		if (opcode != 183) {
 			info.getMessages()
 					.add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
@@ -37,11 +38,10 @@ public class MethodSequenceVisitor extends MethodVisitor {
 	@Override
 	public void visitTypeInsn(int opcode, String type) {
 		super.visitTypeInsn(opcode, type);
-		String newObjectName = "Class" + info.getObjects().size();
 		if (type.replaceAll("/", ".").contains(info.getPackageName())) {
-			info.getObjects().put(newObjectName, type.substring(type.lastIndexOf("/") + 1));
-			info.getMessages().add(new MessageInfo(this.depth, newObjectName,
-					this.className.substring(this.className.lastIndexOf(".") + 1), "", "<<create>>"));
+			info.getObjects().add(type.substring(type.lastIndexOf("/") + 1));
+			info.getMessages().add(new MessageInfo(this.depth,
+					this.className.substring(this.className.lastIndexOf(".") + 1), type.substring(type.lastIndexOf("/") + 1), "", "new"));
 		}
 	}
 

@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 public class SequenceDiagramInfo {
 	
-	HashMap<String, String> objects = new HashMap<String, String>();
+	ArrayList<String> objects = new ArrayList<String>();
 	ArrayList<MessageInfo> message = new ArrayList<MessageInfo>();
 	String packageName;
 
-	public HashMap<String, String> getObjects(){
+	public ArrayList<String> getObjects(){
 		return this.objects;
 	}
 

@@ -24,13 +24,19 @@ public class SequenceDiagramTextParser implements Parsable {
 		int depth = 1;
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName(className.substring(0, className.lastIndexOf(".")+1));
+		System.out.println(className.substring(className.lastIndexOf(".")+1)+":"+className.substring(className.lastIndexOf(".")+1));
 		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info,  className, methodName, depth);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-		System.out.println(info.getObjects());
 		//info.getMessages().stream().forEach(message -> System.out.println("Caller: " + message.getCaller() + "\nCallee: " + message.getCallee() + "\nMessage: " + message.getMessage() + "\nAnswer: " + message.getAnswer()));
 	
-		for(String object : info.getObjects().keySet()){
-			System.out.println(object + " : " + info.getObjects().get(object));
+		
+		for(String object : info.getObjects()){
+			System.out.println("/" + object + ":" + object);
+		}
+		System.out.println("");
+		
+		for(MessageInfo message : info.getMessages()){
+			System.out.println(message.getCaller()+":"+message.getAnswer()+"="+message.getCallee()+"."+message.getMessage());
 		}
 	}
 
