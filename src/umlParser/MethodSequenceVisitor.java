@@ -1,8 +1,13 @@
 package umlParser;
 
+import java.io.IOException;
+
 import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
+import jdk.internal.org.objectweb.asm.ClassReader;
+import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.MethodVisitor;
+import jdk.internal.org.objectweb.asm.Opcodes;
 
 public class MethodSequenceVisitor extends MethodVisitor {
 
@@ -28,10 +33,34 @@ public class MethodSequenceVisitor extends MethodVisitor {
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
 		if (owner.replace("/", ".").contains(info.getPackageName()))
 			if (opcode != 183) {
+				MessageInfo message = new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
+						owner.substring(owner.lastIndexOf("/") + 1),
+						returnType.equals("void") ? "" : returnType, name);
 				info.getMessages()
-						.add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
-								owner.substring(owner.lastIndexOf("/") + 1),
-								returnType.equals("void") ? "" : returnType, name));
+						.add(message);
+				if(depth < info.getMaxDepth()){
+					ClassReader reader;
+					try {
+						reader = new ClassReader(message.getCallee());
+						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
+						reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+					} catch (IOException e) {
+					}
+				}
+				if(Type.getReturnType(desc).getClassName().contains(info.getPackageName()) && !info.getObjects().contains(returnType)){
+					info.getObjects().add(returnType);
+					message = new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1), returnType, "", "new");
+					info.getMessages().add(message);
+					if(depth < info.getMaxDepth()){
+						ClassReader reader;
+						try {
+							reader = new ClassReader(message.getCallee());
+							ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
+							reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+						} catch (IOException e) {
+						}
+					}
+				}
 			}
 	}
 
@@ -41,9 +70,19 @@ public class MethodSequenceVisitor extends MethodVisitor {
 		if (type.replaceAll("/", ".").contains(info.getPackageName())) {
 			if (!info.getObjects().contains(type.substring(type.lastIndexOf("/") + 1))) {
 				info.getObjects().add(type.substring(type.lastIndexOf("/") + 1));
+				MessageInfo message = new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
+						type.substring(type.lastIndexOf("/") + 1), "", "new");
 				info.getMessages()
-						.add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
-								type.substring(type.lastIndexOf("/") + 1), "", "new"));
+						.add(message);
+				if(depth < info.getMaxDepth()){
+					ClassReader reader;
+					try {
+						reader = new ClassReader(message.getCallee());
+						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
+						reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+					} catch (IOException e) {
+					}
+				}
 			}
 		}
 	}

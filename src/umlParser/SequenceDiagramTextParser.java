@@ -14,39 +14,41 @@ public class SequenceDiagramTextParser implements Parsable {
 	public void parse(String[] args) throws IOException {
 		String className = args[0];
 		String methodName = args[1];
-		String[] params = args[2].substring(1, args[2].length()).split(" ");
-		int maxDepth = 5;
-		if (args.length == 4) {
-			maxDepth = Integer.parseInt(args[3]);
-		}
+		String[] params = args[2].substring(1, args[2].length()-1).split(" ");
 
 		ClassReader reader = new ClassReader(className);
-		int depth = 1;
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
+		if (args.length == 4) {
+			info.setMaxDepth(Integer.parseInt(args[3]));
+		}
 		info.setPackageName(className.substring(0, className.lastIndexOf(".") + 1));
 		System.out.println(className.substring(className.lastIndexOf(".") + 1) + ":"
 				+ className.substring(className.lastIndexOf(".") + 1));
-		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, className, methodName, depth);
+		for(int i = 0; i < params.length; i++){
+			System.out.println(params[i].substring(0, params[i].lastIndexOf("<")) + ":"
+				+ params[i].substring(0, params[i].lastIndexOf("<")));
+		}
+		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, className, methodName, 1);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 		// info.getMessages().stream().forEach(message ->
 		// System.out.println("Caller: " + message.getCaller() + "\nCallee: " +
 		// message.getCallee() + "\nMessage: " + message.getMessage() +
 		// "\nAnswer: " + message.getAnswer()));
 
-		for (depth = 2; depth < maxDepth; depth++) {
-			SequenceDiagramInfo nextDepth = new SequenceDiagramInfo();
-			nextDepth.setPackageName(info.getPackageName());
-			nextDepth.getObjects().addAll(info.getObjects());
-			for (MessageInfo message : info.getMessages()) {
-				nextDepth.getMessages().add(message);
-				if (message.getDepth() == depth - 1) {
-					methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, nextDepth, message.getCallee(),
-							message.getMessage(), depth);
-					reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-				}
-			}
-			info = nextDepth;
-		}
+//		for (depth = 2; depth <= maxDepth; depth++) {
+//			SequenceDiagramInfo nextDepth = new SequenceDiagramInfo();
+//			nextDepth.setPackageName(info.getPackageName());
+//			nextDepth.getObjects().addAll(info.getObjects());
+//			for (MessageInfo message : info.getMessages()) {
+//				nextDepth.getMessages().add(message);
+//				if (message.getDepth() == depth - 1) {
+//					methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, nextDepth, message.getCallee(),
+//							message.getMessage(), depth);
+//					reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+//				}
+//			}
+//			info = nextDepth;
+//		}
 
 		for (String object : info.getObjects()) {
 			System.out.println("/" + object + ":" + object);
