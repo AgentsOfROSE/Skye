@@ -30,26 +30,6 @@ public class SequenceDiagramTextParser implements Parsable {
 		}
 		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, className, methodName, 1);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-		// info.getMessages().stream().forEach(message ->
-		// System.out.println("Caller: " + message.getCaller() + "\nCallee: " +
-		// message.getCallee() + "\nMessage: " + message.getMessage() +
-		// "\nAnswer: " + message.getAnswer()));
-
-//		for (depth = 2; depth <= maxDepth; depth++) {
-//			SequenceDiagramInfo nextDepth = new SequenceDiagramInfo();
-//			nextDepth.setPackageName(info.getPackageName());
-//			nextDepth.getObjects().addAll(info.getObjects());
-//			for (MessageInfo message : info.getMessages()) {
-//				nextDepth.getMessages().add(message);
-//				if (message.getDepth() == depth - 1) {
-//					methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, nextDepth, message.getCallee(),
-//							message.getMessage(), depth);
-//					reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-//				}
-//			}
-//			info = nextDepth;
-//		}
-
 		for (String object : info.getObjects()) {
 			System.out.println("/" + object + ":" + object);
 		}
