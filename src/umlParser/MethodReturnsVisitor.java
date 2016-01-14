@@ -31,7 +31,6 @@ public class MethodReturnsVisitor extends MethodVisitor {
 	@Override
 	public void visitTypeInsn(int opcode, String type) {
 		super.visitTypeInsn(opcode, type);
-		System.out.println(type);
 		String returnType = type.substring(type.lastIndexOf("/") + 1);
 		if(!info.getUsedClasses().contains(returnType)){
 			info.getUsedClasses().add(returnType);
