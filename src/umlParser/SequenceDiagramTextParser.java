@@ -14,6 +14,8 @@ public class SequenceDiagramTextParser implements Parsable {
 		if (args.length == 4) {
 			maxDepth = Integer.parseInt(args[3]);
 		}
+		
+		
 	}
 
 }

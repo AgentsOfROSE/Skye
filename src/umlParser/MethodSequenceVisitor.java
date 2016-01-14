@@ -6,16 +6,20 @@ import jdk.internal.org.objectweb.asm.MethodVisitor;
 
 public class MethodSequenceVisitor extends MethodVisitor {
 
-	private ClassInfo info;
+	private SequenceDiagramInfo info;
+	private String className;
+	private int depth;
 	
 	
 	public MethodSequenceVisitor(int arg0) {
 		super(arg0);
 	}
 
-	public MethodSequenceVisitor(int arg0, ClassInfo info, MethodVisitor arg1) {
+	public MethodSequenceVisitor(int arg0, SequenceDiagramInfo info, int depth, String className, MethodVisitor arg1) {
 		super(arg0, arg1);
 		this.info = info;
+		this.className = className;
+		this.depth = depth;
 	}
 	
 	@Override
@@ -23,19 +27,15 @@ public class MethodSequenceVisitor extends MethodVisitor {
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
-		if(!info.getUsedClasses().contains(returnType)){
-			info.getUsedClasses().add(returnType);
-		}
+		info.getMessages().add(new MessageInfo(this.depth, owner, this.className, returnType, desc));
 	}
 	
 	@Override
 	public void visitTypeInsn(int opcode, String type) {
 		super.visitTypeInsn(opcode, type);
-		System.out.println(type);
-		String returnType = type.substring(type.lastIndexOf("/") + 1);
-		if(!info.getUsedClasses().contains(returnType)){
-			info.getUsedClasses().add(returnType);
-		}
+		String newObjectName = "Class"+info.getObjects().size();
+		info.getObjects().put(newObjectName, type.substring(type.lastIndexOf("/")));
+		info.getMessages().add(new MessageInfo(this.depth, newObjectName, this.className, "", "<<create>>"));
 	}
 
 }

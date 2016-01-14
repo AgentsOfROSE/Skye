@@ -1,5 +1,6 @@
 package umlParser;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SequenceDiagramInfo {
 	
@@ -11,6 +12,6 @@ public class SequenceDiagramInfo {
 	}
 
 	public ArrayList<MessageInfo> getMessages(){
-		return this.messages;
+		return this.message;
 	}
 }

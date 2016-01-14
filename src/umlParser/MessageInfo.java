@@ -9,6 +9,14 @@ public class MessageInfo {
 	String answer;
 	String message;
 	
+	public MessageInfo(int depth, String caller, String callee, String answer, String message){
+		this.depth = depth;
+		this.caller = caller;
+		this.callee = callee;
+		this.answer = answer;
+		this.message = message;
+	}
+	
 	public int getDepth(){
 		return this.depth;
 	}
