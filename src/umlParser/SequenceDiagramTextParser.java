@@ -19,24 +19,43 @@ public class SequenceDiagramTextParser implements Parsable {
 		if (args.length == 4) {
 			maxDepth = Integer.parseInt(args[3]);
 		}
-		
+
 		ClassReader reader = new ClassReader(className);
 		int depth = 1;
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
-		info.setPackageName(className.substring(0, className.lastIndexOf(".")+1));
-		System.out.println(className.substring(className.lastIndexOf(".")+1)+":"+className.substring(className.lastIndexOf(".")+1));
-		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info,  className, methodName, depth);
+		info.setPackageName(className.substring(0, className.lastIndexOf(".") + 1));
+		System.out.println(className.substring(className.lastIndexOf(".") + 1) + ":"
+				+ className.substring(className.lastIndexOf(".") + 1));
+		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, className, methodName, depth);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-		//info.getMessages().stream().forEach(message -> System.out.println("Caller: " + message.getCaller() + "\nCallee: " + message.getCallee() + "\nMessage: " + message.getMessage() + "\nAnswer: " + message.getAnswer()));
-	
-		
-		for(String object : info.getObjects()){
+		// info.getMessages().stream().forEach(message ->
+		// System.out.println("Caller: " + message.getCaller() + "\nCallee: " +
+		// message.getCallee() + "\nMessage: " + message.getMessage() +
+		// "\nAnswer: " + message.getAnswer()));
+
+		for (depth = 2; depth < maxDepth; depth++) {
+			SequenceDiagramInfo nextDepth = new SequenceDiagramInfo();
+			nextDepth.setPackageName(info.getPackageName());
+			nextDepth.getObjects().addAll(info.getObjects());
+			for (MessageInfo message : info.getMessages()) {
+				nextDepth.getMessages().add(message);
+				if (message.getDepth() == depth - 1) {
+					methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, nextDepth, message.getCallee(),
+							message.getMessage(), depth);
+					reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+				}
+			}
+			info = nextDepth;
+		}
+
+		for (String object : info.getObjects()) {
 			System.out.println("/" + object + ":" + object);
 		}
 		System.out.println("");
-		
-		for(MessageInfo message : info.getMessages()){
-			System.out.println(message.getCaller()+":"+message.getAnswer()+"="+message.getCallee()+"."+message.getMessage());
+
+		for (MessageInfo message : info.getMessages()) {
+			System.out.println(message.getCaller() + ":" + message.getAnswer() + "=" + message.getCallee() + "."
+					+ message.getMessage());
 		}
 	}
 

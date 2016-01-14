@@ -26,22 +26,25 @@ public class MethodSequenceVisitor extends MethodVisitor {
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
-		if(owner.replace("/", ".").contains(info.getPackageName()))
-		if (opcode != 183) {
-			info.getMessages()
-					.add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
-							owner.substring(owner.lastIndexOf("/") + 1), returnType.equals("void") ? "" : returnType,
-							name));
-		}
+		if (owner.replace("/", ".").contains(info.getPackageName()))
+			if (opcode != 183) {
+				info.getMessages()
+						.add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
+								owner.substring(owner.lastIndexOf("/") + 1),
+								returnType.equals("void") ? "" : returnType, name));
+			}
 	}
 
 	@Override
 	public void visitTypeInsn(int opcode, String type) {
 		super.visitTypeInsn(opcode, type);
 		if (type.replaceAll("/", ".").contains(info.getPackageName())) {
-			info.getObjects().add(type.substring(type.lastIndexOf("/") + 1));
-			info.getMessages().add(new MessageInfo(this.depth,
-					this.className.substring(this.className.lastIndexOf(".") + 1), type.substring(type.lastIndexOf("/") + 1), "", "new"));
+			if (!info.getObjects().contains(type.substring(type.lastIndexOf("/") + 1))) {
+				info.getObjects().add(type.substring(type.lastIndexOf("/") + 1));
+				info.getMessages()
+						.add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
+								type.substring(type.lastIndexOf("/") + 1), "", "new"));
+			}
 		}
 	}
 
