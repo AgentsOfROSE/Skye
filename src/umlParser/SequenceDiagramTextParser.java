@@ -42,7 +42,6 @@ public class SequenceDiagramTextParser implements Parsable {
 		}
 		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, className, methodName, 1);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-
 		ArrayList<String> statics = new ArrayList<String>();
 		for (MessageInfo message : info.getMessages()) {
 			if (!info.getObjects().contains(message.getCallee())
