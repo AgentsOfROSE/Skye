@@ -9,8 +9,7 @@ public class MethodSequenceVisitor extends MethodVisitor {
 	private SequenceDiagramInfo info;
 	private String className;
 	private int depth;
-	
-	
+
 	public MethodSequenceVisitor(int arg0) {
 		super(arg0);
 	}
@@ -21,23 +20,29 @@ public class MethodSequenceVisitor extends MethodVisitor {
 		this.className = className;
 		this.depth = depth;
 	}
-	
+
 	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
-		if(opcode != 183){
-			info.getMessages().add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1), owner.substring(owner.lastIndexOf("/") + 1), returnType.equals("void") ? "" : returnType, name));
+		if (opcode != 183) {
+			info.getMessages()
+					.add(new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
+							owner.substring(owner.lastIndexOf("/") + 1), returnType.equals("void") ? "" : returnType,
+							name));
 		}
 	}
-	
+
 	@Override
 	public void visitTypeInsn(int opcode, String type) {
 		super.visitTypeInsn(opcode, type);
-		String newObjectName = "Class"+info.getObjects().size();
-		info.getObjects().put(newObjectName, type.substring(type.lastIndexOf("/") + 1));
-		info.getMessages().add(new MessageInfo(this.depth, newObjectName, this.className.substring(this.className.lastIndexOf(".") + 1), "", "<<create>>"));
+		String newObjectName = "Class" + info.getObjects().size();
+		if (type.replaceAll("/", ".").contains(info.getPackageName())) {
+			info.getObjects().put(newObjectName, type.substring(type.lastIndexOf("/") + 1));
+			info.getMessages().add(new MessageInfo(this.depth, newObjectName,
+					this.className.substring(this.className.lastIndexOf(".") + 1), "", "<<create>>"));
+		}
 	}
 
 }

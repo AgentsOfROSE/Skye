@@ -23,10 +23,15 @@ public class SequenceDiagramTextParser implements Parsable {
 		ClassReader reader = new ClassReader(className);
 		int depth = 1;
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
+		info.setPackageName(className.substring(0, className.lastIndexOf(".")+1));
 		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info,  className, methodName, depth);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 		System.out.println(info.getObjects());
 		//info.getMessages().stream().forEach(message -> System.out.println("Caller: " + message.getCaller() + "\nCallee: " + message.getCallee() + "\nMessage: " + message.getMessage() + "\nAnswer: " + message.getAnswer()));
+	
+		for(String object : info.getObjects().keySet()){
+			System.out.println(object + " : " + info.getObjects().get(object));
+		}
 	}
 
 }
