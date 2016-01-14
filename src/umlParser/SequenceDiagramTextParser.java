@@ -3,6 +3,11 @@ package umlParser;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import jdk.internal.org.objectweb.asm.ClassReader;
+import jdk.internal.org.objectweb.asm.ClassVisitor;
+import jdk.internal.org.objectweb.asm.MethodVisitor;
+import jdk.internal.org.objectweb.asm.Opcodes;
+
 public class SequenceDiagramTextParser implements Parsable {
 
 	@Override
@@ -15,7 +20,13 @@ public class SequenceDiagramTextParser implements Parsable {
 			maxDepth = Integer.parseInt(args[3]);
 		}
 		
-		
+		ClassReader reader = new ClassReader(className);
+		int depth = 1;
+		SequenceDiagramInfo info = new SequenceDiagramInfo();
+		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info,  className, methodName, depth);
+		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
+		System.out.println(info.getObjects());
+		//info.getMessages().stream().forEach(message -> System.out.println("Caller: " + message.getCaller() + "\nCallee: " + message.getCallee() + "\nMessage: " + message.getMessage() + "\nAnswer: " + message.getAnswer()));
 	}
 
 }
