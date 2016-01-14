@@ -41,10 +41,11 @@ public class MethodSequenceVisitor extends MethodVisitor {
 				if(depth < info.getMaxDepth()){
 					ClassReader reader;
 					try {
-						reader = new ClassReader(message.getCallee());
+						reader = new ClassReader(owner);
 						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
 						reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
 				if(Type.getReturnType(desc).getClassName().contains(info.getPackageName()) && !info.getObjects().contains(returnType)){
@@ -54,10 +55,11 @@ public class MethodSequenceVisitor extends MethodVisitor {
 					if(depth < info.getMaxDepth()){
 						ClassReader reader;
 						try {
-							reader = new ClassReader(message.getCallee());
+							reader = new ClassReader(Type.getReturnType(desc).getClassName().replace("/", "."));
 							ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
 							reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 						} catch (IOException e) {
+							e.printStackTrace();
 						}
 					}
 				}
@@ -77,10 +79,11 @@ public class MethodSequenceVisitor extends MethodVisitor {
 				if(depth < info.getMaxDepth()){
 					ClassReader reader;
 					try {
-						reader = new ClassReader(message.getCallee());
+						reader = new ClassReader(type);
 						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
 						reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
 			}
