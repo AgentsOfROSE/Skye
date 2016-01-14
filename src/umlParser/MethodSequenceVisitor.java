@@ -21,12 +21,6 @@ public class MethodSequenceVisitor extends MethodVisitor {
 	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
-		if(name.equals("createDough")){
-		System.out.println(info.getName());
-		System.out.println(name);
-		System.out.println(desc);
-		System.out.println(Type.getReturnType(desc));
-		}
 		String returnType = Type.getReturnType(desc).getClassName()
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
 		if(!info.getUsedClasses().contains(returnType)){
