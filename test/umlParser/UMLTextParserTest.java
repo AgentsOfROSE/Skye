@@ -162,7 +162,6 @@ public class UMLTextParserTest {
 		ClassReader reader = new ClassReader("umlParser.Student");
 		ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
-		System.out.println(info.getMethods().size());
 		assertTrue(info.getMethods().size() == 14);
 	}
 	
