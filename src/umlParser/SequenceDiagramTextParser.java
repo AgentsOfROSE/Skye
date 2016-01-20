@@ -40,7 +40,7 @@ public class SequenceDiagramTextParser implements Parsable {
 								+ parameters.get(i).substring(parameters.get(i).lastIndexOf(".") + 1));
 			}
 		}
-		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, className, methodName, 1);
+		ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, className, methodName, parameters, 1);
 		reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 		ArrayList<String> statics = new ArrayList<String>();
 		for (MessageInfo message : info.getMessages()) {
@@ -60,7 +60,7 @@ public class SequenceDiagramTextParser implements Parsable {
 
 		for (MessageInfo message : info.getMessages()) {
 			System.out.println(message.getCaller() + ":" + message.getAnswer() + "=" + message.getCallee() + "."
-					+ message.getMessage());
+					+ message.getMessage()+message.getParametersString());
 		}
 	}
 

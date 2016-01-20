@@ -8,13 +8,15 @@ public class MessageInfo {
 	String callee;
 	String answer;
 	String message;
-	
-	public MessageInfo(int depth, String caller, String callee, String answer, String message){
+	ArrayList<String> parameters;
+
+	public MessageInfo(int depth, String caller, String callee, String answer, String message, ArrayList<String> parameters){
 		this.depth = depth;
 		this.caller = caller;
 		this.callee = callee;
 		this.answer = answer;
 		this.message = message;
+		this.parameters = parameters;
 	}
 	
 	public int getDepth(){
@@ -55,5 +57,20 @@ public class MessageInfo {
 	
 	public void setMessage(String message){
 		this.message = message;
+	}
+	
+	public ArrayList<String> getParameters() {
+		return parameters;
+	}
+	
+	public String getParametersString() {
+		if(this.parameters.size() == 0){
+			return "()";
+		}
+		String returnString = "(";
+		for(String param : this.parameters){
+			returnString = returnString + param + ", ";
+		}
+		return returnString.substring(0, returnString.length()-2) + ")";
 	}
 }

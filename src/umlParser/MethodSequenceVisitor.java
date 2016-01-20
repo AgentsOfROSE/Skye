@@ -1,6 +1,7 @@
 package umlParser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
@@ -33,16 +34,27 @@ public class MethodSequenceVisitor extends MethodVisitor {
 				.substring(Type.getReturnType(desc).getClassName().lastIndexOf(".") + 1);
 		if (owner.replace("/", ".").contains(info.getPackageName()))
 			if (opcode != 183) {
+				String[] methodParams = desc.substring(desc.indexOf("(") + 1, desc.indexOf(")")).split(";");
+				ArrayList<String> methodParameters = new ArrayList<String>();
+				for(String param : methodParams){
+					if(!param.equals("")){
+						if(param.contains("java")){
+							methodParameters.add(param.substring(1).replace("/", "."));
+						} else {
+							methodParameters.add(param.replace("/", "."));
+						}
+					}
+				}
 				MessageInfo message = new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
 						owner.substring(owner.lastIndexOf("/") + 1),
-						returnType.equals("void") ? "" : returnType, name);
+						returnType.equals("void") ? "" : returnType, name, methodParameters);
 				info.getMessages()
-						.add(message);
+				.add(message);
 				if(depth < info.getMaxDepth()){
 					ClassReader reader;
 					try {
 						reader = new ClassReader(owner);
-						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
+						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), methodParameters, depth + 1);
 						reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -50,13 +62,13 @@ public class MethodSequenceVisitor extends MethodVisitor {
 				}
 				if(Type.getReturnType(desc).getClassName().contains(info.getPackageName()) && !info.getObjects().contains(returnType)){
 					info.getObjects().add(returnType);
-					message = new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1), returnType, "", "new");
+					message = new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1), returnType, "", "new", new ArrayList<String>());
 					info.getMessages().add(message);
 					if(depth < info.getMaxDepth()){
 						ClassReader reader;
 						try {
 							reader = new ClassReader(Type.getReturnType(desc).getClassName().replace("/", "."));
-							ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
+							ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), new ArrayList<String>(), depth + 1);
 							reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -73,14 +85,14 @@ public class MethodSequenceVisitor extends MethodVisitor {
 			if (!info.getObjects().contains(type.substring(type.lastIndexOf("/") + 1))) {
 				info.getObjects().add(type.substring(type.lastIndexOf("/") + 1));
 				MessageInfo message = new MessageInfo(this.depth, this.className.substring(this.className.lastIndexOf(".") + 1),
-						type.substring(type.lastIndexOf("/") + 1), "", "new");
+						type.substring(type.lastIndexOf("/") + 1), "", "new", new ArrayList<String>());
 				info.getMessages()
 						.add(message);
 				if(depth < info.getMaxDepth()){
 					ClassReader reader;
 					try {
 						reader = new ClassReader(type);
-						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), depth + 1);
+						ClassVisitor methodVisitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, message.getCallee(), message.getMessage(), new ArrayList<String>(), depth + 1);
 						reader.accept(methodVisitor, ClassReader.EXPAND_FRAMES);
 					} catch (IOException e) {
 						e.printStackTrace();

@@ -1,8 +1,9 @@
 package umlParser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class SequenceDiagramParserTest {
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName("umlParser");
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "makeFriend", 1);
+		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "makeFriend", new ArrayList<String>(), 1);
 		reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getMessages().get(0).getClass().getTypeName().equals("umlParser.MessageInfo"));
 		assertTrue(info.getObjects().get(0).equals("Student"));
@@ -28,7 +29,7 @@ public class SequenceDiagramParserTest {
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName("umlParser");
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "hatesLife", 1);
+		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "hatesLife", new ArrayList<String>(), 1);
 		reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getMessages().get(0).getClass().getTypeName().equals("umlParser.MessageInfo"));
 		assertTrue(info.getMessages().size() == 2);
@@ -40,7 +41,7 @@ public class SequenceDiagramParserTest {
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName("umlParser");
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "age", 1);
+		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "age", new ArrayList<String>(), 1);
 		reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getMessages().size() == 0);
 		assertTrue(info.getObjects().size() == 0);
@@ -51,7 +52,7 @@ public class SequenceDiagramParserTest {
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName("umlParser");
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "cries", 1);
+		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "cries", new ArrayList<String>(), 1);
 		reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getMessages().get(0).getClass().getTypeName().equals("umlParser.MessageInfo"));
 		assertTrue(info.getMessages().size() == 3);
@@ -63,7 +64,7 @@ public class SequenceDiagramParserTest {
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName("umlParser");
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "jumpUpAndDown", info.getMaxDepth());
+		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "jumpUpAndDown", new ArrayList<String>(), info.getMaxDepth());
 		reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getMessages().size() == 0);
 		assertTrue(info.getObjects().size() == 0);
@@ -74,7 +75,7 @@ public class SequenceDiagramParserTest {
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName("umlParser");
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "random", info.getMaxDepth());
+		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "random", new ArrayList<String>(), info.getMaxDepth());
 		reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getMessages().size() == 1);
 		assertTrue(info.getObjects().size() == 0);
@@ -85,7 +86,7 @@ public class SequenceDiagramParserTest {
 		SequenceDiagramInfo info = new SequenceDiagramInfo();
 		info.setPackageName("umlParser");
 		ClassReader reader = new ClassReader("umlParser.Student");
-		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "numFriends", info.getMaxDepth());
+		ClassVisitor visitor = new SequenceClassMethodVisitor(Opcodes.ASM5, info, "umlParser.Student", "numFriends", new ArrayList<String>(), info.getMaxDepth());
 		reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 		assertTrue(info.getMessages().size() == 0);
 		assertTrue(info.getObjects().size() == 0);
