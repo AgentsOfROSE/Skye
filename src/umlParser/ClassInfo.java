@@ -10,6 +10,8 @@ public class ClassInfo {
 	private ArrayList<String> implementedClasses = new ArrayList<String>(); 
 	private ArrayList<String> usedClasses = new ArrayList<String>();
 	private ArrayList<String> associatedClasses = new ArrayList<String>();
+	private ArrayList<String> patterns = new ArrayList<String>();
+	private String frameColor = "black";
 	
 	public ArrayList<String> getAssociatedClasses() {
 		return associatedClasses;
@@ -68,6 +70,18 @@ public class ClassInfo {
 
 	public void setUsedClasses(ArrayList<String> usedClasses) {
 		this.usedClasses = usedClasses;
+	}
+	
+	public ArrayList<String> getPatterns(){
+		return this.patterns;
+	}
+	
+	public String getFrameColor(){
+		return this.frameColor;
+	}
+	
+	public void setFrameColor(String color){
+		this.frameColor = color;
 	}
 
 }

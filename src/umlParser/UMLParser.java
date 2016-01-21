@@ -40,7 +40,11 @@ public class UMLParser implements Parsable {
 				+ "node [\n\t\t fontname = \"Bitstream Vera Sans\" \n\t\t fontsize = 8 \n\t\t shape = \"record\" \n\t] "
 				+ "\n\n\tedge [\n\t\t fontname = \"Bitstream Vera Sans\"\n\t\t fontsize = 8 \n\t]\n");
 		for (ClassInfo classInfo : classes) {
-			System.out.print("\t" + classInfo.getName() + " [ \n \t \t label = \"{" + classInfo.getName() + "|");
+			System.out.print("\t" + classInfo.getName() + " [ \n \t \t label = \"{");
+			for(String pattern : classInfo.getPatterns()){
+				System.out.print("\\<\\<"+pattern+"\\>\\>\\n");
+			}
+			System.out.print(classInfo.getName() + "|");
 			for (FieldInfo fieldInfo : classInfo.getFields()) {
 				System.out.print(fieldInfo.getAccess() + " " + fieldInfo.getName() + " : " + fieldInfo.getClassName() + "\\l");
 			}
@@ -55,7 +59,9 @@ public class UMLParser implements Parsable {
 				}
 				System.out.print(") : " + methodInfo.getReturnType() + "\\l");
 			}
-			System.out.println("}\"\n\t]\n");
+			System.out.print("}\",\n");
+			System.out.print("\t \t color = " + classInfo.getFrameColor()+"\n");
+			System.out.print("\t]\n");
 		}
 	}
 
