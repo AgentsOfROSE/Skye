@@ -20,7 +20,7 @@ public class UMLSingletonParser extends UMLParser{
 		this.parser.setClassListFull(this.getClassListFull());
 		for(String className : this.parser.getClassListFull()){
 			ClassReader reader = new ClassReader(className);
-			ClassVisitor singletonVisitor = new SingletonVisitor(Opcodes.ASM5, this.getClasses().get(this.getClassListFull().indexOf(className)));
+			ClassVisitor singletonVisitor = new SingletonVisitor(Opcodes.ASM5, this.getClasses().get(this.getClassListFull().indexOf(className)), className);
 			reader.accept(singletonVisitor, ClassReader.EXPAND_FRAMES);
 		}
 		this.parser.parse(args);
