@@ -14,22 +14,18 @@ public class UMLParser implements Parsable {
 	private ArrayList<String> classListFull;
 
 	public UMLParser(){
-		 this.classes = new ArrayList<ClassInfo>();
-	     this.classListAbbreviated = new ArrayList<String>();
-	     this.classListFull = new ArrayList<String>();
+		this.classes = new ArrayList<ClassInfo>();
+	    this.classListAbbreviated = new ArrayList<String>();
+	    this.classListFull = new ArrayList<String>();
 	}
 
 	public void parse(String[] args) throws IOException {
-		for (String className : args) {
-			classListFull.add(className);
-			classListAbbreviated.add(className.substring(className.lastIndexOf(".") + 1));
-			ClassInfo info = new ClassInfo();
-			classes.add(info);
+		for (String className : this.getClassListFull()) {
 			ClassReader reader = new ClassReader(className);
 
-			ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5, info);
-			ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, info);
-			ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, info);
+			ClassVisitor declVisitor = new ClassDeclarationVisitor(Opcodes.ASM5, this.getClasses().get(this.getClassListFull().indexOf(className)));
+			ClassVisitor fieldVisitor = new ClassFieldVisitor(Opcodes.ASM5, this.getClasses().get(this.getClassListFull().indexOf(className)));
+			ClassVisitor methodVisitor = new ClassMethodVisitor(Opcodes.ASM5, this.getClasses().get(this.getClassListFull().indexOf(className)));
 
 			reader.accept(declVisitor, ClassReader.EXPAND_FRAMES);
 			reader.accept(fieldVisitor, ClassReader.EXPAND_FRAMES);
