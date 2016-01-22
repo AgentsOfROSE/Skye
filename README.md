@@ -44,4 +44,14 @@ Who did what:
 	
 Instructions
 	The user now uses the first command line argument to select a parser type, "uml" for a UML diagram and "sequence" for a sequence diagram. Then, for UML diagrams a list of classes, each with their package, is given as the remaining arguments. The system will now only show UML elements which are given as command line parameters. The Sequence Diagram parser first takes in the class name for the method, then takes in the method name, next it takes in the parameters for the method inside "<>" braces, space separated, and finally it optionally takes in the maximum depth for the sequence diagram to travers. If no maximum depth is given the system assumes a maximum depth of 5. 
+	
+Milestone 4:
 
+Design:
+	For this Milestone we added Singleton detection functionality. After refactoring our code to primarily use the Decorator patter when parsing for UMLs, we added a UMLSingletonParser that utilizes a SingletonVisitor that detects whether or not a class is a singleton, and then adds code to color the frame of the class and adds a tag beneath the name of the class, indicating that it is in fact a singleton.
+
+Who did what:
+	For Milestone 4, Trevor and Emily once again pair programmed, working together to refactor existing code, increase functionality, and finally implementing the Singleton detecting requirements set forth in the milestone. Trevor wrote the test cases and generated the UML diagrams. Emily made the manual UML diagram for the project in its current state, fixed the M3 Collections.shuffle manual sequence diagram, and updated the readme. We checked each other's work periodically as well.
+	
+Instructions
+	Same as in the last milestone.
