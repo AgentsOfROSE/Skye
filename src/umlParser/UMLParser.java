@@ -37,10 +37,11 @@ public class UMLParser implements Parsable {
 				+ "\n\n\tedge [\n\t\t fontname = \"Bitstream Vera Sans\"\n\t\t fontsize = 8 \n\t]\n");
 		for (ClassInfo classInfo : classes) {
 			System.out.print("\t" + classInfo.getName() + " [ \n \t \t label = \"{");
+			System.out.print(classInfo.getName() + "\\n");
 			for(String pattern : classInfo.getPatterns()){
 				System.out.print("\\<\\<"+pattern+"\\>\\>\\n");
 			}
-			System.out.print(classInfo.getName() + "|");
+			System.out.print("|");
 			for (FieldInfo fieldInfo : classInfo.getFields()) {
 				System.out.print(fieldInfo.getAccess() + " " + fieldInfo.getName() + " : " + fieldInfo.getClassName() + "\\l");
 			}
