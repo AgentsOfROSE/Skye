@@ -27,11 +27,13 @@ public class SingletonVisitor extends ClassVisitor {
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		MethodVisitor toDecorate = super.visitMethod(access, name, desc, signature, exceptions);
 		if((access & Opcodes.ACC_PUBLIC) != 0){
-			if(desc.substring(desc.indexOf(")")).contains(this.className)){
-				methodFound = true;
-				if(methodFound && fieldFound){
-					info.getPatterns().add("Singleton");
-					info.setFrameColor("blue");
+			if((access & Opcodes.ACC_STATIC) != 0){
+				if(desc.substring(desc.indexOf(")")).contains(this.className)){
+					methodFound = true;
+					if(methodFound && fieldFound){
+						info.getPatterns().add("Singleton");
+						info.setFrameColor("blue");
+					}
 				}
 			}
 		}
@@ -42,11 +44,13 @@ public class SingletonVisitor extends ClassVisitor {
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 		FieldVisitor toDecorate = super.visitField(access, name, desc, signature, value);
 		if ((access & Opcodes.ACC_PRIVATE) != 0) {
-			if(desc.contains(this.className)){
-				fieldFound = true;
-				if(methodFound && fieldFound){
-					info.getPatterns().add("Singleton");
-					info.setFrameColor("blue");
+			if ((access & Opcodes.ACC_STATIC) != 0){
+				if(desc.contains(this.className)){
+					fieldFound = true;
+					if(methodFound && fieldFound){
+						info.getPatterns().add("Singleton");
+						info.setFrameColor("blue");
+					}
 				}
 			}
 		}
