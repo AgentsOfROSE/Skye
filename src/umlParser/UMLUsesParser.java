@@ -29,7 +29,8 @@ public class UMLUsesParser extends UMLParser{
 		
 		System.out.print("\n\n\tedge [\n\t\tstyle = \"dashed\"\n\t\tarrowhead = \"vee\"\n\t]\n\n");
 		for (ClassInfo classInfo : this.getClasses()) {
-			for (String usedClassName : classInfo.getUsedClasses()) {
+			String[] usedClassesFiltered = classInfo.getUsedClasses().stream().filter(className -> !classInfo.getAssociatedClasses().contains(className)).toArray(size -> new String[size]);
+			for (String usedClassName : usedClassesFiltered) {
 				if (this.getClassListAbbreviated().contains(usedClassName.contains("ArrayList") ? usedClassName.replace("ArrayList_", "")
 						: usedClassName)) {
 					System.out.println("\t" + classInfo.getName() + "->" + (usedClassName.contains("ArrayList")
