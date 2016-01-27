@@ -11,6 +11,8 @@ public class ClassInfo {
 	private ArrayList<String> usedClasses = new ArrayList<String>();
 	private ArrayList<String> associatedClasses = new ArrayList<String>();
 	private ArrayList<String> patterns = new ArrayList<String>();
+	private ArrayList<String> annotations = new ArrayList<String>();
+
 	private String frameColor = "black";
 	private String classFillColor = "white";
 	
@@ -92,6 +94,10 @@ public class ClassInfo {
 
 	public void setClassFillColor(String classFillColor) {
 		this.classFillColor = classFillColor;
+	}
+	
+	public ArrayList<String> getAnnotations() {
+		return annotations;
 	}
 
 }

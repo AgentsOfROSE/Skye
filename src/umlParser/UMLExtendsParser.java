@@ -6,12 +6,10 @@ import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
-public class UMLExtendsParser extends UMLParser{
+public class UMLExtendsParser extends AbstractUMLParser{
 	
-	UMLParser parser;
-
-	public UMLExtendsParser(UMLParser parser) {
-		this.parser = parser;
+	public UMLExtendsParser(UMLParsable parser) {
+		super(parser);
 	}
 	
 	public void parse(String[] args) throws IOException {

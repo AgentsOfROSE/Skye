@@ -6,14 +6,12 @@ import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
-public class UMLAssociationParser extends UMLParser{
+public class UMLAssociationParser extends AbstractUMLParser{
 	
-	UMLParser parser;
-
-	public UMLAssociationParser(UMLParser parser) {
-		this.parser = parser;
+	public UMLAssociationParser(UMLParsable parser) {
+		super(parser);
 	}
-	
+
 	public void parse(String[] args) throws IOException {
 		this.parser.setClasses(this.getClasses());
 		this.parser.setClassListAbbreviated(this.getClassListAbbreviated());
@@ -31,7 +29,11 @@ public class UMLAssociationParser extends UMLParser{
 				if (this.getClassListAbbreviated().contains(associatedClass.contains("ArrayList") ? associatedClass.replace("ArrayList_", "")
 						: associatedClass)) {
 					System.out.println("\t" + classInfo.getName() + "->" + (associatedClass.contains("ArrayList")
-							? associatedClass.replace("ArrayList_", "") : associatedClass));
+							? associatedClass.replace("ArrayList_", "") : associatedClass) + 
+							((this.getClasses().get(this.getClassListAbbreviated().indexOf((associatedClass.contains("ArrayList")
+									? associatedClass.replace("ArrayList_", "") : associatedClass))).getAnnotations().contains("Component") && 
+									this.getClasses().get(this.getClassListAbbreviated().indexOf(classInfo.getName())).getAnnotations().contains("Decorator")) 
+							? " [label=\"<<Decorates>>\"]" : ""));
 				}
 			}
 		}

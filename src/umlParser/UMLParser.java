@@ -7,12 +7,12 @@ import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
-public class UMLParser implements Parsable {
-	
-	private ArrayList<ClassInfo> classes;
-	private ArrayList<String> classListAbbreviated;
-	private ArrayList<String> classListFull;
+public class UMLParser implements UMLParsable {
 
+	protected ArrayList<ClassInfo> classes;
+	protected ArrayList<String> classListAbbreviated;
+	protected ArrayList<String> classListFull;
+	
 	public UMLParser(){
 		this.classes = new ArrayList<ClassInfo>();
 	    this.classListAbbreviated = new ArrayList<String>();
@@ -38,8 +38,8 @@ public class UMLParser implements Parsable {
 		for (ClassInfo classInfo : classes) {
 			System.out.print("\t" + classInfo.getName() + " [ \n \t \t label = \"{");
 			System.out.print(classInfo.getName() + "\\n");
-			for(String pattern : classInfo.getPatterns()){
-				System.out.print("\\<\\<"+pattern+"\\>\\>\\n");
+			for(String annotation : classInfo.getAnnotations()){
+				System.out.print("\\<\\<"+annotation+"\\>\\>\\n");
 			}
 			System.out.print("|");
 			for (FieldInfo fieldInfo : classInfo.getFields()) {
@@ -62,7 +62,6 @@ public class UMLParser implements Parsable {
 			System.out.print("\t]\n");
 		}
 	}
-
 	public ArrayList<ClassInfo> getClasses() {
 		return classes;
 	}
@@ -86,5 +85,4 @@ public class UMLParser implements Parsable {
 	public void setClassListFull(ArrayList<String> classListFull) {
 		this.classListFull = classListFull;
 	}
-
 }

@@ -2,6 +2,7 @@ package umlParser;
 
 
 import jdk.internal.org.objectweb.asm.ClassVisitor;
+import jdk.internal.org.objectweb.asm.Opcodes;
 
 public class ClassDeclarationVisitor extends ClassVisitor {
 	
@@ -18,6 +19,8 @@ public class ClassDeclarationVisitor extends ClassVisitor {
 	
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+		if((access & Opcodes.ACC_INTERFACE) != 0)
+			info.getAnnotations().add("Interface");
 		String[] path = name.split("/");
 		info.setName(path[path.length - 1]);
 		
