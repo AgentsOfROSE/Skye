@@ -12,6 +12,8 @@ public class ClassInfo {
 	private ArrayList<String> associatedClasses = new ArrayList<String>();
 	private ArrayList<String> patterns = new ArrayList<String>();
 	private String frameColor = "black";
+	private String classFillColor = "white";
+	
 	
 	public ArrayList<String> getAssociatedClasses() {
 		return associatedClasses;
@@ -82,6 +84,14 @@ public class ClassInfo {
 	
 	public void setFrameColor(String color){
 		this.frameColor = color;
+	}
+
+	public String getClassFillColor() {
+		return classFillColor;
+	}
+
+	public void setClassFillColor(String classFillColor) {
+		this.classFillColor = classFillColor;
 	}
 
 }

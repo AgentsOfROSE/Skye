@@ -33,7 +33,7 @@ public class UMLParser implements Parsable {
 		}
 
 		System.out.println("digraph G {\n\tfontname = \"Bitstream Vera Sans\"\n\tfontsize = 8 \n\n\t"
-				+ "node [\n\t\t fontname = \"Bitstream Vera Sans\" \n\t\t fontsize = 8 \n\t\t shape = \"record\" \n\t] "
+				+ "node [\n\t\t fontname = \"Bitstream Vera Sans\" \n\t\t fontsize = 8 \n\t\t shape = \"record\" ,\n\t\t style = \"filled\"\n\t] "
 				+ "\n\n\tedge [\n\t\t fontname = \"Bitstream Vera Sans\"\n\t\t fontsize = 8 \n\t]\n");
 		for (ClassInfo classInfo : classes) {
 			System.out.print("\t" + classInfo.getName() + " [ \n \t \t label = \"{");
@@ -57,7 +57,8 @@ public class UMLParser implements Parsable {
 				System.out.print(") : " + methodInfo.getReturnType() + "\\l");
 			}
 			System.out.print("}\",\n");
-			System.out.print("\t \t color = " + classInfo.getFrameColor()+"\n");
+			System.out.print("\t \t color = " + classInfo.getFrameColor()+",\n");
+			System.out.print("\t \t fillcolor = " + classInfo.getClassFillColor()+"\n");
 			System.out.print("\t]\n");
 		}
 	}
