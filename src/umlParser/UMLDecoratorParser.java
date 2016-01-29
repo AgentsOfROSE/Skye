@@ -18,7 +18,6 @@ public class UMLDecoratorParser extends AbstractUMLParser{
 		this.parser.setClasses(this.getClasses());
 		this.parser.setClassListAbbreviated(this.getClassListAbbreviated());
 		this.parser.setClassListFull(this.getClassListFull());
-		/* START CHANGES HERE */
 		ArrayList<String> interfaceList = new ArrayList<String>();
 		HashMap<String, String> abstractMap = new HashMap<String, String>();
 		ArrayList<String> concreteDecoratorList = new ArrayList<String>();
@@ -55,7 +54,6 @@ public class UMLDecoratorParser extends AbstractUMLParser{
 			 concreteInfo.getPatterns().add("Decorator");
 			 concreteInfo.setClassFillColor("green");
 		}
-		/* END CHANGES HERE */
 		this.parser.parse(args);
 	}
 	

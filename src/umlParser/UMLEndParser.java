@@ -2,10 +2,6 @@ package umlParser;
 
 import java.io.IOException;
 
-import jdk.internal.org.objectweb.asm.ClassReader;
-import jdk.internal.org.objectweb.asm.ClassVisitor;
-import jdk.internal.org.objectweb.asm.Opcodes;
-
 public class UMLEndParser extends AbstractUMLParser{
 	
 	public UMLEndParser(UMLParsable parser) {

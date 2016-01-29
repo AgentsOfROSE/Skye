@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.FieldVisitor;
-import jdk.internal.org.objectweb.asm.Opcodes;
 
 public class DecoratorAbstractVisitor extends ClassVisitor {
 	

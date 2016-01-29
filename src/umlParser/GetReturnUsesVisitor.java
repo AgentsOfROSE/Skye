@@ -3,7 +3,6 @@ package umlParser;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.MethodVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
-import jdk.internal.org.objectweb.asm.Type;
 
 public class GetReturnUsesVisitor extends ClassVisitor {
 

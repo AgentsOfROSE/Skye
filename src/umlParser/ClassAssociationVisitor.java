@@ -3,9 +3,6 @@ package umlParser;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.FieldVisitor;
 import jdk.internal.org.objectweb.asm.Type;
-import jdk.internal.org.objectweb.asm.signature.SignatureReader;
-import jdk.internal.org.objectweb.asm.signature.SignatureVisitor;
-import jdk.internal.org.objectweb.asm.Opcodes;
 
 public class ClassAssociationVisitor extends ClassVisitor {
 	

@@ -13,7 +13,6 @@ import jdk.internal.org.objectweb.asm.Opcodes;
 
 public class UMLTextParserTest {
 
-	private String[] classes = new String[] { "Person", "Student", "RoseHulmanStudent" };
 	private String PUBLIC_ACCESS = "+";
 	private String PRIVATE_ACCESS = "-";
 	private String PROTECTED_ACCESS = "#";

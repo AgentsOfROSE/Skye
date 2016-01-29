@@ -1,6 +1,5 @@
 package umlParser;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SequenceDiagramInfo {
 	

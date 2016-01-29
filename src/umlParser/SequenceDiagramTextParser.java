@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
-import jdk.internal.org.objectweb.asm.MethodVisitor;
 import jdk.internal.org.objectweb.asm.Opcodes;
 
 public class SequenceDiagramTextParser implements Parsable {

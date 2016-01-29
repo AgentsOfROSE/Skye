@@ -1,6 +1,7 @@
 package umlParser;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
@@ -13,6 +14,9 @@ public class UMLAssociationParser extends AbstractUMLParser{
 	}
 
 	public void parse(String[] args) throws IOException {
+		HashMap<String, String> labels = new HashMap<String, String>();
+		labels.put("Component:Decorator", "Decorates");
+		labels.put("Adaptee:Adapter", "Adapts");
 		this.parser.setClasses(this.getClasses());
 		this.parser.setClassListAbbreviated(this.getClassListAbbreviated());
 		this.parser.setClassListFull(this.getClassListFull());
@@ -28,12 +32,16 @@ public class UMLAssociationParser extends AbstractUMLParser{
 			for (String associatedClass : classInfo.getAssociatedClasses()) {
 				if (this.getClassListAbbreviated().contains(associatedClass.contains("ArrayList") ? associatedClass.replace("ArrayList_", "")
 						: associatedClass)) {
-					System.out.println("\t" + classInfo.getName() + "->" + (associatedClass.contains("ArrayList")
-							? associatedClass.replace("ArrayList_", "") : associatedClass) + 
-							((this.getClasses().get(this.getClassListAbbreviated().indexOf((associatedClass.contains("ArrayList")
-									? associatedClass.replace("ArrayList_", "") : associatedClass))).getAnnotations().contains("Component") && 
-									this.getClasses().get(this.getClassListAbbreviated().indexOf(classInfo.getName())).getAnnotations().contains("Decorator")) 
-							? " [label=\"<<Decorates>>\"]" : ""));
+					System.out.print("\t" + classInfo.getName() + "->" + (associatedClass.contains("ArrayList")
+							? associatedClass.replace("ArrayList_", "") : associatedClass) + "[label=\"");
+					for(String associatedAnnotation: (this.getClasses().get(this.getClassListAbbreviated().indexOf((associatedClass.contains("ArrayList")
+							? associatedClass.replace("ArrayList_", "") : associatedClass))).getAnnotations())){
+						for(String thisAnnotation: this.getClasses().get(this.getClassListAbbreviated().indexOf(classInfo.getName())).getAnnotations()){
+							if(labels.containsKey(associatedAnnotation+":"+thisAnnotation))
+								System.out.print("<<"+labels.get(associatedAnnotation+":"+thisAnnotation)+">>");
+						}
+					}
+					System.out.println("\"]");
 				}
 			}
 		}
