@@ -25,7 +25,6 @@ public class AdapterAdapteeVisitor extends ClassVisitor{
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 		FieldVisitor toDecorate = super.visitField(access, name, desc, signature, value);
 		String type = Type.getType(desc).getClassName();
-		type = type.lastIndexOf(".")>-1 ? type.substring(type.lastIndexOf(".")+1) : type;
 		if (!this.fieldsFound.contains(type)) {
 			this.fieldsFound.add(type);
 			if(this.constructorParams.contains(type)){
@@ -46,7 +45,7 @@ public class AdapterAdapteeVisitor extends ClassVisitor{
 		if(name.equals("<init>")){
 			Type[] argTypes = Type.getArgumentTypes(desc);
 			for (Type t : argTypes) {
-				String className = t.getClassName().substring(t.getClassName().lastIndexOf(".") + 1);
+				String className = t.getClassName();
 				if (!this.constructorParams.contains(className)) {
 					this.constructorParams.add(className);
 					if(this.fieldsFound.contains(className)){

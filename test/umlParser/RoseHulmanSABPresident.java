@@ -7,7 +7,7 @@ public class RoseHulmanSABPresident extends RoseHulmanStudent {
 	private RoseHulmanSABPresident() {
 	}
 	
-	public RoseHulmanSABPresident getPresident(){
+	public static RoseHulmanSABPresident getPresident(){
 		if(president == null){
 			president = new RoseHulmanSABPresident();
 		}

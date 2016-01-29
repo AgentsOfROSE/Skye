@@ -1,6 +1,8 @@
 package umlParser;
 
 
+import java.util.ArrayList;
+
 import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.FieldVisitor;
 import jdk.internal.org.objectweb.asm.MethodVisitor;
@@ -8,14 +10,14 @@ import jdk.internal.org.objectweb.asm.Opcodes;
 
 public class SingletonVisitor extends ClassVisitor {
 	
-	private ClassInfo info;
+	private ArrayList<String> singletons;
 	private String className;
 	private boolean fieldFound = false;
 	private boolean methodFound = false;
 
-	public SingletonVisitor(int api, ClassInfo info, String className) {
+	public SingletonVisitor(int api, ArrayList<String> singletons, String className) {
 		super(api);
-		this.info = info;
+		this.singletons = singletons;
 		this.className = className.replace(".", "/");
 	}
 
@@ -31,8 +33,7 @@ public class SingletonVisitor extends ClassVisitor {
 				if(desc.substring(desc.indexOf(")")).contains(this.className)){
 					methodFound = true;
 					if(methodFound && fieldFound){
-						info.getPatterns().add("Singleton");
-						info.setFrameColor("blue");
+						this.singletons.add(this.className.replace("/", "."));
 					}
 				}
 			}
@@ -48,8 +49,7 @@ public class SingletonVisitor extends ClassVisitor {
 				if(desc.contains(this.className)){
 					fieldFound = true;
 					if(methodFound && fieldFound){
-						info.getPatterns().add("Singleton");
-						info.setFrameColor("blue");
+						this.singletons.add(this.className.replace("/", "."));
 					}
 				}
 			}

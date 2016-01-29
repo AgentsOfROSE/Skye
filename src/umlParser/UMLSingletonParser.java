@@ -2,10 +2,6 @@ package umlParser;
 
 import java.io.IOException;
 
-import jdk.internal.org.objectweb.asm.ClassReader;
-import jdk.internal.org.objectweb.asm.ClassVisitor;
-import jdk.internal.org.objectweb.asm.Opcodes;
-
 public class UMLSingletonParser extends AbstractUMLParser{
 	
 
@@ -17,10 +13,16 @@ public class UMLSingletonParser extends AbstractUMLParser{
 		this.parser.setClasses(this.getClasses());
 		this.parser.setClassListAbbreviated(this.getClassListAbbreviated());
 		this.parser.setClassListFull(this.getClassListFull());
-		for(String className : this.parser.getClassListFull()){
-			ClassReader reader = new ClassReader(className);
-			ClassVisitor singletonVisitor = new SingletonVisitor(Opcodes.ASM5, this.getClasses().get(this.getClassListFull().indexOf(className)), className);
-			reader.accept(singletonVisitor, ClassReader.EXPAND_FRAMES);
+		String singletons = (new SingletonDetector()).detect(args).split("~")[0];
+		String[] singletonClasses = singletons.substring(singletons.indexOf("-") + 1).split(";");
+		if(singletonClasses[0].length() > 0){
+			for(String classInfo : singletonClasses){
+				String[] expandedInfo = classInfo.split(":");
+				ClassInfo data = this.getClasses().get(this.getClassListFull().indexOf(expandedInfo[1]));
+				data.getAnnotations().add(expandedInfo[0]);
+				data.getPatterns().add("Singleton");
+				data.setFrameColor("blue");
+			}
 		}
 		this.parser.parse(args);
 	}
