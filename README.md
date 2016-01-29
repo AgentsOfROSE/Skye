@@ -55,3 +55,15 @@ Who did what:
 	
 Instructions
 	Same as in the last milestone.
+	
+Milestone 5:
+
+Design:
+	For this Milestone we added Detector and Adapter detection functionality. After refactoring our code to more specifically use the Decorator patter when parsing for UMLs, we added two new parser classes and three visitors for each new type of detection. We also changed the design to now use the PatternDetection interface and three new detection classes which the parsers use in order to find different patterns. These detectors return strings of format <<PatternName>>-<<Role>>:<<Class>>~ with the role and class portions repeating as necessary.
+
+Who did what:
+	For Milestone 5, Trevor and Emily once again pair programmed, working together to refactor existing code, increase functionality, and finally implementing the new detecting requirements set forth in the milestone. Emily wrote the test cases Trevor generated the UML diagrams, made the manual UML diagram for the project in its current state, and updated the readme. We checked each other's work periodically as well.
+	
+Instructions
+	Same as in the last milestone.
+
