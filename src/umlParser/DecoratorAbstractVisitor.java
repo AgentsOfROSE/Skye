@@ -36,6 +36,11 @@ public class DecoratorAbstractVisitor extends ClassVisitor {
 						abstractMap.put(name.replace("/", "."), interfaceName.replace("/", "."));
 				}
 			}
+			if(this.allInterfaces.contains(name)) {
+				implementedInterfaces.add(name);
+				if(storedInterfaces.contains(name))
+					abstractMap.put(name.replace("/", "."), name.replace("/", "."));
+			}
 			if(this.allInterfaces.contains(superName)) {
 				implementedInterfaces.add(superName);
 				if(storedInterfaces.contains(superName))
