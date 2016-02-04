@@ -9,7 +9,7 @@ public class Main {
 	private static HashMap<String, Parsable> parserMap = new HashMap<String, Parsable>();
 	
 	static {
-		parserMap.put("uml", new UMLEndParser(new UMLCompositeParser(new UMLDecoratorParser(new UMLSingletonParser(new UMLUsesParser(new UMLAssociationParser(new UMLImplementsParser(new UMLExtendsParser(new UMLParser())))))))));
+		parserMap.put("uml", new UMLEndParser(new UMLCompositeParser(new UMLAdapterParser(new UMLDecoratorParser(new UMLSingletonParser(new UMLUsesParser(new UMLAssociationParser(new UMLImplementsParser(new UMLExtendsParser(new UMLParser()))))))))));
 		parserMap.put("sequence", new SequenceDiagramTextParser());
 	}
 

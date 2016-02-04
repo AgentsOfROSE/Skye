@@ -15,9 +15,7 @@ public class UMLAdapterParser extends AbstractUMLParser{
 		String detected = (new AdapterDetector()).detect(args).split("~")[0];
 		String[] adapterClasses = detected.substring(detected.indexOf("-") + 1).split(";");
 		if(adapterClasses[0].length() > 0){
-			System.out.println(adapterClasses);
 			for(String classInfo : adapterClasses){
-				System.out.println(classInfo);
 				String[] expandedInfo = classInfo.split(":");
 				ClassInfo data = this.getClasses().get(this.getClassListFull().indexOf(expandedInfo[1]));
 				data.getAnnotations().add(expandedInfo[0]);

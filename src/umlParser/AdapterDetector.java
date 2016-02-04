@@ -13,6 +13,10 @@ public class AdapterDetector implements PatternDetector {
 
 	@Override
 	public String detect(String[] classes) throws IOException {
+		ArrayList<String> validClasses = new ArrayList<String>();
+		for(String className : classes){
+			validClasses.add(className);
+		}
 		ArrayList<String> interfaceList = new ArrayList<String>();
 		HashMap<String, String> possibleAdaptersMap = new HashMap<String, String>();
 		HashMap<String, ArrayList<String>> possibleAdaptees = new HashMap<String, ArrayList<String>>();
@@ -28,7 +32,7 @@ public class AdapterDetector implements PatternDetector {
 		}
 		for(String className : classes){
 			ClassReader reader = new ClassReader(className);
-			ClassVisitor adapterAdapteeVisitor = new AdapterAdapteeVisitor(Opcodes.ASM5, possibleAdaptees, className.replace("/", "."));
+			ClassVisitor adapterAdapteeVisitor = new AdapterAdapteeVisitor(Opcodes.ASM5, validClasses, possibleAdaptees, className.replace("/", "."));
 			reader.accept(adapterAdapteeVisitor, ClassReader.EXPAND_FRAMES);
 		}
 		

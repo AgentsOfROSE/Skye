@@ -13,10 +13,12 @@ public class AdapterAdapteeVisitor extends ClassVisitor{
 	private ArrayList<String> constructorParams = new ArrayList<String>();
 	private ArrayList<String> fieldsFound = new ArrayList<String>();
 	String className;
+	ArrayList<String> validClasses;
 	HashMap<String, ArrayList<String>> adapters;
 
-	public AdapterAdapteeVisitor(int api, HashMap<String, ArrayList<String>> adapters, String className) {
+	public AdapterAdapteeVisitor(int api, ArrayList<String> validClasses, HashMap<String, ArrayList<String>> adapters, String className) {
 		super(api);
+		this.validClasses = validClasses;
 		this.className = className;
 		this.adapters = adapters;
 	}
@@ -25,7 +27,7 @@ public class AdapterAdapteeVisitor extends ClassVisitor{
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 		FieldVisitor toDecorate = super.visitField(access, name, desc, signature, value);
 		String type = Type.getType(desc).getClassName();
-		if (!this.fieldsFound.contains(type)) {
+		if (!this.fieldsFound.contains(type) && validClasses.contains(type.replace("/", "."))) {
 			this.fieldsFound.add(type);
 			if(this.constructorParams.contains(type)){
 				if(!this.adapters.keySet().contains(this.className.replace("/", "."))){
