@@ -3,6 +3,7 @@ package umlParser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;
@@ -35,9 +36,11 @@ public class DecoratorDetector implements PatternDetector {
 		
 		for(String abstractName : abstractMap.keySet()){
 			 returnString = returnString +"Decorator:"+abstractName+";";
-			 returnString = returnString +"Component:"+abstractMap.get(abstractName)+";";
 		}
-		for(String concreteName : concreteDecoratorList){
+		for(String component : new HashSet<String>(abstractMap.values())){
+			returnString = returnString +"Component:"+component+";";			
+		}
+		for(String concreteName : new HashSet<String>(concreteDecoratorList)){
 			 returnString = returnString +"Decorator:"+concreteName+";";
 		}
 		return returnString + "~";
