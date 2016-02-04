@@ -59,11 +59,22 @@ Instructions
 Milestone 5:
 
 Design:
-	For this Milestone we added Detector and Adapter detection functionality. After refactoring our code to more specifically use the Decorator patter when parsing for UMLs, we added two new parser classes and three visitors for each new type of detection. We also changed the design to now use the PatternDetection interface and three new detection classes which the parsers use in order to find different patterns. These detectors return strings of format <<PatternName>>-<<Role>>:<<Class>>~ with the role and class portions repeating as necessary.
+	For this Milestone we added Detector and Adapter detection functionality. After refactoring our code to more specifically use the Decorator pattern when parsing for UMLs, we added two new parser classes and three visitors for each new type of detection. We also changed the design to now use the PatternDetection interface and three new detection classes which the parsers use in order to find different patterns. These detectors return strings of format <<PatternName>>-<<Role>>:<<Class>>~ with the role and class portions repeating as necessary.
 
 Who did what:
 	For Milestone 5, Trevor and Emily once again pair programmed, working together to refactor existing code, increase functionality, and finally implementing the new detecting requirements set forth in the milestone. Emily wrote the test cases Trevor generated the UML diagrams, made the manual UML diagram for the project in its current state, and updated the readme. We checked each other's work periodically as well.
 	
 Instructions
 	Same as in the last milestone.
+	
+Milestone 6:
+
+Design:
+	For this Milestone we added Composite pattern detection functionality. We added one new parser class, a detector class, and three new visitor classes for this type of detection. Like in the last milestone, we used the PatternDetection interface to make adding on this new functionality to our existing code much simpler. Again, we are still using the Decorator pattern when we parse for UMLs. We set our code up properly enough in the last milestone that we did not need to refactor this time around.
+	
+Who did what:
+	For Milestone 6, Trevor and Emily once again pair programmed, working together to implement the functionality required for this milestone. This week, Trevor created the automated test cases, and Emily generated UML pictures, the manual UML, and updated the readme. 
+	
+Instructions
+	Same as in the last milestone
 
