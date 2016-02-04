@@ -53,7 +53,7 @@ public class CompositeCompositeVisitor extends ClassVisitor{
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 		FieldVisitor toDecorate = super.visitField(access, name, desc, signature, value);
 		for(String interfaceName : this.allInterfaces){
-			if(desc.contains(interfaceName)){
+			if(signature != null && signature.contains("<L"+interfaceName+";>")){
 				this.storedInterfaces.add(interfaceName);
 				if(implementedInterfaces.contains(interfaceName))
 					abstractMap.put(this.abstractName.replace("/", "."), interfaceName.replace("/", "."));
