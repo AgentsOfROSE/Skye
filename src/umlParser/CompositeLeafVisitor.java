@@ -25,11 +25,11 @@ public class CompositeLeafVisitor extends ClassVisitor {
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 		for(String interfaceName : interfaces){
-			if(components.contains(interfaceName.replace("/", ".")) && !composites.contains(name.replace("/", "."))){
+			if((components.contains(interfaceName.replace("/", ".")) || composites.contains(interfaceName.replace("/", "."))) && !composites.contains(name.replace("/", "."))){
 				leaves.add(name.replace("/", "."));
 			}
 		}
-		if(components.contains(superName.replace("/", ".")) && !composites.contains(name.replace("/", "."))){
+		if((components.contains(superName.replace("/", ".")) || composites.contains(superName.replace("/", "."))) && !composites.contains(name.replace("/", "."))){
 			leaves.add(name.replace("/", "."));
 		}
 	}
