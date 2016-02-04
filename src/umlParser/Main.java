@@ -16,7 +16,6 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		Parsable parser = parserMap.get(args[0]);
 		parser.parse(Arrays.copyOfRange(args, 1, args.length));
-
 	}
 
 }
