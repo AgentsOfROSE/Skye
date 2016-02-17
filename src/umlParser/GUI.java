@@ -5,7 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JProgressBar;
+import javax.swing.JPanel;
 
 public class GUI {
 	
@@ -13,32 +13,40 @@ public class GUI {
 				
 		
 		JFrame frame = new JFrame();
-		frame.getContentPane().setLayout(new FlowLayout());
+		frame.getContentPane().setLayout(null);
 		frame.setTitle("Design Parser");
-		frame.setSize(550, 550);
+		frame.setPreferredSize(new Dimension(550, 500));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setVisible(true);
 		
-		LandingActionListener actionListener = new LandingActionListener(frame);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		frame.getContentPane().add(panel);
+		
+		DesignParserActionListener actionListener = new DesignParserActionListener(frame);
 		
 		JButton loadConfigButton = new JButton();
 		loadConfigButton.setText("Load Config");
 		loadConfigButton.setName("Load Config");
-		loadConfigButton.setSize(new Dimension(150, 50));
 		loadConfigButton.addActionListener(actionListener);
+		loadConfigButton.setBounds(100, 150, 150, 50);
 		loadConfigButton.setVisible(true);
-		loadConfigButton.setLocation(100, 150);
-		frame.getContentPane().add(loadConfigButton);
+		panel.add(loadConfigButton);
 		
 		JButton analyzeButton = new JButton();
 		analyzeButton.setText("Analyze");
 		analyzeButton.setName("Analyze");
-		analyzeButton.setSize(new Dimension(150, 50));
+		analyzeButton.setBounds(300, 150, 150, 50);
 		analyzeButton.addActionListener(actionListener);
 		analyzeButton.setVisible(true);
-		analyzeButton.setLocation(300, 150);
-		frame.getContentPane().add(analyzeButton);
+		panel.add(analyzeButton);
+		
+		panel.setLocation(0,0);
+		panel.setSize(new Dimension(550, 550));
+		frame.pack();
+		frame.setContentPane(panel);
+		frame.setResizable(false);
+		frame.setVisible(true);
 	}
 
 }

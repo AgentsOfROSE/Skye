@@ -1,4 +1,4 @@
-Input-Folder: c:\\User1\\Documents\\Lab2-1\\bin
+Input-Folder: c:\\EclipseWorkspaces\\csse374\\Skye\\src\\decoratorSolution
 Input-Classes: decoratorSolution.DecryptionInputStream, decoratorSolution.EncryptionOutputStream, decoratorSolution.IDecryption, decoratorSolution.IEncryption, decoratorSolution.SubstitutionCipher, decoratorSolution.TextEditorApp, java.io.FilterInputStream, java.io.FilterOutputStream, java.io.InputStream, java.io.OutputStream
 Output-Directory: c:\\User1\\Documents\\Lab2-1\\input-output
 Dot-Path: C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe

@@ -25,14 +25,9 @@ public class LoadAnalyzerProxy extends JProgressBar implements IAnalyzer {
 	@Override
 	public boolean executeAll(ArrayList<String> phases) {
 		JProgressBar bar = this;
-		Thread t = new Thread(){
-			public void run(){	
-				for(String phase : phases){
+		for(String phase : phases){
 					updateProgBar(phase, phases, bar);
-				}
-			}
-		};
-		t.start();
+		}
 		return true;
 	}
 	
