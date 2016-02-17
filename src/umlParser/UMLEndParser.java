@@ -8,6 +8,10 @@ public class UMLEndParser extends AbstractUMLParser{
 		super(parser);
 	}
 	
+	public UMLEndParser(){
+		super(null);
+	}
+	
 	public void parse(String[] args) throws IOException {
 		for (String className : args) {
 			this.getClassListFull().add(className);

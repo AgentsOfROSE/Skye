@@ -40,5 +40,9 @@ public abstract class AbstractUMLParser implements UMLParsable{
 	public void setClassListFull(ArrayList<String> classListFull) {
 		this.classListFull = classListFull;
 	}
+	
+	public void setParser(UMLParsable parser){
+		this.parser = parser;
+	}
 
 }

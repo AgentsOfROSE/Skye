@@ -39,15 +39,6 @@ public class GUI {
 		analyzeButton.setVisible(true);
 		analyzeButton.setLocation(300, 150);
 		frame.getContentPane().add(analyzeButton);
-		
-		JProgressBar progBar = new LoadAnalyzerProxy(new Analyzer());
-		progBar.setVisible(false);
-		progBar.setSize(new Dimension(300, 50));
-		progBar.setMaximum(100);
-		progBar.setMinimum(0);
-		progBar.setBorderPainted(true);
-		progBar.setLocation(100, 350);
-		frame.getContentPane().add(progBar);
 	}
 
 }

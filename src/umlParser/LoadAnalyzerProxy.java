@@ -24,11 +24,6 @@ public class LoadAnalyzerProxy extends JProgressBar implements IAnalyzer {
 
 	@Override
 	public boolean executeAll(ArrayList<String> phases) {
-		double percent = 0;
-		System.out.println(phases.size());
-		System.out.println((100/phases.size()));
-		double phasePercent = (100/phases.size());
-		System.out.println(phasePercent);
 		JProgressBar bar = this;
 		Thread t = new Thread(){
 			public void run(){	
@@ -47,11 +42,6 @@ public class LoadAnalyzerProxy extends JProgressBar implements IAnalyzer {
 				if(execute(phase)){
 					bar.setValue((int) 100*(phases.indexOf(phase) + 1)/phases.size());	
 					bar.repaint();
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 		});

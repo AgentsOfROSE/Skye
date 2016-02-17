@@ -1,21 +1,53 @@
 package umlParser;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Analyzer implements IAnalyzer {
 
-	public Analyzer() {
-		// TODO Auto-generated constructor stub
+	HashMap<String, Class<? extends UMLParsable>> phases = new HashMap<>();
+	HashMap<Class<? extends UMLParsable>, Class<? extends PatternDetector>> detectors = new HashMap<>();
+	ArrayList<UMLParsable> outputGenerator = new ArrayList<>();
+	ArrayList<String> classes;
+
+	public Analyzer(ArrayList<String> classes) {
+		this.classes = classes;
+		// phases.put("Loader", UMLParser.class);
+		phases.put("Decorator-Detector", UMLDecoratorParser.class);
+		detectors.put(UMLDecoratorParser.class, DecoratorDetector.class);
+		phases.put("Singleton-Detector", UMLSingletonParser.class);
+		detectors.put(UMLSingletonParser.class, SingletonDetector.class);
 	}
 
 	@Override
 	public boolean execute(String phase) {
 		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			if(phase.equals("Loader")){
+				//outputGenerator.put(UMLEndParser.class.newInstance(), "");
+			} else if(phase.equals("Output")){
+				((AbstractUMLParser) outputGenerator.get(outputGenerator.size()-1)).setParser(new UMLUsesParser(new UMLAssociationParser(new UMLImplementsParser(new UMLExtendsParser(new UMLParser())))));
+				for(int i = outputGenerator.size()-2; i >= 0; i--){
+					((AbstractUMLParser) outputGenerator.get(i)).setParser(outputGenerator.get(i+1));
+				}
+				AbstractUMLParser parser = new UMLEndParser(outputGenerator.get(0));
+				parser.parse(classes.toArray(new String[classes.size()]));
+			} else {
+				String detected = detectors.get(phases.get(phase)).newInstance().detect(classes.toArray(new String[classes.size()]));
+				outputGenerator.add(phases.get(phase).getConstructor(new Class[]{String.class}).newInstance(detected.split("~")[0]));
+			}
+		} catch (InstantiationException | IllegalAccessException | IOException e) {
 			e.printStackTrace();
-		} 
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 

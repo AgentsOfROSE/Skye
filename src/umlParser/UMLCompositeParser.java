@@ -3,9 +3,21 @@ package umlParser;
 import java.io.IOException;
 
 public class UMLCompositeParser extends AbstractUMLParser {
+	
+	private String detected;
 
 	public UMLCompositeParser(UMLParsable parser) {
 		super(parser);
+	}
+	
+	public UMLCompositeParser(String detected) {
+		super(null);
+		this.detected = detected;
+	}
+	
+	public UMLCompositeParser(UMLParsable parser, String detected){
+		super(parser);
+		this.detected = detected;
 	}
 
 	@Override
@@ -13,7 +25,9 @@ public class UMLCompositeParser extends AbstractUMLParser {
 		this.parser.setClasses(this.getClasses());
 		this.parser.setClassListAbbreviated(this.getClassListAbbreviated());
 		this.parser.setClassListFull(this.getClassListFull());
-		String detected = (new CompositeDetector()).detect(args).split("~")[0];
+		if(detected == null){
+			detected = (new CompositeDetector()).detect(args).split("~")[0];
+		}
 		String[] compositeClasses = detected.substring(detected.indexOf("-") + 1).split(";");
 		if(compositeClasses[0].length() > 0){
 			for(String classInfo : compositeClasses){
