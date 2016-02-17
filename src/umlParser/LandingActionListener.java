@@ -1,5 +1,6 @@
 package umlParser;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JProgressBar;
 
 public class LandingActionListener implements ActionListener{
 
@@ -22,6 +24,19 @@ public class LandingActionListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(((JButton) e.getSource()).getName().equals("Analyze")){
+			JProgressBar progBar = new LoadAnalyzerProxy(new Analyzer());
+			progBar.setVisible(true);
+			progBar.setSize(new Dimension(300, 50));
+			progBar.setMaximum(100);
+			progBar.setMinimum(0);
+			progBar.setBorderPainted(true);
+			progBar.setLocation(100, 350);
+			this.landingFrame.getContentPane().add(progBar);
+			this.landingFrame.repaint();
+			if(configInfo != null){
+				((LoadAnalyzerProxy) progBar).executeAll(configInfo.getPhases());
+			}
+			System.out.println(Thread.activeCount());
 			System.out.println("Analyze");
 		} else if(((JButton) e.getSource()).getName().equals("Load Config")){
 			JFileChooser fileChooser = new JFileChooser();
