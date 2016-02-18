@@ -3,9 +3,12 @@ package umlParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -112,7 +115,37 @@ public class DesignParserActionListener implements ActionListener{
 				this.graphPanel.removeAll();
 				this.graphPanel.add(graphLabel);
 				this.graphPanel.repaint();
-			} 
+			} else if (((JMenuItem) e.getSource()).getName().equals("Export Graph")){
+				JFileChooser save = new JFileChooser();
+				save.setApproveButtonText("Save");
+				save.showOpenDialog(frame);
+				String toSave = save.getSelectedFile().getAbsolutePath();
+				File graphFile = new File("output.png");
+				File saveFile = null;
+				if(toSave.endsWith(".png")){
+					saveFile = new File(toSave);
+				} else {
+					saveFile = new File(toSave+".png");
+				}
+				InputStream in;
+				OutputStream out;
+				try {
+					in = new FileInputStream(graphFile);
+					out = new FileOutputStream(saveFile);
+					byte[] buf = new byte[1024];
+					int len;
+					while((len = in.read(buf)) > 0){
+						out.write(buf, 0, len);
+						
+					}
+					in.close();
+					out.close();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 	
