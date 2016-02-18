@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -22,11 +23,15 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
 
 public class DesignParserActionListener implements ActionListener{
 
 	JFrame frame = null;
 	GUIConfigInfo configInfo = null;
+	ArrayList<String> analyzedClasses = null;
+	JPanel graphPanel;
+	Timer timer = new Timer(200, this);
 	
 	public DesignParserActionListener(JFrame frame) {
 		this.frame = frame;
@@ -34,10 +39,12 @@ public class DesignParserActionListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().getClass() == JButton.class){
+		if(e.getSource() == timer){
+			this.frame.revalidate();
+		} else if(e.getSource().getClass() == JButton.class){
 			if(((JButton) e.getSource()).getName().equals("Analyze")){
 				if(configInfo != null){
-					JProgressBar progBar = new LoadAnalyzerProxy(new Analyzer(configInfo.getInputClasses()));
+					JProgressBar progBar = new LoadAnalyzerProxy(new Analyzer(this.analyzedClasses));
 					progBar.setBounds(100, 350, 300, 50);
 					progBar.setMaximum(100);
 					progBar.setMinimum(0);
@@ -60,17 +67,8 @@ public class DesignParserActionListener implements ActionListener{
 						ProcessBuilder pb = new ProcessBuilder(configInfo.getDotPath(), "-Tpng", "output.dot", "-o", "output.png");
 						Process child = pb.start();
 						child.waitFor();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
 						setupResultFrame();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
+					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -85,10 +83,35 @@ public class DesignParserActionListener implements ActionListener{
 				}
 			}
 		} else if(e.getSource().getClass() == JMenuItem.class){
+			System.out.println(((JMenuItem) e.getSource()).getName());
 			if(((JMenuItem) e.getSource()).getName().equals("Help Menu")){
 				setupHelpScreen();
 			} else if(((JMenuItem) e.getSource()).getName().equals("About Menu")){
 				setupAboutScreen();
+			} else if(((JMenuItem) e.getSource()).getName().equals("New Config")){
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File("./docs"));
+				int result = fileChooser.showOpenDialog(frame);
+				if (result == JFileChooser.APPROVE_OPTION){
+					this.configInfo = new GUIConfigInfo();
+					File selectedFile = fileChooser.getSelectedFile();
+					loadFile(selectedFile);
+				}
+				IAnalyzer resultAnalyzer = new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses), configInfo.getDotPath());
+				JLabel graphLabel = new JLabel((ResultAnalyzerProxy) resultAnalyzer);
+				File outputFile = new File(".//output.dot");
+				PrintStream printStream;
+				try {
+					printStream = new PrintStream(new FileOutputStream(outputFile));
+					System.setOut(printStream);
+					resultAnalyzer.executeAll(configInfo.getPhases());
+					System.setOut(System.out);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				this.graphPanel.removeAll();
+				this.graphPanel.add(graphLabel);
+				this.graphPanel.repaint();
 			} 
 		}
 	}
@@ -125,10 +148,8 @@ public class DesignParserActionListener implements ActionListener{
 //			System.out.println(configInfo.getDotPath());
 //			System.out.println(configInfo.getPhases());
 			scanner.close();
+			this.analyzedClasses = configInfo.getInputClasses();
 			return true;
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-			return false;
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return false;
@@ -164,9 +185,11 @@ public class DesignParserActionListener implements ActionListener{
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newConfig = new JMenuItem("New Config File");
 		newConfig.setName("New Config");
+		newConfig.addActionListener(this);
 		fileMenu.add(newConfig);
 		JMenuItem exportGraph = new JMenuItem("Export Graph");
 		exportGraph.setName("Export Graph");
+		exportGraph.addActionListener(this);
 		fileMenu.add(exportGraph);
 		menuBar.add(fileMenu);
 		
@@ -204,9 +227,12 @@ public class DesignParserActionListener implements ActionListener{
 		rightScrollFrame.setBounds(300, 0, 694, 743);
 		rightScrollFrame.setVisible(true);
 		this.frame.getContentPane().add(rightScrollFrame);
-		rightPane.add(new JLabel(new ImageIcon(ImageIO.read(new File("output.png")))));
+		JLabel graphLabel = new JLabel(new ImageIcon(ImageIO.read(new File("output.png"))));
+		rightPane.add(graphLabel);
+		this.graphPanel = rightPane;
 		
 		this.frame.repaint();
+		timer.start();
 	}
 	
 	public void setupHelpScreen(){
