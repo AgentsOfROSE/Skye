@@ -1,0 +1,109 @@
+digraph G {
+	fontname = "Bitstream Vera Sans"
+	fontsize = 8 
+
+	node [
+		 fontname = "Bitstream Vera Sans" 
+		 fontsize = 8 
+		 shape = "record" ,
+		 style = "filled"
+	] 
+
+	edge [
+		 fontname = "Bitstream Vera Sans"
+		 fontsize = 8 
+	]
+
+	DecryptionInputStream [ 
+ 	 	 label = "{DecryptionInputStream\n\<\<Decorator\>\>\n|- decryptor : IDecryption\l|+ init(Param1 : InputStream, Param2 : IDecryption) : void\l+ read() : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	EncryptionOutputStream [ 
+ 	 	 label = "{EncryptionOutputStream\n\<\<Decorator\>\>\n|- encryptor : IEncryption\l|+ init(Param1 : OutputStream, Param2 : IEncryption) : void\l+ write(Param1 : int) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	IDecryption [ 
+ 	 	 label = "{IDecryption\n\<\<Interface\>\>\n||+ decrypt(Param1 : char) : char\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	IEncryption [ 
+ 	 	 label = "{IEncryption\n\<\<Interface\>\>\n||+ encrypt(Param1 : char) : char\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	SubstitutionCipher [ 
+ 	 	 label = "{SubstitutionCipher\n|- encryptionKey : char[]\l- decryptionKey : char[]\l|+ init() : void\l+ encrypt(Param1 : char) : char\l+ decrypt(Param1 : char) : char\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	TextEditorApp [ 
+ 	 	 label = "{TextEditorApp\n||+ init() : void\l+ main(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	FilterInputStream [ 
+ 	 	 label = "{FilterInputStream\n\<\<Decorator\>\>\n|# in : InputStream\l|# init(Param1 : InputStream) : void\l+ read() : int\l+ read(Param1 : byte[]) : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l+ skip(Param1 : long) : long\l+ available() : int\l+ close() : void\l+ mark(Param1 : int) : void\l+ reset() : void\l+ markSupported() : boolean\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	FilterOutputStream [ 
+ 	 	 label = "{FilterOutputStream\n\<\<Decorator\>\>\n|# out : OutputStream\l|+ init(Param1 : OutputStream) : void\l+ write(Param1 : int) : void\l+ write(Param1 : byte[]) : void\l+ write(Param1 : byte[], Param2 : int, Param3 : int) : void\l+ flush() : void\l+ close() : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	InputStream [ 
+ 	 	 label = "{InputStream\n\<\<Component\>\>\n|- MAX_SKIP_BUFFER_SIZE : int\l|+ init() : void\l+ read() : int\l+ read(Param1 : byte[]) : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l+ skip(Param1 : long) : long\l+ available() : int\l+ close() : void\l+ mark(Param1 : int) : void\l+ reset() : void\l+ markSupported() : boolean\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	OutputStream [ 
+ 	 	 label = "{OutputStream\n\<\<Component\>\>\n||+ init() : void\l+ write(Param1 : int) : void\l+ write(Param1 : byte[]) : void\l+ write(Param1 : byte[], Param2 : int, Param3 : int) : void\l+ flush() : void\l+ close() : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+
+	edge [
+		arrowhead = "empty"
+	]
+
+	DecryptionInputStream -> FilterInputStream
+	EncryptionOutputStream -> FilterOutputStream
+	FilterInputStream -> InputStream
+	FilterOutputStream -> OutputStream
+
+
+	edge [
+		style = "dashed"
+		arrowhead = "normal"
+	]
+
+	SubstitutionCipher->IEncryption
+	SubstitutionCipher->IDecryption
+
+
+	edge [
+		style = "solid"
+		arrowhead = "vee"
+	]
+
+	DecryptionInputStream->IDecryption[label=""]
+	EncryptionOutputStream->IEncryption[label=""]
+	FilterInputStream->InputStream[label="<<Decorates>>"]
+	FilterOutputStream->OutputStream[label="<<Decorates>>"]
+
+
+	edge [
+		style = "dashed"
+		arrowhead = "vee"
+	]
+
+	DecryptionInputStream->InputStream
+	EncryptionOutputStream->OutputStream
+	TextEditorApp->SubstitutionCipher
+	TextEditorApp->DecryptionInputStream
+	TextEditorApp->EncryptionOutputStream
+
+}

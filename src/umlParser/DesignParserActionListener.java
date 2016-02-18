@@ -1,12 +1,16 @@
 package umlParser;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -41,8 +45,34 @@ public class DesignParserActionListener implements ActionListener{
 					progBar.setVisible(true);
 					this.frame.getContentPane().add(progBar);
 					this.frame.repaint();
-					((LoadAnalyzerProxy) progBar).executeAll(configInfo.getPhases());
-					setupResultFrame();
+					try {
+						File outputFile = new File(".//output.dot");
+						PrintStream printStream = new PrintStream(new FileOutputStream(outputFile));
+						System.setOut(printStream);
+						((LoadAnalyzerProxy) progBar).executeAll(configInfo.getPhases());
+						printStream.close();
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+					
+					System.setOut(System.out);
+					try {
+						ProcessBuilder pb = new ProcessBuilder(configInfo.getDotPath(), "-Tpng", "output.dot", "-o", "output.png");
+						Process child = pb.start();
+						child.waitFor();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						setupResultFrame();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			} else if(((JButton) e.getSource()).getName().equals("Load Config")){
 				JFileChooser fileChooser = new JFileChooser();
@@ -89,11 +119,11 @@ public class DesignParserActionListener implements ActionListener{
 			File directoryFile = new File(configInfo.getInputFolder());
 			//search(directoryFile);
 			// Other attributes possibly added here later
-			System.out.println(configInfo.getInputFolder());
-			System.out.println(configInfo.getInputClasses());
-			System.out.println(configInfo.getOutputFolder());
-			System.out.println(configInfo.getDotPath());
-			System.out.println(configInfo.getPhases());
+//			System.out.println(configInfo.getInputFolder());
+//			System.out.println(configInfo.getInputClasses());
+//			System.out.println(configInfo.getOutputFolder());
+//			System.out.println(configInfo.getDotPath());
+//			System.out.println(configInfo.getPhases());
 			scanner.close();
 			return true;
 		} catch (FileNotFoundException e1) {
@@ -124,10 +154,10 @@ public class DesignParserActionListener implements ActionListener{
 		}
 	}
 	
-	public void setupResultFrame(){
+	public void setupResultFrame() throws IOException{
 		this.frame.getContentPane().removeAll();
-		this.frame.setSize(800,800);
-		this.frame.getContentPane().setSize(800, 743);
+		this.frame.setSize(1000,800);
+		this.frame.getContentPane().setSize(1000, 743);
 		
 		JMenuBar menuBar = new JMenuBar();
 		
@@ -171,9 +201,10 @@ public class DesignParserActionListener implements ActionListener{
 		rightPane.setVisible(true);
 		rightScrollFrame.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		rightScrollFrame.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		rightScrollFrame.setBounds(300, 0, 494, 743);
+		rightScrollFrame.setBounds(300, 0, 694, 743);
 		rightScrollFrame.setVisible(true);
 		this.frame.getContentPane().add(rightScrollFrame);
+		rightPane.add(new JLabel(new ImageIcon(ImageIO.read(new File("output.png")))));
 		
 		this.frame.repaint();
 	}

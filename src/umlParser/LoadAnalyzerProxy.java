@@ -26,20 +26,23 @@ public class LoadAnalyzerProxy extends JProgressBar implements IAnalyzer {
 	public boolean executeAll(ArrayList<String> phases) {
 		JProgressBar bar = this;
 		for(String phase : phases){
-					updateProgBar(phase, phases, bar);
+			if(execute(phase)){
+				bar.setValue((int) 100*(phases.indexOf(phase) + 1)/phases.size());	
+				bar.repaint();
+			}
 		}
 		return true;
 	}
 	
-	private void updateProgBar(String phase, ArrayList<String> phases, JProgressBar bar){
-		SwingUtilities.invokeLater(new Runnable(){						
-			public void run(){							
-				if(execute(phase)){
-					bar.setValue((int) 100*(phases.indexOf(phase) + 1)/phases.size());	
-					bar.repaint();
-				}
-			}
-		});
-	}
+//	private void updateProgBar(String phase, ArrayList<String> phases, JProgressBar bar){
+//		SwingUtilities.invokeLater(new Runnable(){						
+//			public void run(){							
+//				if(execute(phase)){
+//					bar.setValue((int) 100*(phases.indexOf(phase) + 1)/phases.size());	
+//					bar.repaint();
+//				}
+//			}
+//		});
+//	}
 
 }
