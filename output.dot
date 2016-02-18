@@ -15,12 +15,12 @@ digraph G {
 	]
 
 	DecryptionInputStream [ 
- 	 	 label = "{DecryptionInputStream\n\<\<Decorator\>\>\n|- decryptor : IDecryption\l|+ init(Param1 : InputStream, Param2 : IDecryption) : void\l+ read() : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l}",
+ 	 	 label = "{DecryptionInputStream\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n|- decryptor : IDecryption\l|+ init(Param1 : InputStream, Param2 : IDecryption) : void\l+ read() : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l}",
 	 	 color = black,
 	 	 fillcolor = green
 	]
 	EncryptionOutputStream [ 
- 	 	 label = "{EncryptionOutputStream\n\<\<Decorator\>\>\n|- encryptor : IEncryption\l|+ init(Param1 : OutputStream, Param2 : IEncryption) : void\l+ write(Param1 : int) : void\l}",
+ 	 	 label = "{EncryptionOutputStream\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n|- encryptor : IEncryption\l|+ init(Param1 : OutputStream, Param2 : IEncryption) : void\l+ write(Param1 : int) : void\l}",
 	 	 color = black,
 	 	 fillcolor = green
 	]
@@ -45,22 +45,22 @@ digraph G {
 	 	 fillcolor = white
 	]
 	FilterInputStream [ 
- 	 	 label = "{FilterInputStream\n\<\<Decorator\>\>\n|# in : InputStream\l|# init(Param1 : InputStream) : void\l+ read() : int\l+ read(Param1 : byte[]) : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l+ skip(Param1 : long) : long\l+ available() : int\l+ close() : void\l+ mark(Param1 : int) : void\l+ reset() : void\l+ markSupported() : boolean\l}",
+ 	 	 label = "{FilterInputStream\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n|# in : InputStream\l|# init(Param1 : InputStream) : void\l+ read() : int\l+ read(Param1 : byte[]) : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l+ skip(Param1 : long) : long\l+ available() : int\l+ close() : void\l+ mark(Param1 : int) : void\l+ reset() : void\l+ markSupported() : boolean\l}",
 	 	 color = black,
 	 	 fillcolor = green
 	]
 	FilterOutputStream [ 
- 	 	 label = "{FilterOutputStream\n\<\<Decorator\>\>\n|# out : OutputStream\l|+ init(Param1 : OutputStream) : void\l+ write(Param1 : int) : void\l+ write(Param1 : byte[]) : void\l+ write(Param1 : byte[], Param2 : int, Param3 : int) : void\l+ flush() : void\l+ close() : void\l}",
+ 	 	 label = "{FilterOutputStream\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n\<\<Decorator\>\>\n|# out : OutputStream\l|+ init(Param1 : OutputStream) : void\l+ write(Param1 : int) : void\l+ write(Param1 : byte[]) : void\l+ write(Param1 : byte[], Param2 : int, Param3 : int) : void\l+ flush() : void\l+ close() : void\l}",
 	 	 color = black,
 	 	 fillcolor = green
 	]
 	InputStream [ 
- 	 	 label = "{InputStream\n\<\<Component\>\>\n|- MAX_SKIP_BUFFER_SIZE : int\l|+ init() : void\l+ read() : int\l+ read(Param1 : byte[]) : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l+ skip(Param1 : long) : long\l+ available() : int\l+ close() : void\l+ mark(Param1 : int) : void\l+ reset() : void\l+ markSupported() : boolean\l}",
+ 	 	 label = "{InputStream\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n|- MAX_SKIP_BUFFER_SIZE : int\l|+ init() : void\l+ read() : int\l+ read(Param1 : byte[]) : int\l+ read(Param1 : byte[], Param2 : int, Param3 : int) : int\l+ skip(Param1 : long) : long\l+ available() : int\l+ close() : void\l+ mark(Param1 : int) : void\l+ reset() : void\l+ markSupported() : boolean\l}",
 	 	 color = black,
 	 	 fillcolor = green
 	]
 	OutputStream [ 
- 	 	 label = "{OutputStream\n\<\<Component\>\>\n||+ init() : void\l+ write(Param1 : int) : void\l+ write(Param1 : byte[]) : void\l+ write(Param1 : byte[], Param2 : int, Param3 : int) : void\l+ flush() : void\l+ close() : void\l}",
+ 	 	 label = "{OutputStream\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n\<\<Component\>\>\n||+ init() : void\l+ write(Param1 : int) : void\l+ write(Param1 : byte[]) : void\l+ write(Param1 : byte[], Param2 : int, Param3 : int) : void\l+ flush() : void\l+ close() : void\l}",
 	 	 color = black,
 	 	 fillcolor = green
 	]
@@ -91,8 +91,8 @@ digraph G {
 
 	DecryptionInputStream->IDecryption[label=""]
 	EncryptionOutputStream->IEncryption[label=""]
-	FilterInputStream->InputStream[label="<<Decorates>>"]
-	FilterOutputStream->OutputStream[label="<<Decorates>>"]
+	FilterInputStream->InputStream[label="<<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>>"]
+	FilterOutputStream->OutputStream[label="<<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>><<Decorates>>"]
 
 
 	edge [

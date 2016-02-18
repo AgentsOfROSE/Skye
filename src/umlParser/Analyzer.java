@@ -34,7 +34,13 @@ public class Analyzer implements IAnalyzer {
 				AbstractUMLParser parser = new UMLEndParser(outputGenerator.get(0));
 				parser.parse(classes.toArray(new String[classes.size()]));
 			} else {
-				String detected = detectors.get(phases.get(phase)).newInstance().detect(classes.toArray(new String[classes.size()]));
+				ArrayList<String> classesToDetect = new ArrayList<String>();
+				for(String className : this.classes){
+					if(exceptions.get(phase) == null || !exceptions.get(phase).contains(className)){
+						classesToDetect.add(className);
+					}
+				}
+				String detected = detectors.get(phases.get(phase)).newInstance().detect(classesToDetect.toArray(new String[classesToDetect.size()]));
 				outputGenerator.add(phases.get(phase).getConstructor(new Class[]{String.class}).newInstance(detected.split("~")[0]));
 			}
 		} catch (InstantiationException | IllegalAccessException | IOException e) {

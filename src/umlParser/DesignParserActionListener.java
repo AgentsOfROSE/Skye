@@ -48,6 +48,7 @@ public class DesignParserActionListener implements ActionListener {
 	JPanel graphPanel;
 	Timer timer = new Timer(200, this);
 	ArrayList<String> analyzedPhases = null;
+	IAnalyzer resultAnalyzer = null;
 	HashMap<String, String> phaseToDetector = new HashMap<>();
 
 	public DesignParserActionListener(JFrame frame) {
@@ -113,9 +114,7 @@ public class DesignParserActionListener implements ActionListener {
 					File selectedFile = fileChooser.getSelectedFile();
 					loadFile(selectedFile);
 				}
-				IAnalyzer resultAnalyzer = new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses),
-						configInfo.getDotPath());
-				JLabel graphLabel = new JLabel((ResultAnalyzerProxy) resultAnalyzer);
+				((ResultAnalyzerProxy) this.resultAnalyzer).setImageIcon(null);
 				File outputFile = new File(".//output.dot");
 				PrintStream printStream;
 				try {
@@ -127,8 +126,6 @@ public class DesignParserActionListener implements ActionListener {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-				this.graphPanel.removeAll();
-				this.graphPanel.add(graphLabel);
 				this.graphPanel.repaint();
 			} else if (((JMenuItem) e.getSource()).getName().equals("Export Graph")) {
 				JFileChooser save = new JFileChooser();
@@ -198,6 +195,8 @@ public class DesignParserActionListener implements ActionListener {
 			scanner.close();
 			this.analyzedPhases = configInfo.getPhases();
 			this.analyzedClasses = configInfo.getInputClasses();
+			this.resultAnalyzer = new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses),
+					configInfo.getDotPath());
 			return true;
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -321,10 +320,9 @@ public class DesignParserActionListener implements ActionListener {
 					System.out.println(e.getPath().length);
 					System.out.println(((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
 				}
+				((ResultAnalyzerProxy) resultAnalyzer).setImageIcon(null);
+				frame.revalidate();
 				System.out.println(analyzedPhases);
-				IAnalyzer resultAnalyzer = new ResultAnalyzerProxy(new Analyzer(analyzedClasses),
-						configInfo.getDotPath());
-				JLabel graphLabel = new JLabel((ResultAnalyzerProxy) resultAnalyzer);
 				File outputFile = new File(".//output.dot");
 				PrintStream printStream;
 				try {
@@ -336,8 +334,6 @@ public class DesignParserActionListener implements ActionListener {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-				graphPanel.removeAll();
-				graphPanel.add(graphLabel);
 				graphPanel.repaint();
 				System.out.println(System.currentTimeMillis() + ": nodes changed");
 			}
@@ -370,7 +366,8 @@ public class DesignParserActionListener implements ActionListener {
 		rightScrollFrame.setBounds(300, 0, 694, 743);
 		rightScrollFrame.setVisible(true);
 		this.frame.getContentPane().add(rightScrollFrame);
-		JLabel graphLabel = new JLabel(new ImageIcon(ImageIO.read(new File("output.png"))));
+		((ResultAnalyzerProxy) this.resultAnalyzer).setImageIcon(new ImageIcon(ImageIO.read(new File("output.png"))));
+		JLabel graphLabel = new JLabel((ResultAnalyzerProxy) this.resultAnalyzer);
 		rightPane.add(graphLabel);
 		this.graphPanel = rightPane;
 
