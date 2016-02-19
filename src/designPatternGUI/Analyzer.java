@@ -1,9 +1,27 @@
-package umlParser;
+package designPatternGUI;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import umlParser.AbstractUMLParser;
+import umlParser.AdapterDetector;
+import umlParser.CompositeDetector;
+import umlParser.DecoratorDetector;
+import umlParser.PatternDetector;
+import umlParser.SingletonDetector;
+import umlParser.UMLAdapterParser;
+import umlParser.UMLAssociationParser;
+import umlParser.UMLCompositeParser;
+import umlParser.UMLDecoratorParser;
+import umlParser.UMLEndParser;
+import umlParser.UMLExtendsParser;
+import umlParser.UMLImplementsParser;
+import umlParser.UMLParsable;
+import umlParser.UMLParser;
+import umlParser.UMLSingletonParser;
+import umlParser.UMLUsesParser;
 
 public class Analyzer implements IAnalyzer {
 

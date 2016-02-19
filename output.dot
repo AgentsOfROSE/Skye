@@ -20,9 +20,9 @@ digraph G {
 	 	 fillcolor = green
 	]
 	AbstractUMLParser [ 
- 	 	 label = "{AbstractUMLParser\n\<\<Adapter\>\>\n\<\<Decorator\>\>\n|# parser : UMLParsable\l# classes : ArrayList_ClassInfo\l# classListAbbreviated : ArrayList_String\l# classListFull : ArrayList_String\l|+ init(Param1 : UMLParsable) : void\l+ parse(Param1 : String[]) : void\l+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l+ setParser(Param1 : UMLParsable) : void\l}",
+ 	 	 label = "{AbstractUMLParser\n\<\<Decorator\>\>\n\<\<Adapter\>\>\n|# parser : UMLParsable\l# classes : ArrayList_ClassInfo\l# classListAbbreviated : ArrayList_String\l# classListFull : ArrayList_String\l|+ init(Param1 : UMLParsable) : void\l+ parse(Param1 : String[]) : void\l+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l+ setParser(Param1 : UMLParsable) : void\l}",
 	 	 color = black,
-	 	 fillcolor = green
+	 	 fillcolor = firebrick
 	]
 	AdapterAdapteeVisitor [ 
  	 	 label = "{AdapterAdapteeVisitor\n\<\<Decorator\>\>\n|- constructorParams : ArrayList_String\l- fieldsFound : ArrayList_String\l  className : String\l  validClasses : ArrayList_String\l  adapters : HashMap\l|+ init(Param1 : int, Param2 : ArrayList_String, Param3 : HashMap, Param4 : String) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l}",
@@ -43,11 +43,6 @@ digraph G {
  	 	 label = "{AdapterTargetVisitor\n\<\<Decorator\>\>\n|- interfaces : ArrayList_String\l|+ init(Param1 : int, Param2 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
 	 	 color = black,
 	 	 fillcolor = green
-	]
-	Analyzer [ 
- 	 	 label = "{Analyzer\n|  phases : HashMap\l  detectors : HashMap\l  outputGenerator : ArrayList_UMLParsable\l  classes : ArrayList_String\l|+ init(Param1 : ArrayList_String) : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l}",
-	 	 color = black,
-	 	 fillcolor = white
 	]
 	ClassAssociationVisitor [ 
  	 	 label = "{ClassAssociationVisitor\n\<\<Decorator\>\>\n|  info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l}",
@@ -124,11 +119,6 @@ digraph G {
 	 	 color = black,
 	 	 fillcolor = green
 	]
-	DesignParserActionListener [ 
- 	 	 label = "{DesignParserActionListener\n|  frame : JFrame\l  configInfo : GUIConfigInfo\l  analyzedClasses : ArrayList_String\l  graphPanel : JPanel\l  treePanel : JPanel\l  timer : Timer\l  analyzedPhases : ArrayList_String\l  resultAnalyzer : IAnalyzer\l  phaseToDetector : HashMap\l|+ init(Param1 : JFrame) : void\l+ actionPerformed(Param1 : ActionEvent) : void\l- loadConfig() : void\l- resultAnalyze() : void\l- export() : void\l- loadFile(Param1 : File) : boolean\l+ search(Param1 : File, Param2 : String) : void\l+ setupResultFrame() : void\l+ setupHelpScreen() : void\l+ setupAboutScreen() : void\l- add(Param1 : DefaultMutableTreeNode, Param2 : String, Param3 : boolean) : DefaultMutableTreeNode\l+ setupTree() : JTree\l  access$0(Param1 : DesignParserActionListener) : void\l}",
-	 	 color = black,
-	 	 fillcolor = white
-	]
 	FieldInfo [ 
  	 	 label = "{FieldInfo\n|- name : String\l- className : String\l- access : String\l|+ getName() : String\l+ setName(Param1 : String) : void\l+ getClassName() : String\l+ setClassName(Param1 : String) : void\l+ getAccess() : String\l+ setAccess(Param1 : String) : void\l+ init() : void\l}",
 	 	 color = black,
@@ -144,25 +134,10 @@ digraph G {
 	 	 color = black,
 	 	 fillcolor = green
 	]
-	GUI [ 
- 	 	 label = "{GUI\n||+ init() : void\l+ main(Param1 : String[]) : void\l}",
-	 	 color = black,
-	 	 fillcolor = white
-	]
 	GUIConfigInfo [ 
  	 	 label = "{GUIConfigInfo\n|- inputFolder : String\l- inputClasses : ArrayList_String\l- outputFolder : String\l- dotPath : String\l- phases : ArrayList_String\l|+ init() : void\l+ getInputFolder() : String\l+ setInputFolder(Param1 : String) : void\l+ getInputClasses() : ArrayList_String\l+ setInputClasses(Param1 : ArrayList_String) : void\l+ getOutputFolder() : String\l+ setOutputFolder(Param1 : String) : void\l+ getDotPath() : String\l+ setDotPath(Param1 : String) : void\l+ getPhases() : ArrayList_String\l+ setPhases(Param1 : ArrayList_String) : void\l}",
 	 	 color = black,
 	 	 fillcolor = white
-	]
-	IAnalyzer [ 
- 	 	 label = "{IAnalyzer\n\<\<Target\>\>\n\<\<Adaptee\>\>\n\<\<Target\>\>\n\<\<Adaptee\>\>\n\<\<Component\>\>\n\<\<Interface\>\>\n|+ exceptions : HashMap\l|  clinit() : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l+ addException(Param1 : String, Param2 : String) : void\l+ removeException(Param1 : String, Param2 : String) : boolean\l}",
-	 	 color = black,
-	 	 fillcolor = green
-	]
-	LoadAnalyzerProxy [ 
- 	 	 label = "{LoadAnalyzerProxy\n\<\<Adapter\>\>\n\<\<Decorator\>\>\n|- serialVersionUID : long\l- analyzer : IAnalyzer\l|+ init(Param1 : IAnalyzer) : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l}",
-	 	 color = black,
-	 	 fillcolor = green
 	]
 	Main [ 
  	 	 label = "{Main\n|- parserMap : HashMap\l|  clinit() : void\l+ init() : void\l+ main(Param1 : String[]) : void\l}",
@@ -198,11 +173,6 @@ digraph G {
  	 	 label = "{PatternDetector\n\<\<Interface\>\>\n||+ detect(Param1 : String[]) : String\l}",
 	 	 color = black,
 	 	 fillcolor = white
-	]
-	ResultAnalyzerProxy [ 
- 	 	 label = "{ResultAnalyzerProxy\n\<\<Adapter\>\>\n\<\<Decorator\>\>\n|- serialVersionUID : long\l  imageIcon : ImageIcon\l  c : Component\l  dotPath : String\l  retrievalThread : Thread\l  analyzer : IAnalyzer\l|+ init(Param1 : IAnalyzer, Param2 : String) : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l+ getIconHeight() : int\l+ getIconWidth() : int\l  setImageIcon(Param1 : ImageIcon) : void\l+ setAnalyzer(Param1 : IAnalyzer) : void\l+ setDotPath(Param1 : String) : void\l+ paintIcon(Param1 : Component, Param2 : Graphics, Param3 : int, Param4 : int) : void\l}",
-	 	 color = black,
-	 	 fillcolor = green
 	]
 	SequenceClassMethodVisitor [ 
  	 	 label = "{SequenceClassMethodVisitor\n\<\<Decorator\>\>\n|  info : SequenceDiagramInfo\l  className : String\l  methodName : String\l  depth : int\l  parameters : ArrayList_String\l|+ init(Param1 : int, Param2 : SequenceDiagramInfo, Param3 : String, Param4 : String, Param5 : ArrayList_String, Param6 : int) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l}",
@@ -265,9 +235,9 @@ digraph G {
 	 	 fillcolor = green
 	]
 	UMLParsable [ 
- 	 	 label = "{UMLParsable\n\<\<Target\>\>\n\<\<Adaptee\>\>\n\<\<Component\>\>\n\<\<Interface\>\>\n||+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l}",
+ 	 	 label = "{UMLParsable\n\<\<Component\>\>\n\<\<Target\>\>\n\<\<Adaptee\>\>\n\<\<Interface\>\>\n||+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l}",
 	 	 color = black,
-	 	 fillcolor = green
+	 	 fillcolor = firebrick
 	]
 	UMLParser [ 
  	 	 label = "{UMLParser\n|# classes : ArrayList_ClassInfo\l# classListAbbreviated : ArrayList_String\l# classListFull : ArrayList_String\l|+ init() : void\l+ parse(Param1 : String[]) : void\l+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l}",
@@ -326,11 +296,8 @@ digraph G {
 
 	AbstractUMLParser->UMLParsable
 	AdapterDetector->PatternDetector
-	Analyzer->IAnalyzer
 	CompositeDetector->PatternDetector
 	DecoratorDetector->PatternDetector
-	LoadAnalyzerProxy->IAnalyzer
-	ResultAnalyzerProxy->IAnalyzer
 	SequenceDiagramTextParser->Parsable
 	SingletonDetector->PatternDetector
 	UMLParsable->Parsable
@@ -343,9 +310,8 @@ digraph G {
 	]
 
 	ClassVisitor->ClassVisitor[label="<<Decorates>>"]
-	AbstractUMLParser->UMLParsable[label="<<Adapts>><<Decorates>>"]
+	AbstractUMLParser->UMLParsable[label="<<Decorates>><<Adapts>>"]
 	AbstractUMLParser->ClassInfo[label=""]
-	Analyzer->UMLParsable[label=""]
 	ClassAssociationVisitor->ClassInfo[label=""]
 	ClassDeclarationVisitor->ClassInfo[label=""]
 	ClassExtensionVisitor->ClassInfo[label=""]
@@ -354,14 +320,10 @@ digraph G {
 	ClassInfo->FieldInfo[label=""]
 	ClassInfo->MethodInfo[label=""]
 	ClassMethodVisitor->ClassInfo[label=""]
-	DesignParserActionListener->GUIConfigInfo[label=""]
-	DesignParserActionListener->IAnalyzer[label=""]
 	GetParamsUsesVisitor->ClassInfo[label=""]
 	GetReturnUsesVisitor->ClassInfo[label=""]
-	LoadAnalyzerProxy->IAnalyzer[label="<<Adapts>><<Adapts>><<Decorates>>"]
 	MethodReturnsVisitor->ClassInfo[label=""]
 	MethodSequenceVisitor->SequenceDiagramInfo[label=""]
-	ResultAnalyzerProxy->IAnalyzer[label="<<Adapts>><<Adapts>><<Decorates>>"]
 	SequenceClassMethodVisitor->SequenceDiagramInfo[label=""]
 	SequenceDiagramInfo->MessageInfo[label=""]
 	UMLParser->ClassInfo[label=""]
@@ -377,15 +339,6 @@ digraph G {
 	AdapterDetector->AdapterAdapterVisitor
 	AdapterDetector->AdapterAdapteeVisitor
 	AdapterTargetVisitor->ClassVisitor
-	Analyzer->UMLEndParser
-	Analyzer->UMLUsesParser
-	Analyzer->UMLAssociationParser
-	Analyzer->UMLImplementsParser
-	Analyzer->UMLExtendsParser
-	Analyzer->UMLParser
-	Analyzer->AbstractUMLParser
-	Analyzer->UMLParsable
-	Analyzer->PatternDetector
 	ClassAssociationVisitor->ClassVisitor
 	ClassDeclarationVisitor->ClassVisitor
 	ClassExtensionVisitor->ClassVisitor
@@ -406,14 +359,9 @@ digraph G {
 	DecoratorDetector->DecoratorAbstractVisitor
 	DecoratorDetector->DecoratorConcreteVisitor
 	DecoratorInterfaceVisitor->ClassVisitor
-	DesignParserActionListener->DesignParserActionListener
-	DesignParserActionListener->ResultAnalyzerProxy
-	DesignParserActionListener->LoadAnalyzerProxy
-	DesignParserActionListener->Analyzer
 	GetParamsUsesVisitor->ClassVisitor
 	GetReturnUsesVisitor->ClassVisitor
 	GetReturnUsesVisitor->MethodReturnsVisitor
-	GUI->DesignParserActionListener
 	Main->UMLEndParser
 	Main->UMLCompositeParser
 	Main->UMLAdapterParser

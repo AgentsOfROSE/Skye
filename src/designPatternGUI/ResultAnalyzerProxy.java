@@ -1,4 +1,4 @@
-package umlParser;
+package designPatternGUI;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -89,7 +89,7 @@ public class ResultAnalyzerProxy extends ImageIcon implements IAnalyzer {
 		if(imageIcon != null) {
 			imageIcon.paintIcon(c, g, x, y);
 		} else {
-			g.drawString("Loading Graph, Please Wait....", x, y);
+			g.drawString("Loading Graph, Please Wait....", 50, 50);
 		}
 	}
 

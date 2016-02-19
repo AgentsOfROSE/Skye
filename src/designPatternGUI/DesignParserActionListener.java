@@ -1,4 +1,4 @@
-package umlParser;
+package designPatternGUI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -39,6 +39,7 @@ import javax.swing.tree.DefaultTreeModel;
 import checkBoxTree.CheckBoxNodeData;
 import checkBoxTree.CheckBoxNodeEditor;
 import checkBoxTree.CheckBoxNodeRenderer;
+import umlParser.GUIConfigInfo;
 
 public class DesignParserActionListener implements ActionListener {
 
