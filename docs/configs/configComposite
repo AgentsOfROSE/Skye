@@ -1,0 +1,5 @@
+Input-Folder: c:\\EclipseWorkspaces\\csse374\\Skye\\src\\compositeSolution
+Input-Classes: 
+Output-Directory: c:\\EclipseWorkspaces\\
+Dot-Path: C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe
+Phases: Loader, Decorator-Detector, Singleton-Detector, Adapter-Detector, Composite-Detector, Output

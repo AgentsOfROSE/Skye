@@ -50,6 +50,7 @@ public class DesignParserActionListener implements ActionListener {
 	JPanel treePanel;
 	Timer timer = new Timer(200, this);
 	ArrayList<String> analyzedPhases = null;
+	HashMap<String, String> exceptions = new HashMap<>();
 	IAnalyzer resultAnalyzer = new ResultAnalyzerProxy(null, null, null);
 	HashMap<String, String> phaseToDetector = new HashMap<>();
 
@@ -181,8 +182,10 @@ public class DesignParserActionListener implements ActionListener {
 			configInfo.setInputFolder(inputPathLine.substring(inputPathLine.indexOf(":") + 2));
 			String inputClassesLine = scanner.nextLine();
 			inputClassesLine = inputClassesLine.substring(inputClassesLine.indexOf(":") + 2);
-			for (String className : inputClassesLine.split(",")) {
-				configInfo.getInputClasses().add(className.trim());
+			if(!inputClassesLine.split(",")[0].equals("")){
+				for (String className : inputClassesLine.split(",")) {
+					configInfo.getInputClasses().add(className.trim());
+				}
 			}
 			String outputPathLine = scanner.nextLine();
 			configInfo.setOutputFolder(outputPathLine.substring(outputPathLine.indexOf(":") + 2));
@@ -375,7 +378,7 @@ public class DesignParserActionListener implements ActionListener {
 			if (!(phase.equals("Loader") || phase.equals("Output"))) {
 				final DefaultMutableTreeNode pattern = add(root, phaseToDetector.get(phase), analyzedPhases.contains(phase));
 				for (String className : configInfo.getInputClasses()) {
-					add(pattern, className, true);
+					add(pattern, className, !(exceptions.containsKey(phaseToDetector.get(phase)) && exceptions.get(phaseToDetector.get(phase)).equals(className)));
 				}
 			}
 		}
@@ -424,9 +427,11 @@ public class DesignParserActionListener implements ActionListener {
 						}
 						if (phaseToUse != null) {
 							if (((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).isChecked()) {
+								exceptions.remove(phaseToDetector.get(phaseToUse), ((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
 								resultAnalyzer.removeException(phaseToUse,
 										((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
 							} else {
+								exceptions.put(phaseToDetector.get(phaseToUse), ((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
 								resultAnalyzer.addException(phaseToUse,
 										((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
 							}

@@ -1,0 +1,5 @@
+Input-Folder: c:\\EclipseWorkspaces\\csse374\\Skye\\src\\decoratorSolution
+Input-Classes: java.io.FilterInputStream, java.io.FilterOutputStream, java.io.InputStream, java.io.OutputStream
+Output-Directory: c:\\EclipseWorkspaces\\
+Dot-Path: C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe
+Phases: Loader, Decorator-Detector, Singleton-Detector, Output
