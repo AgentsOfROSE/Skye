@@ -21,7 +21,9 @@ Who did what:
 
 
 Instructions:
-	Set up the Run Configurations to have the Arguments include the paths of the classes whose UML you want to generate GraphViz code for. Then run the UMLTestParrser class. Output will appear in the console. Copy and paste this code into a new GV sheet. Then run GraphViz by clicking Settings and then OK. A picture of the UML should then appear.
+Command Line Parser:
+
+Set up the Run Configurations to have the Arguments include the paths of the classes whose UML you want to generate GraphViz code for. Then run the UMLTestParrser class. Output will appear in the console. Copy and paste this code into a new GV sheet. Then run GraphViz by clicking Settings and then OK. A picture of the UML should then appear.
 	
 Milestone 2:
 
@@ -77,4 +79,21 @@ Who did what:
 	
 Instructions
 	Same as in the last milestone
+	
+Milestone 7:
+
+Design:
+	This milestone added a GUI component that built upon the base code that we had already implemented. The GUI code is completely seperate from the pattern detection code and thus the pattern detection code does not know anything about the possibility of the GUI. Very little refactoring of the base code was needed in order to implement this new feature. The only changes to the base code was to allow for the UMLParsers to operate with pattern detection strings that were already passed in.
+
+
+Who did what:
+	For Milestone 7, Trevor and Emily once again pair programmed, working together to implement the functionality required for this milestone. Trevor also worked on updating the README and creating documentation for the configuration file. Emily worked on creatign updated UML diagrams for the system.
+	
+Instructions:
+Command Line Parser:
+	Same as previous Milestones
+
+GUI:
+	Run the GUIMain class and the window should appear. Select "Load Config" and load in a configuration file. Next, select "Analyze" and the system should analyze the files listed in the configuration file. You can then select and deselect different patterns and classes for those patterns to use in the analyzation. The system will automatically reanalyze the classes and display the results. You may load in a new configuration file by clicking File->New Config or export the graph given by using File->Export Graph. You can read the About information or Help information by using the appropriate options in the help menu.
+
 
