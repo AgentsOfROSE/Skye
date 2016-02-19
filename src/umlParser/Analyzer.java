@@ -19,20 +19,29 @@ public class Analyzer implements IAnalyzer {
 		detectors.put(UMLDecoratorParser.class, DecoratorDetector.class);
 		phases.put("Singleton-Detector", UMLSingletonParser.class);
 		detectors.put(UMLSingletonParser.class, SingletonDetector.class);
+		phases.put("Composite-Detector", UMLCompositeParser.class);
+		detectors.put(UMLCompositeParser.class, CompositeDetector.class);
+		phases.put("Adapter-Detector", UMLAdapterParser.class);
+		detectors.put(UMLAdapterParser.class, AdapterDetector.class);
 	}
 
 	@Override
 	public boolean execute(String phase) {
 		try {
 			if(phase.equals("Loader")){
-				//outputGenerator.put(UMLEndParser.class.newInstance(), "");
+				outputGenerator = new ArrayList<>();
 			} else if(phase.equals("Output")){
-				((AbstractUMLParser) outputGenerator.get(outputGenerator.size()-1)).setParser(new UMLUsesParser(new UMLAssociationParser(new UMLImplementsParser(new UMLExtendsParser(new UMLParser())))));
-				for(int i = outputGenerator.size()-2; i >= 0; i--){
-					((AbstractUMLParser) outputGenerator.get(i)).setParser(outputGenerator.get(i+1));
+				if(outputGenerator.size() == 0){
+					AbstractUMLParser parser = new UMLEndParser(new UMLUsesParser(new UMLAssociationParser(new UMLImplementsParser(new UMLExtendsParser(new UMLParser())))));
+					parser.parse(classes.toArray(new String[classes.size()]));
+				} else {
+					((AbstractUMLParser) outputGenerator.get(outputGenerator.size()-1)).setParser(new UMLUsesParser(new UMLAssociationParser(new UMLImplementsParser(new UMLExtendsParser(new UMLParser())))));
+					for(int i = outputGenerator.size()-2; i >= 0; i--){
+						((AbstractUMLParser) outputGenerator.get(i)).setParser(outputGenerator.get(i+1));
+					}
+					AbstractUMLParser parser = new UMLEndParser(outputGenerator.get(0));
+					parser.parse(classes.toArray(new String[classes.size()]));
 				}
-				AbstractUMLParser parser = new UMLEndParser(outputGenerator.get(0));
-				parser.parse(classes.toArray(new String[classes.size()]));
 			} else {
 				ArrayList<String> classesToDetect = new ArrayList<String>();
 				for(String className : this.classes){

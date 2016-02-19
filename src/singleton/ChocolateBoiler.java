@@ -1,4 +1,4 @@
-package umlParser;
+package singleton;
 
 public class ChocolateBoiler {
 	private boolean empty;

@@ -1,0 +1,8 @@
+Input-Folder: c:\\EclipseWorkspaces\\csse374\\Skye\\src\\decoratorSolution
+Input-Classes: singleton.ChocolateBoiler
+Output-Directory: c:\\User1\\Documents\\Lab2-1\\input-output
+Dot-Path: C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe
+Phases: Loader, Decorator-Detector, Singleton-Detector, Output
+Adapter-MethodDelegation: 2
+Decorator-MethodDelegation: 1
+Singleton-RequireGetInstance: true

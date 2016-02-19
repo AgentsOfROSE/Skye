@@ -1,5 +1,6 @@
 package umlParser;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -46,9 +47,10 @@ public class DesignParserActionListener implements ActionListener {
 	GUIConfigInfo configInfo = null;
 	ArrayList<String> analyzedClasses = null;
 	JPanel graphPanel;
+	JPanel treePanel;
 	Timer timer = new Timer(200, this);
 	ArrayList<String> analyzedPhases = null;
-	IAnalyzer resultAnalyzer = null;
+	IAnalyzer resultAnalyzer = new ResultAnalyzerProxy(null, null);
 	HashMap<String, String> phaseToDetector = new HashMap<>();
 
 	public DesignParserActionListener(JFrame frame) {
@@ -114,19 +116,23 @@ public class DesignParserActionListener implements ActionListener {
 					File selectedFile = fileChooser.getSelectedFile();
 					loadFile(selectedFile);
 				}
-				((ResultAnalyzerProxy) this.resultAnalyzer).setImageIcon(null);
+				((ResultAnalyzerProxy) resultAnalyzer).setImageIcon(null);
+				frame.revalidate();
+				System.out.println(analyzedPhases);
 				File outputFile = new File(".//output.dot");
 				PrintStream printStream;
 				try {
 					printStream = new PrintStream(new FileOutputStream(outputFile));
 					PrintStream old = System.out;
 					System.setOut(printStream);
-					resultAnalyzer.executeAll(this.analyzedPhases);
+					resultAnalyzer.executeAll(analyzedPhases);
 					System.setOut(old);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-				this.graphPanel.repaint();
+				this.treePanel.removeAll();
+				this.treePanel.add(setupTree());
+				graphPanel.repaint();
 			} else if (((JMenuItem) e.getSource()).getName().equals("Export Graph")) {
 				JFileChooser save = new JFileChooser();
 				save.setApproveButtonText("Save");
@@ -191,12 +197,13 @@ public class DesignParserActionListener implements ActionListener {
 			// System.out.println(configInfo.getInputClasses());
 			// System.out.println(configInfo.getOutputFolder());
 			// System.out.println(configInfo.getDotPath());
-			//System.out.println(configInfo.getPhases());
+			// System.out.println(configInfo.getPhases());
 			scanner.close();
 			this.analyzedPhases = configInfo.getPhases();
 			this.analyzedClasses = configInfo.getInputClasses();
-			this.resultAnalyzer = new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses),
-					configInfo.getDotPath());
+			((ResultAnalyzerProxy) this.resultAnalyzer)
+					.setAnalyzer(new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses), configInfo.getDotPath()));
+			((ResultAnalyzerProxy) this.resultAnalyzer).setDotPath(configInfo.getDotPath());
 			return true;
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -225,8 +232,8 @@ public class DesignParserActionListener implements ActionListener {
 
 	public void setupResultFrame() throws IOException {
 		this.frame.getContentPane().removeAll();
-		this.frame.setSize(1000, 800);
-		this.frame.getContentPane().setSize(1000, 743);
+		this.frame.setSize(1250, 800);
+		this.frame.getContentPane().setSize(1250, 743);
 
 		JMenuBar menuBar = new JMenuBar();
 
@@ -263,107 +270,23 @@ public class DesignParserActionListener implements ActionListener {
 		leftScrollFrame.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		leftScrollFrame.setBounds(0, 0, 300, 743);
 
-		// STUFF STARTS HERE
-		final DefaultMutableTreeNode root = new DefaultMutableTreeNode("Patterns");
-
-		for(String phase : configInfo.getPhases()){
-			if(!(phase.equals("Loader") || phase.equals("Output"))){
-				final DefaultMutableTreeNode pattern = add(root, phaseToDetector.get(phase), true);
-				for(String className : configInfo.getInputClasses()){				
-					add(pattern, className, true);
-				}
-			}
-		}
-
-		final DefaultTreeModel treeModel = new DefaultTreeModel(root);
-		final JTree tree = new JTree(treeModel);
-
-		final CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();
-		tree.setCellRenderer(renderer);
-
-		final CheckBoxNodeEditor editor = new CheckBoxNodeEditor(tree);
-		tree.setCellEditor(editor);
-		tree.setEditable(true);
-
-		// listen for changes in the selection
-		tree.addTreeSelectionListener(new TreeSelectionListener() {
-
-			@Override
-			public void valueChanged(final TreeSelectionEvent e) {
-				System.out.println(System.currentTimeMillis() + ": selection changed");
-			}
-		});
-
-		// listen for changes in the model (including check box toggles)
-		treeModel.addTreeModelListener(new TreeModelListener() {
-
-			//e.getChildren gets selected node
-			//e.getPath gets nodes above it
-			@Override
-			public void treeNodesChanged(final TreeModelEvent e) {
-				for(Object node : e.getChildren()){
-					if(e.getPath().length == 1){
-						String phaseToModify = null;
-						for(String key : phaseToDetector.keySet()){
-							if(phaseToDetector.get(key).equals(((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText())){
-								phaseToModify = key;
-							}
-						}
-						if(phaseToModify != null){
-							if(((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).isChecked()){
-								analyzedPhases.add(1, phaseToModify);
-							} else {
-								analyzedPhases.remove(phaseToModify);
-							}
-						}
-					}
-					System.out.println(e.getPath().length);
-					System.out.println(((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
-				}
-				((ResultAnalyzerProxy) resultAnalyzer).setImageIcon(null);
-				frame.revalidate();
-				System.out.println(analyzedPhases);
-				File outputFile = new File(".//output.dot");
-				PrintStream printStream;
-				try {
-					printStream = new PrintStream(new FileOutputStream(outputFile));
-					PrintStream old = System.out;
-					System.setOut(printStream);
-					resultAnalyzer.executeAll(analyzedPhases);
-					System.setOut(old);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				graphPanel.repaint();
-				System.out.println(System.currentTimeMillis() + ": nodes changed");
-			}
-			@Override
-			public void treeNodesInserted(final TreeModelEvent e) {
-				System.out.println(System.currentTimeMillis() + ": nodes inserted");
-			}
-			@Override
-			public void treeNodesRemoved(final TreeModelEvent e) {
-				System.out.println(System.currentTimeMillis() + ": nodes removed");
-			}
-			@Override
-			public void treeStructureChanged(final TreeModelEvent e) {
-				System.out.println(System.currentTimeMillis() + ": structure changed");
-			}
-		});
-		// STUFF ENDS HERE
-		tree.setBounds(0,0,2000,2000);
+		JTree tree = setupTree();
 		leftPane.add(tree);
+		leftPane.setBackground(Color.WHITE);
+		this.treePanel = leftPane;
+		// STUFF ENDS HERE
 		leftScrollFrame.setVisible(true);
 		this.frame.getContentPane().add(leftScrollFrame);
 
 		JPanel rightPane = new JPanel();
+		rightPane.setBackground(Color.WHITE);
 		rightPane.setBounds(0, 0, 2000, 2000);
 		JScrollPane rightScrollFrame = new JScrollPane(rightPane);
 		// test.setAutoscrolls(true);
 		rightPane.setVisible(true);
 		rightScrollFrame.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		rightScrollFrame.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		rightScrollFrame.setBounds(300, 0, 694, 743);
+		rightScrollFrame.setBounds(300, 0, 944, 743);
 		rightScrollFrame.setVisible(true);
 		this.frame.getContentPane().add(rightScrollFrame);
 		((ResultAnalyzerProxy) this.resultAnalyzer).setImageIcon(new ImageIcon(ImageIO.read(new File("output.png"))));
@@ -419,6 +342,115 @@ public class DesignParserActionListener implements ActionListener {
 		final DefaultMutableTreeNode node = new DefaultMutableTreeNode(data);
 		parent.add(node);
 		return node;
+	}
+
+	public JTree setupTree() {
+		final DefaultMutableTreeNode root = new DefaultMutableTreeNode("Patterns");
+
+		for (String phase : configInfo.getPhases()) {
+			if (!(phase.equals("Loader") || phase.equals("Output"))) {
+				final DefaultMutableTreeNode pattern = add(root, phaseToDetector.get(phase), true);
+				for (String className : configInfo.getInputClasses()) {
+					add(pattern, className, true);
+				}
+			}
+		}
+
+		final DefaultTreeModel treeModel = new DefaultTreeModel(root);
+		final JTree tree = new JTree(treeModel);
+
+		final CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();
+		tree.setCellRenderer(renderer);
+
+		final CheckBoxNodeEditor editor = new CheckBoxNodeEditor(tree);
+		tree.setCellEditor(editor);
+		tree.setEditable(true);
+
+		// listen for changes in the selection
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+
+			@Override
+			public void valueChanged(final TreeSelectionEvent e) {
+				System.out.println(System.currentTimeMillis() + ": selection changed");
+			}
+		});
+
+		// listen for changes in the model (including check box toggles)
+		treeModel.addTreeModelListener(new TreeModelListener() {
+
+			// e.getChildren gets selected node
+			// e.getPath gets nodes above it
+			@Override
+			public void treeNodesChanged(final TreeModelEvent e) {
+				for (Object node : e.getChildren()) {
+					if (e.getPath().length == 1) {
+						String phaseToModify = null;
+						for (String key : phaseToDetector.keySet()) {
+							if (phaseToDetector.get(key).equals(
+									((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText())) {
+								phaseToModify = key;
+							}
+						}
+						if (phaseToModify != null) {
+							if (((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).isChecked()) {
+								analyzedPhases.add(1, phaseToModify);
+							} else {
+								analyzedPhases.remove(phaseToModify);
+							}
+						}
+					} else if (e.getPath().length == 2) {
+						String phaseToUse = null;
+						for (String key : phaseToDetector.keySet()) {
+							if (phaseToDetector.get(key)
+									.equals(((CheckBoxNodeData) ((DefaultMutableTreeNode) ((DefaultMutableTreeNode) node)
+											.getParent()).getUserObject()).getText())) {
+								phaseToUse = key;
+							}
+						}
+						if (phaseToUse != null) {
+							if (((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).isChecked()) {
+								resultAnalyzer.removeException(phaseToUse,
+										((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
+							} else {
+								resultAnalyzer.addException(phaseToUse,
+										((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
+							}
+						}
+					}
+					System.out.println(e.getPath().length);
+					System.out.println(((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
+				}
+				((ResultAnalyzerProxy) resultAnalyzer).setImageIcon(null);
+				frame.revalidate();
+				System.out.println(analyzedPhases);
+				File outputFile = new File(".//output.dot");
+				PrintStream printStream;
+				try {
+					printStream = new PrintStream(new FileOutputStream(outputFile));
+					PrintStream old = System.out;
+					System.setOut(printStream);
+					resultAnalyzer.executeAll(analyzedPhases);
+					System.setOut(old);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				graphPanel.repaint();
+			}
+
+			@Override
+			public void treeNodesInserted(final TreeModelEvent e) {
+			}
+
+			@Override
+			public void treeNodesRemoved(final TreeModelEvent e) {
+			}
+
+			@Override
+			public void treeStructureChanged(final TreeModelEvent e) {
+			}
+		});
+		tree.setBounds(0, 0, 2000, 2000);
+		return tree;
 	}
 
 }

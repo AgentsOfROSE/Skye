@@ -75,6 +75,14 @@ public class ResultAnalyzerProxy extends ImageIcon implements IAnalyzer {
 	synchronized void setImageIcon(ImageIcon imageIcon){
 		this.imageIcon = imageIcon;
 	}
+	
+	public void setAnalyzer(IAnalyzer analyzer){
+		this.analyzer = analyzer;
+	}
+	
+	public void setDotPath(String dotPath){
+		this.dotPath = dotPath;
+	}
 
 	@Override
 	public void paintIcon(final Component c, Graphics g, int x, int y) {
