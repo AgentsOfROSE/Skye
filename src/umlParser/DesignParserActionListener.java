@@ -1,6 +1,7 @@
 package umlParser;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -27,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
@@ -299,7 +301,7 @@ public class DesignParserActionListener implements ActionListener {
 	}
 
 	public void setupHelpScreen() {
-		JFrame helpFrame = new JFrame();
+		JFrame helpFrame = new JFrame("Help");
 		helpFrame.setSize(400, 400);
 		helpFrame.setLayout(null);
 		helpFrame.setResizable(false);
@@ -307,18 +309,27 @@ public class DesignParserActionListener implements ActionListener {
 		JPanel helpPanel = new JPanel();
 		helpPanel.setLayout(null);
 		helpPanel.setBounds(0, 0, 400, 400);
-		JLabel helpContents = new JLabel();
-		helpContents.setText("HELP CONTENTS");
+		JTextArea helpContents = new JTextArea(
+				"HELP\n\nANALYZE CLASSES\nTo analyze new classes you must select a config file to analyze by going to 'File'->'New Config File'\n"
+						+ "\nEXPORTING GRAPH\nYou may export your graph by selecting 'File'->'Export Graph' and then using the file selector\n"
+						+ "\nSELECTING PATTERNS AND CLASSES\nYou may select pattern detectors to run by using the tree located in the left window pane. The analyzer will automatically recreate the UML graph.",
+				50, 1);
+		helpContents.setEditable(false);
+		helpContents.setWrapStyleWord(true);
+		helpContents.setLineWrap(true);
+		helpContents.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		helpContents.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		helpContents.setBounds(50, 50, 300, 300);
+		helpContents.setBounds(25, 25, 350, 350);
+		helpContents.setOpaque(false);
 		helpContents.setVisible(true);
 		helpPanel.add(helpContents);
 		helpPanel.setVisible(true);
+		helpFrame.add(helpPanel);
 		helpFrame.setVisible(true);
 	}
 
 	public void setupAboutScreen() {
-		JFrame aboutFrame = new JFrame();
+		JFrame aboutFrame = new JFrame("Help");
 		aboutFrame.setSize(400, 400);
 		aboutFrame.setLayout(null);
 		aboutFrame.setResizable(false);
@@ -326,13 +337,22 @@ public class DesignParserActionListener implements ActionListener {
 		JPanel aboutPanel = new JPanel();
 		aboutPanel.setLayout(null);
 		aboutPanel.setBounds(0, 0, 400, 400);
-		JLabel aboutContents = new JLabel();
-		aboutContents.setText("ABOUT CONTENTS");
+		JTextArea aboutContents = new JTextArea(
+				"ABOUT\n\nTEAM\nTrevor Burch\nEmily Richardson\n" + 
+						"\nPURPOSE\nThe purpose of this application is to allow users to dynamically detect different design patterns in given source files\n" + 
+						"\nCOPYRIGHT\nAgents Of R.O.S.E. 2016 All rights reserved\n\nHAIL HYDRA",
+				50, 1);
+		aboutContents.setEditable(false);
+		aboutContents.setWrapStyleWord(true);
+		aboutContents.setLineWrap(true);
+		aboutContents.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		aboutContents.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		aboutContents.setBounds(50, 50, 300, 300);
+		aboutContents.setBounds(25, 25, 350, 350);
+		aboutContents.setOpaque(false);
 		aboutContents.setVisible(true);
 		aboutPanel.add(aboutContents);
 		aboutPanel.setVisible(true);
+		aboutFrame.add(aboutPanel);
 		aboutFrame.setVisible(true);
 	}
 
