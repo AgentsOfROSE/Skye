@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;

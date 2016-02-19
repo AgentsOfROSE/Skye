@@ -14,16 +14,309 @@ digraph G {
 		 fontsize = 8 
 	]
 
-	ChocolateBoiler [ 
- 	 	 label = "{ChocolateBoiler\n\<\<Singleton\>\>\n|- empty : boolean\l- boiled : boolean\l- uniqueInstance : ChocolateBoiler\l|- init() : void\l+ getInstance() : ChocolateBoiler\l+ fill() : void\l+ drain() : void\l+ boil() : void\l+ isEmpty() : boolean\l+ isBoiled() : boolean\l}",
-	 	 color = blue,
+	ClassVisitor [ 
+ 	 	 label = "{ClassVisitor\n\<\<Decorator\>\>\n\<\<Component\>\>\n|# api : int\l# cv : ClassVisitor\l|+ init(Param1 : int) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l+ visitSource(Param1 : String, Param2 : String) : void\l+ visitOuterClass(Param1 : String, Param2 : String, Param3 : String) : void\l+ visitAnnotation(Param1 : String, Param2 : boolean) : AnnotationVisitor\l+ visitTypeAnnotation(Param1 : int, Param2 : TypePath, Param3 : String, Param4 : boolean) : AnnotationVisitor\l+ visitAttribute(Param1 : Attribute) : void\l+ visitInnerClass(Param1 : String, Param2 : String, Param3 : String, Param4 : int) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l+ visitEnd() : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	AbstractUMLParser [ 
+ 	 	 label = "{AbstractUMLParser\n\<\<Adapter\>\>\n\<\<Decorator\>\>\n|# parser : UMLParsable\l# classes : ArrayList_ClassInfo\l# classListAbbreviated : ArrayList_String\l# classListFull : ArrayList_String\l|+ init(Param1 : UMLParsable) : void\l+ parse(Param1 : String[]) : void\l+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l+ setParser(Param1 : UMLParsable) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	AdapterAdapteeVisitor [ 
+ 	 	 label = "{AdapterAdapteeVisitor\n\<\<Decorator\>\>\n|- constructorParams : ArrayList_String\l- fieldsFound : ArrayList_String\l  className : String\l  validClasses : ArrayList_String\l  adapters : HashMap\l|+ init(Param1 : int, Param2 : ArrayList_String, Param3 : HashMap, Param4 : String) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	AdapterAdapterVisitor [ 
+ 	 	 label = "{AdapterAdapterVisitor\n\<\<Decorator\>\>\n|- classMap : HashMap\l- allInterfaces : ArrayList_String\l|+ init(Param1 : int, Param2 : HashMap, Param3 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	AdapterDetector [ 
+ 	 	 label = "{AdapterDetector\n||+ init() : void\l+ detect(Param1 : String[]) : String\l}",
+	 	 color = black,
 	 	 fillcolor = white
+	]
+	AdapterTargetVisitor [ 
+ 	 	 label = "{AdapterTargetVisitor\n\<\<Decorator\>\>\n|- interfaces : ArrayList_String\l|+ init(Param1 : int, Param2 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	Analyzer [ 
+ 	 	 label = "{Analyzer\n|  phases : HashMap\l  detectors : HashMap\l  outputGenerator : ArrayList_UMLParsable\l  classes : ArrayList_String\l|+ init(Param1 : ArrayList_String) : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	ClassAssociationVisitor [ 
+ 	 	 label = "{ClassAssociationVisitor\n\<\<Decorator\>\>\n|  info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	ClassDeclarationVisitor [ 
+ 	 	 label = "{ClassDeclarationVisitor\n\<\<Decorator\>\>\n|- info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	ClassExtensionVisitor [ 
+ 	 	 label = "{ClassExtensionVisitor\n\<\<Decorator\>\>\n|- info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	ClassFieldVisitor [ 
+ 	 	 label = "{ClassFieldVisitor\n\<\<Decorator\>\>\n|  info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	ClassImplementationVisitor [ 
+ 	 	 label = "{ClassImplementationVisitor\n\<\<Decorator\>\>\n|- info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	ClassInfo [ 
+ 	 	 label = "{ClassInfo\n|- name : String\l- fields : ArrayList_FieldInfo\l- methods : ArrayList_MethodInfo\l- extendedClass : String\l- implementedClasses : ArrayList_String\l- usedClasses : ArrayList_String\l- associatedClasses : ArrayList_String\l- patterns : ArrayList_String\l- annotations : ArrayList_String\l- frameColor : String\l- classFillColor : String\l|+ getAssociatedClasses() : ArrayList_String\l+ setAssociatedClasses(Param1 : ArrayList_String) : void\l+ init() : void\l+ getName() : String\l+ setName(Param1 : String) : void\l+ getFields() : ArrayList_FieldInfo\l+ setFields(Param1 : ArrayList_FieldInfo) : void\l+ getMethods() : ArrayList_MethodInfo\l+ setMethods(Param1 : ArrayList_MethodInfo) : void\l+ getExtendedClass() : String\l+ setExtendedClass(Param1 : String) : void\l+ getImplementedClasses() : ArrayList_String\l+ setImplementedClasses(Param1 : ArrayList_String) : void\l+ getUsedClasses() : ArrayList_String\l+ setUsedClasses(Param1 : ArrayList_String) : void\l+ getPatterns() : ArrayList_String\l+ getFrameColor() : String\l+ setFrameColor(Param1 : String) : void\l+ getClassFillColor() : String\l+ setClassFillColor(Param1 : String) : void\l+ getAnnotations() : ArrayList_String\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	ClassMethodVisitor [ 
+ 	 	 label = "{ClassMethodVisitor\n\<\<Decorator\>\>\n|  info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	CompositeComponentVisitor [ 
+ 	 	 label = "{CompositeComponentVisitor\n\<\<Decorator\>\>\n|  abstractClasses : ArrayList_String\l|+ init(Param1 : int, Param2 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	CompositeCompositeVisitor [ 
+ 	 	 label = "{CompositeCompositeVisitor\n\<\<Decorator\>\>\n|- compositeMap : HashMap\l- allInterfaces : ArrayList_String\l- implementedInterfaces : ArrayList_String\l- storedInterfaces : ArrayList_String\l- compositeName : String\l|+ init(Param1 : int, Param2 : HashMap, Param3 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	CompositeDetector [ 
+ 	 	 label = "{CompositeDetector\n||+ init() : void\l+ detect(Param1 : String[]) : String\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	CompositeLeafVisitor [ 
+ 	 	 label = "{CompositeLeafVisitor\n\<\<Decorator\>\>\n|  components : Set\l  composites : Set\l  leaves : Set\l|+ init(Param1 : int, Param2 : Set, Param3 : Set, Param4 : Set) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	DecoratorAbstractVisitor [ 
+ 	 	 label = "{DecoratorAbstractVisitor\n\<\<Decorator\>\>\n|- abstractMap : HashMap\l- allInterfaces : ArrayList_String\l- implementedInterfaces : ArrayList_String\l- storedInterfaces : ArrayList_String\l- abstractName : String\l|+ init(Param1 : int, Param2 : HashMap, Param3 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	DecoratorConcreteVisitor [ 
+ 	 	 label = "{DecoratorConcreteVisitor\n\<\<Decorator\>\>\n|- abstracts : Set\l- concreteClasses : ArrayList_String\l|+ init(Param1 : int, Param2 : Set, Param3 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	DecoratorDetector [ 
+ 	 	 label = "{DecoratorDetector\n||+ init() : void\l+ detect(Param1 : String[]) : String\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	DecoratorInterfaceVisitor [ 
+ 	 	 label = "{DecoratorInterfaceVisitor\n\<\<Decorator\>\>\n|- interfaces : ArrayList_String\l|+ init(Param1 : int, Param2 : ArrayList_String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visit(Param1 : int, Param2 : int, Param3 : String, Param4 : String, Param5 : String, Param6 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	DesignParserActionListener [ 
+ 	 	 label = "{DesignParserActionListener\n|  frame : JFrame\l  configInfo : GUIConfigInfo\l  analyzedClasses : ArrayList_String\l  graphPanel : JPanel\l  treePanel : JPanel\l  timer : Timer\l  analyzedPhases : ArrayList_String\l  resultAnalyzer : IAnalyzer\l  phaseToDetector : HashMap\l|+ init(Param1 : JFrame) : void\l+ actionPerformed(Param1 : ActionEvent) : void\l- loadConfig() : void\l- resultAnalyze() : void\l- export() : void\l- loadFile(Param1 : File) : boolean\l+ search(Param1 : File, Param2 : String) : void\l+ setupResultFrame() : void\l+ setupHelpScreen() : void\l+ setupAboutScreen() : void\l- add(Param1 : DefaultMutableTreeNode, Param2 : String, Param3 : boolean) : DefaultMutableTreeNode\l+ setupTree() : JTree\l  access$0(Param1 : DesignParserActionListener) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	FieldInfo [ 
+ 	 	 label = "{FieldInfo\n|- name : String\l- className : String\l- access : String\l|+ getName() : String\l+ setName(Param1 : String) : void\l+ getClassName() : String\l+ setClassName(Param1 : String) : void\l+ getAccess() : String\l+ setAccess(Param1 : String) : void\l+ init() : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	GetParamsUsesVisitor [ 
+ 	 	 label = "{GetParamsUsesVisitor\n\<\<Decorator\>\>\n|  info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	GetReturnUsesVisitor [ 
+ 	 	 label = "{GetReturnUsesVisitor\n\<\<Decorator\>\>\n|  info : ClassInfo\l|+ init(Param1 : int, Param2 : ClassInfo) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	GUI [ 
+ 	 	 label = "{GUI\n||+ init() : void\l+ main(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	GUIConfigInfo [ 
+ 	 	 label = "{GUIConfigInfo\n|- inputFolder : String\l- inputClasses : ArrayList_String\l- outputFolder : String\l- dotPath : String\l- phases : ArrayList_String\l|+ init() : void\l+ getInputFolder() : String\l+ setInputFolder(Param1 : String) : void\l+ getInputClasses() : ArrayList_String\l+ setInputClasses(Param1 : ArrayList_String) : void\l+ getOutputFolder() : String\l+ setOutputFolder(Param1 : String) : void\l+ getDotPath() : String\l+ setDotPath(Param1 : String) : void\l+ getPhases() : ArrayList_String\l+ setPhases(Param1 : ArrayList_String) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	IAnalyzer [ 
+ 	 	 label = "{IAnalyzer\n\<\<Target\>\>\n\<\<Adaptee\>\>\n\<\<Target\>\>\n\<\<Adaptee\>\>\n\<\<Component\>\>\n\<\<Interface\>\>\n|+ exceptions : HashMap\l|  clinit() : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l+ addException(Param1 : String, Param2 : String) : void\l+ removeException(Param1 : String, Param2 : String) : boolean\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	LoadAnalyzerProxy [ 
+ 	 	 label = "{LoadAnalyzerProxy\n\<\<Adapter\>\>\n\<\<Decorator\>\>\n|- serialVersionUID : long\l- analyzer : IAnalyzer\l|+ init(Param1 : IAnalyzer) : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	Main [ 
+ 	 	 label = "{Main\n|- parserMap : HashMap\l|  clinit() : void\l+ init() : void\l+ main(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	MessageInfo [ 
+ 	 	 label = "{MessageInfo\n|  depth : int\l  caller : String\l  callee : String\l  answer : String\l  message : String\l  parameters : ArrayList_String\l|+ init(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String, Param6 : ArrayList_String) : void\l+ getDepth() : int\l+ setDepth(Param1 : int) : void\l+ getCaller() : String\l+ setCaller(Param1 : String) : void\l+ getCallee() : String\l+ setCallee(Param1 : String) : void\l+ getAnswer() : String\l+ setAnswer(Param1 : String) : void\l+ getMessage() : String\l+ setMessage(Param1 : String) : void\l+ getParameters() : ArrayList_String\l+ getParametersString() : String\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	MethodInfo [ 
+ 	 	 label = "{MethodInfo\n|- name : String\l- access : String\l- returnType : String\l- params : ArrayList_String\l|+ getName() : String\l+ setName(Param1 : String) : void\l+ getAccess() : String\l+ setAccess(Param1 : String) : void\l+ getReturnType() : String\l+ setReturnType(Param1 : String) : void\l+ getParams() : ArrayList_String\l+ setParams(Param1 : ArrayList_String) : void\l+ init() : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	MethodReturnsVisitor [ 
+ 	 	 label = "{MethodReturnsVisitor\n|- info : ClassInfo\l|+ init(Param1 : int) : void\l+ init(Param1 : int, Param2 : ClassInfo, Param3 : MethodVisitor) : void\l+ visitMethodInsn(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : boolean) : void\l+ visitTypeInsn(Param1 : int, Param2 : String) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	MethodSequenceVisitor [ 
+ 	 	 label = "{MethodSequenceVisitor\n|- info : SequenceDiagramInfo\l- className : String\l- depth : int\l|+ init(Param1 : int) : void\l+ init(Param1 : int, Param2 : SequenceDiagramInfo, Param3 : int, Param4 : String, Param5 : MethodVisitor) : void\l+ visitMethodInsn(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : boolean) : void\l+ visitTypeInsn(Param1 : int, Param2 : String) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	Parsable [ 
+ 	 	 label = "{Parsable\n\<\<Interface\>\>\n||+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	PatternDetector [ 
+ 	 	 label = "{PatternDetector\n\<\<Interface\>\>\n||+ detect(Param1 : String[]) : String\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	ResultAnalyzerProxy [ 
+ 	 	 label = "{ResultAnalyzerProxy\n\<\<Adapter\>\>\n\<\<Decorator\>\>\n|- serialVersionUID : long\l  imageIcon : ImageIcon\l  c : Component\l  dotPath : String\l  retrievalThread : Thread\l  analyzer : IAnalyzer\l|+ init(Param1 : IAnalyzer, Param2 : String) : void\l+ execute(Param1 : String) : boolean\l+ executeAll(Param1 : ArrayList_String) : boolean\l+ getIconHeight() : int\l+ getIconWidth() : int\l  setImageIcon(Param1 : ImageIcon) : void\l+ setAnalyzer(Param1 : IAnalyzer) : void\l+ setDotPath(Param1 : String) : void\l+ paintIcon(Param1 : Component, Param2 : Graphics, Param3 : int, Param4 : int) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	SequenceClassMethodVisitor [ 
+ 	 	 label = "{SequenceClassMethodVisitor\n\<\<Decorator\>\>\n|  info : SequenceDiagramInfo\l  className : String\l  methodName : String\l  depth : int\l  parameters : ArrayList_String\l|+ init(Param1 : int, Param2 : SequenceDiagramInfo, Param3 : String, Param4 : String, Param5 : ArrayList_String, Param6 : int) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	SequenceDiagramInfo [ 
+ 	 	 label = "{SequenceDiagramInfo\n|  objects : ArrayList_String\l  message : ArrayList_MessageInfo\l  packageName : String\l  maxDepth : int\l|+ init() : void\l+ getMaxDepth() : int\l+ setMaxDepth(Param1 : int) : void\l+ getObjects() : ArrayList_String\l+ getMessages() : ArrayList_MessageInfo\l+ setPackageName(Param1 : String) : void\l+ getPackageName() : String\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	SequenceDiagramTextParser [ 
+ 	 	 label = "{SequenceDiagramTextParser\n||+ init() : void\l+ parse(Param1 : String[]) : void\l- lambda$0(Param1 : MessageInfo, Param2 : String) : boolean\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	SingletonDetector [ 
+ 	 	 label = "{SingletonDetector\n||+ init() : void\l+ detect(Param1 : String[]) : String\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	SingletonVisitor [ 
+ 	 	 label = "{SingletonVisitor\n\<\<Decorator\>\>\n|- singletons : ArrayList_String\l- className : String\l- fieldFound : boolean\l- methodFound : boolean\l|+ init(Param1 : int, Param2 : ArrayList_String, Param3 : String) : void\l+ init(Param1 : int, Param2 : ClassVisitor) : void\l+ visitMethod(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : String[]) : MethodVisitor\l+ visitField(Param1 : int, Param2 : String, Param3 : String, Param4 : String, Param5 : Object) : FieldVisitor\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLAdapterParser [ 
+ 	 	 label = "{UMLAdapterParser\n\<\<Decorator\>\>\n|- detected : String\l|+ init(Param1 : UMLParsable) : void\l+ init(Param1 : String) : void\l+ init(Param1 : UMLParsable, Param2 : String) : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLAssociationParser [ 
+ 	 	 label = "{UMLAssociationParser\n\<\<Decorator\>\>\n||+ init(Param1 : UMLParsable) : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLCompositeParser [ 
+ 	 	 label = "{UMLCompositeParser\n\<\<Decorator\>\>\n|- detected : String\l|+ init(Param1 : UMLParsable) : void\l+ init(Param1 : String) : void\l+ init(Param1 : UMLParsable, Param2 : String) : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLDecoratorParser [ 
+ 	 	 label = "{UMLDecoratorParser\n\<\<Decorator\>\>\n|- detected : String\l|+ init(Param1 : UMLParsable) : void\l+ init(Param1 : String) : void\l+ init(Param1 : UMLParsable, Param2 : String) : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLEndParser [ 
+ 	 	 label = "{UMLEndParser\n\<\<Decorator\>\>\n||+ init(Param1 : UMLParsable) : void\l+ init() : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLExtendsParser [ 
+ 	 	 label = "{UMLExtendsParser\n\<\<Decorator\>\>\n||+ init(Param1 : UMLParsable) : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLImplementsParser [ 
+ 	 	 label = "{UMLImplementsParser\n\<\<Decorator\>\>\n||+ init(Param1 : UMLParsable) : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLParsable [ 
+ 	 	 label = "{UMLParsable\n\<\<Target\>\>\n\<\<Adaptee\>\>\n\<\<Component\>\>\n\<\<Interface\>\>\n||+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLParser [ 
+ 	 	 label = "{UMLParser\n|# classes : ArrayList_ClassInfo\l# classListAbbreviated : ArrayList_String\l# classListFull : ArrayList_String\l|+ init() : void\l+ parse(Param1 : String[]) : void\l+ getClasses() : ArrayList_ClassInfo\l+ getClassListAbbreviated() : ArrayList_String\l+ getClassListFull() : ArrayList_String\l+ setClasses(Param1 : ArrayList_ClassInfo) : void\l+ setClassListAbbreviated(Param1 : ArrayList_String) : void\l+ setClassListFull(Param1 : ArrayList_String) : void\l}",
+	 	 color = black,
+	 	 fillcolor = white
+	]
+	UMLSingletonParser [ 
+ 	 	 label = "{UMLSingletonParser\n\<\<Decorator\>\>\n|- detected : String\l|+ init(Param1 : UMLParsable) : void\l+ init(Param1 : String) : void\l+ init(Param1 : UMLParsable, Param2 : String) : void\l+ parse(Param1 : String[]) : void\l}",
+	 	 color = black,
+	 	 fillcolor = green
+	]
+	UMLUsesParser [ 
+ 	 	 label = "{UMLUsesParser\n\<\<Decorator\>\>\n||+ init(Param1 : UMLParsable) : void\l+ parse(Param1 : String[]) : void\l- lambda$0(Param1 : ClassInfo, Param2 : String) : boolean\l- lambda$1(Param1 : int) : String[]\l}",
+	 	 color = black,
+	 	 fillcolor = green
 	]
 
 	edge [
 		arrowhead = "empty"
 	]
 
+	AdapterAdapteeVisitor -> ClassVisitor
+	AdapterAdapterVisitor -> ClassVisitor
+	AdapterTargetVisitor -> ClassVisitor
+	ClassAssociationVisitor -> ClassVisitor
+	ClassDeclarationVisitor -> ClassVisitor
+	ClassExtensionVisitor -> ClassVisitor
+	ClassFieldVisitor -> ClassVisitor
+	ClassImplementationVisitor -> ClassVisitor
+	ClassMethodVisitor -> ClassVisitor
+	CompositeComponentVisitor -> ClassVisitor
+	CompositeCompositeVisitor -> ClassVisitor
+	CompositeLeafVisitor -> ClassVisitor
+	DecoratorAbstractVisitor -> ClassVisitor
+	DecoratorConcreteVisitor -> ClassVisitor
+	DecoratorInterfaceVisitor -> ClassVisitor
+	GetParamsUsesVisitor -> ClassVisitor
+	GetReturnUsesVisitor -> ClassVisitor
+	SequenceClassMethodVisitor -> ClassVisitor
+	SingletonVisitor -> ClassVisitor
+	UMLAdapterParser -> AbstractUMLParser
+	UMLAssociationParser -> AbstractUMLParser
+	UMLCompositeParser -> AbstractUMLParser
+	UMLDecoratorParser -> AbstractUMLParser
+	UMLEndParser -> AbstractUMLParser
+	UMLExtendsParser -> AbstractUMLParser
+	UMLImplementsParser -> AbstractUMLParser
+	UMLSingletonParser -> AbstractUMLParser
+	UMLUsesParser -> AbstractUMLParser
 
 
 	edge [
@@ -31,6 +324,17 @@ digraph G {
 		arrowhead = "normal"
 	]
 
+	AbstractUMLParser->UMLParsable
+	AdapterDetector->PatternDetector
+	Analyzer->IAnalyzer
+	CompositeDetector->PatternDetector
+	DecoratorDetector->PatternDetector
+	LoadAnalyzerProxy->IAnalyzer
+	ResultAnalyzerProxy->IAnalyzer
+	SequenceDiagramTextParser->Parsable
+	SingletonDetector->PatternDetector
+	UMLParsable->Parsable
+	UMLParser->UMLParsable
 
 
 	edge [
@@ -38,7 +342,29 @@ digraph G {
 		arrowhead = "vee"
 	]
 
-	ChocolateBoiler->ChocolateBoiler[label=""]
+	ClassVisitor->ClassVisitor[label="<<Decorates>>"]
+	AbstractUMLParser->UMLParsable[label="<<Adapts>><<Decorates>>"]
+	AbstractUMLParser->ClassInfo[label=""]
+	Analyzer->UMLParsable[label=""]
+	ClassAssociationVisitor->ClassInfo[label=""]
+	ClassDeclarationVisitor->ClassInfo[label=""]
+	ClassExtensionVisitor->ClassInfo[label=""]
+	ClassFieldVisitor->ClassInfo[label=""]
+	ClassImplementationVisitor->ClassInfo[label=""]
+	ClassInfo->FieldInfo[label=""]
+	ClassInfo->MethodInfo[label=""]
+	ClassMethodVisitor->ClassInfo[label=""]
+	DesignParserActionListener->GUIConfigInfo[label=""]
+	DesignParserActionListener->IAnalyzer[label=""]
+	GetParamsUsesVisitor->ClassInfo[label=""]
+	GetReturnUsesVisitor->ClassInfo[label=""]
+	LoadAnalyzerProxy->IAnalyzer[label="<<Adapts>><<Adapts>><<Decorates>>"]
+	MethodReturnsVisitor->ClassInfo[label=""]
+	MethodSequenceVisitor->SequenceDiagramInfo[label=""]
+	ResultAnalyzerProxy->IAnalyzer[label="<<Adapts>><<Adapts>><<Decorates>>"]
+	SequenceClassMethodVisitor->SequenceDiagramInfo[label=""]
+	SequenceDiagramInfo->MessageInfo[label=""]
+	UMLParser->ClassInfo[label=""]
 
 
 	edge [
@@ -46,5 +372,102 @@ digraph G {
 		arrowhead = "vee"
 	]
 
+	AdapterAdapterVisitor->ClassVisitor
+	AdapterDetector->AdapterTargetVisitor
+	AdapterDetector->AdapterAdapterVisitor
+	AdapterDetector->AdapterAdapteeVisitor
+	AdapterTargetVisitor->ClassVisitor
+	Analyzer->UMLEndParser
+	Analyzer->UMLUsesParser
+	Analyzer->UMLAssociationParser
+	Analyzer->UMLImplementsParser
+	Analyzer->UMLExtendsParser
+	Analyzer->UMLParser
+	Analyzer->AbstractUMLParser
+	Analyzer->UMLParsable
+	Analyzer->PatternDetector
+	ClassAssociationVisitor->ClassVisitor
+	ClassDeclarationVisitor->ClassVisitor
+	ClassExtensionVisitor->ClassVisitor
+	ClassFieldVisitor->ClassVisitor
+	ClassFieldVisitor->FieldInfo
+	ClassImplementationVisitor->ClassVisitor
+	ClassMethodVisitor->ClassVisitor
+	ClassMethodVisitor->MethodInfo
+	CompositeComponentVisitor->ClassVisitor
+	CompositeCompositeVisitor->ClassVisitor
+	CompositeDetector->CompositeComponentVisitor
+	CompositeDetector->CompositeCompositeVisitor
+	CompositeDetector->CompositeLeafVisitor
+	CompositeLeafVisitor->ClassVisitor
+	DecoratorAbstractVisitor->ClassVisitor
+	DecoratorConcreteVisitor->ClassVisitor
+	DecoratorDetector->DecoratorInterfaceVisitor
+	DecoratorDetector->DecoratorAbstractVisitor
+	DecoratorDetector->DecoratorConcreteVisitor
+	DecoratorInterfaceVisitor->ClassVisitor
+	DesignParserActionListener->DesignParserActionListener
+	DesignParserActionListener->ResultAnalyzerProxy
+	DesignParserActionListener->LoadAnalyzerProxy
+	DesignParserActionListener->Analyzer
+	GetParamsUsesVisitor->ClassVisitor
+	GetReturnUsesVisitor->ClassVisitor
+	GetReturnUsesVisitor->MethodReturnsVisitor
+	GUI->DesignParserActionListener
+	Main->UMLEndParser
+	Main->UMLCompositeParser
+	Main->UMLAdapterParser
+	Main->UMLDecoratorParser
+	Main->UMLSingletonParser
+	Main->UMLUsesParser
+	Main->UMLAssociationParser
+	Main->UMLImplementsParser
+	Main->UMLExtendsParser
+	Main->UMLParser
+	Main->SequenceDiagramTextParser
+	Main->Parsable
+	MethodSequenceVisitor->MessageInfo
+	MethodSequenceVisitor->SequenceClassMethodVisitor
+	SequenceClassMethodVisitor->ClassVisitor
+	SequenceClassMethodVisitor->MethodSequenceVisitor
+	SequenceDiagramTextParser->MessageInfo
+	SequenceDiagramTextParser->SequenceDiagramInfo
+	SequenceDiagramTextParser->SequenceClassMethodVisitor
+	SingletonDetector->SingletonVisitor
+	SingletonVisitor->ClassVisitor
+	UMLAdapterParser->UMLParsable
+	UMLAdapterParser->AdapterDetector
+	UMLAdapterParser->ClassInfo
+	UMLAssociationParser->UMLParsable
+	UMLAssociationParser->ClassAssociationVisitor
+	UMLAssociationParser->ClassInfo
+	UMLCompositeParser->UMLParsable
+	UMLCompositeParser->CompositeDetector
+	UMLCompositeParser->ClassInfo
+	UMLDecoratorParser->UMLParsable
+	UMLDecoratorParser->DecoratorDetector
+	UMLDecoratorParser->ClassInfo
+	UMLEndParser->UMLParsable
+	UMLEndParser->ClassInfo
+	UMLExtendsParser->UMLParsable
+	UMLExtendsParser->ClassExtensionVisitor
+	UMLExtendsParser->ClassInfo
+	UMLImplementsParser->UMLParsable
+	UMLImplementsParser->ClassImplementationVisitor
+	UMLImplementsParser->ClassInfo
+	UMLParsable->ClassInfo
+	UMLParser->ClassDeclarationVisitor
+	UMLParser->ClassInfo
+	UMLParser->ClassFieldVisitor
+	UMLParser->ClassMethodVisitor
+	UMLParser->FieldInfo
+	UMLParser->MethodInfo
+	UMLSingletonParser->UMLParsable
+	UMLSingletonParser->SingletonDetector
+	UMLSingletonParser->ClassInfo
+	UMLUsesParser->UMLParsable
+	UMLUsesParser->ClassInfo
+	UMLUsesParser->GetParamsUsesVisitor
+	UMLUsesParser->GetReturnUsesVisitor
 
 }

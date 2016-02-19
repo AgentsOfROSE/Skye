@@ -1,6 +1,5 @@
 package umlParser;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import jdk.internal.org.objectweb.asm.ClassVisitor;

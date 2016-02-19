@@ -2,11 +2,7 @@ package umlParser;
 
 import java.util.ArrayList;
 
-import javax.swing.BoundedRangeModel;
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class LoadAnalyzerProxy extends JProgressBar implements IAnalyzer {
 

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +33,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -59,6 +56,8 @@ public class DesignParserActionListener implements ActionListener {
 		this.frame = frame;
 		phaseToDetector.put("Singleton-Detector", "Singleton");
 		phaseToDetector.put("Decorator-Detector", "Decorator");
+		phaseToDetector.put("Adapter-Detector", "Adapter");
+		phaseToDetector.put("Composite-Detector", "Composite");
 	}
 
 	@Override
@@ -94,81 +93,82 @@ public class DesignParserActionListener implements ActionListener {
 					}
 				}
 			} else if (((JButton) e.getSource()).getName().equals("Load Config")) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("./docs"));
-				int result = fileChooser.showOpenDialog(frame);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					this.configInfo = new GUIConfigInfo();
-					File selectedFile = fileChooser.getSelectedFile();
-					loadFile(selectedFile);
-				}
+				loadConfig();
 			}
 		} else if (e.getSource().getClass() == JMenuItem.class) {
-			System.out.println(((JMenuItem) e.getSource()).getName());
 			if (((JMenuItem) e.getSource()).getName().equals("Help Menu")) {
 				setupHelpScreen();
 			} else if (((JMenuItem) e.getSource()).getName().equals("About Menu")) {
 				setupAboutScreen();
 			} else if (((JMenuItem) e.getSource()).getName().equals("New Config")) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("./docs"));
-				int result = fileChooser.showOpenDialog(frame);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					this.configInfo = new GUIConfigInfo();
-					File selectedFile = fileChooser.getSelectedFile();
-					loadFile(selectedFile);
-				}
-				((ResultAnalyzerProxy) resultAnalyzer).setImageIcon(null);
-				frame.revalidate();
-				System.out.println(analyzedPhases);
-				File outputFile = new File(".//output.dot");
-				PrintStream printStream;
-				try {
-					printStream = new PrintStream(new FileOutputStream(outputFile));
-					PrintStream old = System.out;
-					System.setOut(printStream);
-					resultAnalyzer.executeAll(analyzedPhases);
-					System.setOut(old);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				this.treePanel.removeAll();
-				this.treePanel.add(setupTree());
-				graphPanel.repaint();
+				loadConfig();
+				resultAnalyze();
 			} else if (((JMenuItem) e.getSource()).getName().equals("Export Graph")) {
-				JFileChooser save = new JFileChooser();
-				save.setApproveButtonText("Save");
-				save.showOpenDialog(frame);
-				String toSave = save.getSelectedFile().getAbsolutePath();
-				File graphFile = new File("output.png");
-				File saveFile = null;
-				if (toSave.endsWith(".png")) {
-					saveFile = new File(toSave);
-				} else {
-					saveFile = new File(toSave + ".png");
-				}
-				InputStream in;
-				OutputStream out;
 				try {
-					in = new FileInputStream(graphFile);
-					out = new FileOutputStream(saveFile);
-					byte[] buf = new byte[1024];
-					int len;
-					while ((len = in.read(buf)) > 0) {
-						out.write(buf, 0, len);
-
-					}
-					in.close();
-					out.close();
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
+					export();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
 		}
 	}
+	
+	private void loadConfig(){
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File("./docs/configs"));
+		int result = fileChooser.showOpenDialog(frame);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			this.configInfo = new GUIConfigInfo();
+			File selectedFile = fileChooser.getSelectedFile();
+			loadFile(selectedFile);
+		}
+	}
+	
+	private void resultAnalyze(){
+		((ResultAnalyzerProxy) resultAnalyzer).setImageIcon(null);
+		frame.revalidate();
+		File outputFile = new File(".//output.dot");
+		PrintStream printStream;
+		try {
+			printStream = new PrintStream(new FileOutputStream(outputFile));
+			PrintStream old = System.out;
+			System.setOut(printStream);
+			resultAnalyzer.executeAll(analyzedPhases);
+			System.setOut(old);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		this.treePanel.removeAll();
+		this.treePanel.add(setupTree());
+		graphPanel.repaint();
+	}
+	
+	private void export() throws IOException{
+		JFileChooser save = new JFileChooser();
+		save.setApproveButtonText("Save");
+		save.showOpenDialog(frame);
+		String toSave = save.getSelectedFile().getAbsolutePath();
+		File graphFile = new File("output.png");
+		File saveFile = null;
+		if (toSave.endsWith(".png")) {
+			saveFile = new File(toSave);
+		} else {
+			saveFile = new File(toSave + ".png");
+		}
+		InputStream in;
+		OutputStream out;
+		in = new FileInputStream(graphFile);
+		out = new FileOutputStream(saveFile);
+		byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
 
+		}
+		in.close();
+		out.close();
+	}
+	
 	private boolean loadFile(File selectedFile) {
 		try {
 			Scanner scanner = new Scanner(selectedFile);
@@ -193,15 +193,19 @@ public class DesignParserActionListener implements ActionListener {
 				configInfo.getPhases().add(phaseName.trim());
 			}
 			File directoryFile = new File(configInfo.getInputFolder());
-			// search(directoryFile);
+			search(directoryFile, directoryFile.getName());
 			// Other attributes possibly added here later
 			// System.out.println(configInfo.getInputFolder());
-			// System.out.println(configInfo.getInputClasses());
+			//System.out.println(configInfo.getInputClasses());
 			// System.out.println(configInfo.getOutputFolder());
 			// System.out.println(configInfo.getDotPath());
 			// System.out.println(configInfo.getPhases());
 			scanner.close();
-			this.analyzedPhases = configInfo.getPhases();
+			ArrayList<String> phasesToAnalyze = new ArrayList<String>();
+			for(String phase : configInfo.getPhases()){
+				phasesToAnalyze.add(phase);
+			}
+			this.analyzedPhases = phasesToAnalyze;
 			this.analyzedClasses = configInfo.getInputClasses();
 			((ResultAnalyzerProxy) this.resultAnalyzer)
 					.setAnalyzer(new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses), configInfo.getDotPath()));
@@ -214,17 +218,15 @@ public class DesignParserActionListener implements ActionListener {
 
 	}
 
-	public void search(File file) {
-		System.out.println(file.canRead());
+	public void search(File file, String path) {
 		if (file.isDirectory()) {
 			if (file.canRead()) {
 				for (File temp : file.listFiles()) {
 					if (temp.isDirectory()) {
-						search(temp);
+						search(temp, path + "." + temp.getName());
 					} else {
-						System.out.println(temp.getName().getClass().toGenericString());
 						if (temp.getName().substring(temp.getName().lastIndexOf(".")).equals(".java")) {
-							// configInfo.getInputClasses().add(temp.getName().getClass().toString());
+							configInfo.getInputClasses().add(path + "." + temp.getName().substring(0, temp.getName().lastIndexOf(".")));
 						}
 					}
 				}
@@ -369,7 +371,7 @@ public class DesignParserActionListener implements ActionListener {
 
 		for (String phase : configInfo.getPhases()) {
 			if (!(phase.equals("Loader") || phase.equals("Output"))) {
-				final DefaultMutableTreeNode pattern = add(root, phaseToDetector.get(phase), true);
+				final DefaultMutableTreeNode pattern = add(root, phaseToDetector.get(phase), analyzedPhases.contains(phase));
 				for (String className : configInfo.getInputClasses()) {
 					add(pattern, className, true);
 				}
@@ -385,15 +387,6 @@ public class DesignParserActionListener implements ActionListener {
 		final CheckBoxNodeEditor editor = new CheckBoxNodeEditor(tree);
 		tree.setCellEditor(editor);
 		tree.setEditable(true);
-
-		// listen for changes in the selection
-		tree.addTreeSelectionListener(new TreeSelectionListener() {
-
-			@Override
-			public void valueChanged(final TreeSelectionEvent e) {
-				System.out.println(System.currentTimeMillis() + ": selection changed");
-			}
-		});
 
 		// listen for changes in the model (including check box toggles)
 		treeModel.addTreeModelListener(new TreeModelListener() {
@@ -437,24 +430,8 @@ public class DesignParserActionListener implements ActionListener {
 							}
 						}
 					}
-					System.out.println(e.getPath().length);
-					System.out.println(((CheckBoxNodeData) ((DefaultMutableTreeNode) node).getUserObject()).getText());
 				}
-				((ResultAnalyzerProxy) resultAnalyzer).setImageIcon(null);
-				frame.revalidate();
-				System.out.println(analyzedPhases);
-				File outputFile = new File(".//output.dot");
-				PrintStream printStream;
-				try {
-					printStream = new PrintStream(new FileOutputStream(outputFile));
-					PrintStream old = System.out;
-					System.setOut(printStream);
-					resultAnalyzer.executeAll(analyzedPhases);
-					System.setOut(old);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				graphPanel.repaint();
+				resultAnalyze();
 			}
 
 			@Override
