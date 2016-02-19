@@ -14,12 +14,14 @@ public class ResultAnalyzerProxy extends ImageIcon implements IAnalyzer {
 	volatile ImageIcon imageIcon;
 	Component c;
 	String dotPath;
+	String outputPath;
 	Thread retrievalThread;
 	IAnalyzer analyzer;
 
-	public ResultAnalyzerProxy(IAnalyzer analyzer, String dotPath) {
+	public ResultAnalyzerProxy(IAnalyzer analyzer, String dotPath, String outputPath) {
 		this.analyzer = analyzer;
 		this.dotPath = dotPath;
+		this.outputPath = outputPath;
 	}
 
 	@Override
@@ -37,10 +39,10 @@ public class ResultAnalyzerProxy extends ImageIcon implements IAnalyzer {
 		retrievalThread = new Thread(new Runnable(){
 			public void run(){
 				try {
-					ProcessBuilder pb = new ProcessBuilder(dotPath, "-Tpng", "output.dot", "-o", "output.png");
+					ProcessBuilder pb = new ProcessBuilder(dotPath, "-Tpng", "output.dot", "-o", outputPath + "\\output.png");
 					Process child = pb.start();
 					child.waitFor();
-					setImageIcon(new ImageIcon(ImageIO.read(new File("output.png"))));
+					setImageIcon(new ImageIcon(ImageIO.read(new File(outputPath + "\\output.png"))));
 					if(c != null){
 						c.repaint();
 					}
@@ -83,6 +85,10 @@ public class ResultAnalyzerProxy extends ImageIcon implements IAnalyzer {
 		this.dotPath = dotPath;
 	}
 
+	public void setOutputPath(String outputPath){
+		this.outputPath = outputPath;
+	}
+	
 	@Override
 	public void paintIcon(final Component c, Graphics g, int x, int y) {
 		this.c = c;

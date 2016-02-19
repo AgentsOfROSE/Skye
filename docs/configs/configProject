@@ -1,5 +1,5 @@
 Input-Folder: c:\\EclipseWorkspaces\\csse374\\Skye\\src\\umlParser
 Input-Classes: jdk.internal.org.objectweb.asm.ClassVisitor
-Output-Directory: c:\\User1\\Documents\\Lab2-1\\input-output
+Output-Directory: c:\\EclipseWorkspaces\\
 Dot-Path: C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe
 Phases: Loader, Decorator-Detector, Singleton-Detector, Adapter-Detector, Composite-Detector, Output

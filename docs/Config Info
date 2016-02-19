@@ -1,0 +1,23 @@
+Config File Setup:
+
+Portions:
+Input-Folder: absolute path to a folder that contains classes to recursively load from the file system (e.g. a project like /Lab2-1/bin). Optional for the user.
+Input-Classes: list of additional classes to load from the classpath, such as Java built-in classes, ASM classes, or other classes you added to the classpath. Must be fully qualified class names (e.g. java.util.List) separated by a comma
+Output-Dir: Absolute path to output directory for storing generated graphs.
+Dot-Path: path to the ‘dot’ executable, which is the command line version of GraphViz.
+Phases: name of Phases in the order they should execute, separated by a comma
+More attributes for phase-specific configuration. For instance, if a pattern detector has some threshold for deciding whether the pattern is present, add a property for that.
+
+Phases:
+Loader -> Setups the analyzer for a new analyzation [Required]
+Singleton-Detector -> Detects Singletons
+Adapter-Detector -> Detects Adapters
+Composite-Detector -> Detects Composites
+Decorator-Detector -> Detects Decorator
+Output -> Generates GraphViz graph from patterns detected [Required]
+
+// COMING SOON TO A THEATRE NEAR YOU //
+Pattern Specific:
+After the phases portion of the config file you may specify pattern specific settings.
+These settings should begin with the pattern name [Starting with a Capital letter] and then have a dash followed by the setting name
+After the setting name there should be a ": " followed by the flag for that setting

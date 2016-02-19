@@ -50,7 +50,7 @@ public class DesignParserActionListener implements ActionListener {
 	JPanel treePanel;
 	Timer timer = new Timer(200, this);
 	ArrayList<String> analyzedPhases = null;
-	IAnalyzer resultAnalyzer = new ResultAnalyzerProxy(null, null);
+	IAnalyzer resultAnalyzer = new ResultAnalyzerProxy(null, null, null);
 	HashMap<String, String> phaseToDetector = new HashMap<>();
 
 	public DesignParserActionListener(JFrame frame) {
@@ -85,7 +85,7 @@ public class DesignParserActionListener implements ActionListener {
 						printStream.close();
 						System.setOut(old);
 						ProcessBuilder pb = new ProcessBuilder(configInfo.getDotPath(), "-Tpng", "output.dot", "-o",
-								"output.png");
+								configInfo.getOutputFolder() + "\\output.png");
 						Process child = pb.start();
 						child.waitFor();
 						setupResultFrame();
@@ -149,7 +149,7 @@ public class DesignParserActionListener implements ActionListener {
 		save.setApproveButtonText("Save");
 		save.showOpenDialog(frame);
 		String toSave = save.getSelectedFile().getAbsolutePath();
-		File graphFile = new File("output.png");
+		File graphFile = new File(configInfo.getOutputFolder()+"\\output.png");
 		File saveFile = null;
 		if (toSave.endsWith(".png")) {
 			saveFile = new File(toSave);
@@ -209,8 +209,9 @@ public class DesignParserActionListener implements ActionListener {
 			this.analyzedPhases = phasesToAnalyze;
 			this.analyzedClasses = configInfo.getInputClasses();
 			((ResultAnalyzerProxy) this.resultAnalyzer)
-					.setAnalyzer(new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses), configInfo.getDotPath()));
+					.setAnalyzer(new ResultAnalyzerProxy(new Analyzer(this.analyzedClasses), configInfo.getDotPath(), configInfo.getOutputFolder()));
 			((ResultAnalyzerProxy) this.resultAnalyzer).setDotPath(configInfo.getDotPath());
+			((ResultAnalyzerProxy) this.resultAnalyzer).setOutputPath(configInfo.getOutputFolder());
 			return true;
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -294,7 +295,7 @@ public class DesignParserActionListener implements ActionListener {
 		rightScrollFrame.setBounds(300, 0, 944, 743);
 		rightScrollFrame.setVisible(true);
 		this.frame.getContentPane().add(rightScrollFrame);
-		((ResultAnalyzerProxy) this.resultAnalyzer).setImageIcon(new ImageIcon(ImageIO.read(new File("output.png"))));
+		((ResultAnalyzerProxy) this.resultAnalyzer).setImageIcon(new ImageIcon(ImageIO.read(new File(configInfo.getOutputFolder() + "\\output.png"))));
 		JLabel graphLabel = new JLabel((ResultAnalyzerProxy) this.resultAnalyzer);
 		rightPane.add(graphLabel);
 		this.graphPanel = rightPane;
